@@ -32,6 +32,26 @@ SINOW berasal dari "Sinau," artinya belajar dalam bahasa Jawa. Nama produk ini t
 - Reset password
 - Download/Cetak data transaksi
 
+# Backend Environment Variables
+Untuk menjalankan projek ini, kamu perlu menambahkkan environment variables berikut ke dalam file .env di backend
+
+`PORT`
+`DB_USER`
+`DB_PASSWORD`
+`DB_NAME`
+`DB_HOST`
+`DB_PORT`
+`JWT_SECRET`
+`JWT_ISSUER`
+`JWT_LOGIN_TOKEN_EXPIRES_IN`
+`IMAGEKIT_PUBLIC_KEY`
+`IMAGEKIT_PRIVATE_KEY`
+`IMAGEKIT_URL`
+`APP_NAME`
+`APP_EMAIL`
+`APP_PASSWORD`
+`BASE_URL`
+
 # Project Links
 
 ## Design
