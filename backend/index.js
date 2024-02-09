@@ -13,7 +13,7 @@ const app = express()
 app.use(cors())
 app.use(
   cors({
-    origin: 'http://localhost:5000',
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 )
@@ -23,12 +23,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 app.use(router)
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
-  next()
-})
 
 app.use('/', (req, res, next) => {
   if (req.originalUrl === '/') {
