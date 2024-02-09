@@ -129,9 +129,9 @@ export default function MainLayout({ children }) {
         <div className="flex justify-between items-center p-2 pb-4">
           <Link href={"/"} className={`flex items-center gap-2 font-bold`}>
             <Image
-              src="https://ik.imagekit.io/vsecvavlp/SINOW%20assets/LOGO/logo-sinow-dark-bg.png?updatedAt=1706577329324"
-              width={40}
-              height={40}
+              src="https://ik.imagekit.io/vsecvavlp/SINOW%20assets/LOGO/logo_sinow_bg.png?updatedAt=1707395834962"
+              width={36}
+              height={36}
               alt="sinow logo dark"
             />
             <h2 className="text-xl hidden min-[300px]:block">SINOW</h2>
