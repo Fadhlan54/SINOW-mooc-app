@@ -7,8 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FaStar } from "react-icons/fa";
 import { RiShieldStarLine } from "react-icons/ri";
 import { PiBooks, PiClockFill } from "react-icons/pi";
-import { IoDiamond, IoDiamondSharp, IoGiftSharp } from "react-icons/io5";
-import { FaGift } from "react-icons/fa";
+import { IoDiamondSharp, IoGiftSharp } from "react-icons/io5";
 import { FreeMode, Autoplay } from "swiper/modules";
 
 import "swiper/swiper-bundle.css";
@@ -321,6 +320,7 @@ export default function Home() {
               <Loading />
             </div>
           ) : (
+            courses &&
             courses.map((course) => (
               <div key={course.id} className="rounded-3xl bg-white shadow-lg ">
                 <Image
