@@ -151,7 +151,7 @@ const loginWithGoogleCallback = async (req, res) => {
     })
 
     return res.redirect(
-      `${process.env.CLIENT_URL}/oauth-success?token=${token}`,
+      `${process.env.CLIENT_URL}/auth/oauth-success?token=${token}`,
     )
   } catch (error) {
     return next(new ApiError(error.message, 500))
