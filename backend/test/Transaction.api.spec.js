@@ -1,13 +1,15 @@
 /* eslint-disable */
 const request = require('supertest')
-const { Transaction, UserCourse } = require('../models')
+const { Transaction, MyCourse } = require('../models')
 const app = require('../index')
 const generateSHA512 = require('../utils/generateSHA512')
 require('dotenv').config()
 
 let token = null
 let course = null
+let freeCourse = null
 let transaction = null
+const fakeId = '12345678-ab12-4321-8888-1234567890ab'
 
 beforeAll(async () => {
   try {
@@ -21,12 +23,17 @@ beforeAll(async () => {
       '/api/v1/courses?type=premium',
     )
 
-    if (premiumCourseResponse.body.data.length > 0) {
-      course =
-        premiumCourseResponse.body.data[
-          premiumCourseResponse.body.data.length - 1
-        ]
-    }
+    course =
+      premiumCourseResponse.body.data[
+        premiumCourseResponse.body.data.length - 1
+      ]
+
+    const freeCourseResponse = await request(app).get(
+      '/api/v1/courses?type=gratis',
+    )
+
+    freeCourse =
+      freeCourseResponse.body.data[freeCourseResponse.body.data.length - 1]
   } catch (error) {
     console.log('error saat login: ')
     console.log(error)
@@ -78,7 +85,7 @@ describe('API create transaction', () => {
     const response = await request(app)
       .post('/api/v1/transactions')
       .send({
-        courseId: 999999,
+        courseId: fakeId,
       })
       .set({
         Authorization: `Bearer ${token}`,
@@ -92,7 +99,7 @@ describe('API create transaction', () => {
     const response = await request(app)
       .post('/api/v1/transactions')
       .send({
-        courseId: 1,
+        courseId: freeCourse.id,
       })
       .set({
         Authorization: `Bearer ${token}`,
@@ -103,14 +110,13 @@ describe('API create transaction', () => {
   })
 
   it('failed create transaction: already paid', async () => {
-    const userCourse = await UserCourse.findOne({
+    const myCourse = await MyCourse.findOne({
       where: {
-        userId: 1,
         courseId: course.id,
       },
     })
 
-    await userCourse.update({
+    await myCourse.update({
       isAccessible: true,
     })
 
@@ -126,7 +132,7 @@ describe('API create transaction', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body.status).toBe('Failed')
 
-    await userCourse.update({
+    await myCourse.update({
       isAccessible: false,
     })
   })

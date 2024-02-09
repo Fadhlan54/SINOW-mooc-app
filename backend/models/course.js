@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Course.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       name: DataTypes.STRING,
       imageUrl: DataTypes.STRING,
       videoPreviewUrl: DataTypes.STRING,
@@ -57,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       courseBy: DataTypes.STRING,
-      createdBy: DataTypes.INTEGER,
+      createdBy: DataTypes.UUID,
     },
     {
       sequelize,

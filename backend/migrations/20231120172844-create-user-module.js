@@ -1,21 +1,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('UserModules', {
+    await queryInterface.createTable('MyModules', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       moduleId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       chapterId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       status: {
         type: Sequelize.STRING,
@@ -32,6 +32,6 @@ module.exports = {
     })
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('UserModules')
+    await queryInterface.dropTable('MyModules')
   },
 }

@@ -5,32 +5,22 @@ const validateCategory = async (categoryId, next) => {
   if (Array.isArray(categoryId)) {
     // eslint-disable-next-line consistent-return
     categoryId.forEach(async (cat) => {
-      if (Number.isNaN(Number(cat))) {
-        return next(
-          new ApiError('Semua category harus berupa angka bilangan bulat', 400),
-        )
-      }
       const checkCategory = await Category.findByPk(cat)
       if (!checkCategory) {
         return next(
           new ApiError(
-            'Category tidak tersedia, cek \'localhost:3000/api/v1/category\' untuk melihat daftar kategori yang tersedia',
+            `Category tidak tersedia, cek ${process.env.BASE_URL}/api/v1/category untuk melihat daftar kategori yang tersedia`,
             404,
           ),
         )
       }
     })
   } else {
-    if (Number.isNaN(Number(categoryId))) {
-      return next(
-        new ApiError('Category harus berupa angka bilangan bulat', 400),
-      )
-    }
     const checkCategory = await Category.findByPk(categoryId)
     if (!checkCategory) {
       return next(
         new ApiError(
-          'Category tidak tersedia, cek \'localhost:3000/api/v1/category\' untuk melihat daftar kategori yang tersedia',
+          "Category tidak tersedia, cek 'localhost:3000/api/v1/category' untuk melihat daftar kategori yang tersedia",
           404,
         ),
       )
@@ -46,7 +36,7 @@ const validateLevel = (level, next) => {
     if (!validLevels.includes(level)) {
       return next(
         new ApiError(
-          'Level harus antara \'beginner\', \'intermediate\' atau \'advanced\', perhatikan juga huruf kecil besarnya',
+          "Level harus antara 'beginner', 'intermediate' atau 'advanced', perhatikan juga huruf kecil besarnya",
           400,
         ),
       )
@@ -55,7 +45,7 @@ const validateLevel = (level, next) => {
     if (!level.every((item) => validLevels.includes(item))) {
       return next(
         new ApiError(
-          'Level harus antara \'beginner\', \'intermediate\' atau \'advanced\', perhatikan juga huruf kecil besarnya',
+          "Level harus antara 'beginner', 'intermediate' atau 'advanced', perhatikan juga huruf kecil besarnya",
           400,
         ),
       )
@@ -66,7 +56,7 @@ const validateLevel = (level, next) => {
 
 const validateType = (type, next) => {
   if (type !== 'gratis' && type !== 'premium') {
-    return next(new ApiError('Type harus \'gratis\' atau \'premium\'', 400))
+    return next(new ApiError("Type harus 'gratis' atau 'premium'", 400))
   }
   return true
 }
@@ -93,7 +83,7 @@ const getCourseOrder = (sortBy, next) => {
   if (sortBy) {
     if (!validSortBy.includes(sortBy)) {
       return next(
-        new ApiError('sortBy harus \'terbaru\', \'terpopuler\' atau \'promo\'', 400),
+        new ApiError("sortBy harus 'terbaru', 'terpopuler' atau 'promo'", 400),
       )
     }
     if (sortBy === 'terbaru') {
@@ -111,7 +101,7 @@ const getCourseOrder = (sortBy, next) => {
 const validateProgress = (progress, next) => {
   if (progress !== 'inProgress' && progress !== 'completed') {
     return next(
-      new ApiError('progress harus \'inProgress\' atau \'completed\'', 400),
+      new ApiError("progress harus 'inProgress' atau 'completed'", 400),
     )
   }
   return true

@@ -2,12 +2,12 @@
 
 const request = require('supertest')
 const app = require('../index')
-const path = require('path')
 require('dotenv').config()
 
 let adminToken = null
 let userToken = null
 let notification = null
+const fakeId = '12345678-ab12-4321-8888-1234567890ab'
 
 beforeAll(async () => {
   try {
@@ -136,7 +136,7 @@ describe('API Get All Notification', () => {
 
   it('failed get notification: user id not valid', async () => {
     const response = await request(app)
-      .get('/api/v1/notifications?userId=abc')
+      .get(`/api/v1/notifications?userId=abc`)
       .set({
         Authorization: `Bearer ${adminToken}`,
       })
@@ -148,7 +148,7 @@ describe('API Get All Notification', () => {
 describe('API update notification', () => {
   it('success update notification', async () => {
     const response = await request(app)
-      .put('/api/v1/notifications/1')
+      .put(`/api/v1/notifications/${notification.id}`)
       .set({
         Authorization: `Bearer ${adminToken}`,
       })
@@ -163,7 +163,7 @@ describe('API update notification', () => {
 
   it('failed update notification: not admin', async () => {
     const response = await request(app)
-      .put('/api/v1/notifications/1')
+      .put(`/api/v1/notifications/${notification.id}`)
       .set({
         Authorization: `Bearer ${userToken}`,
       })
@@ -178,7 +178,7 @@ describe('API update notification', () => {
 
   it('failed update notification: notification not found', async () => {
     const response = await request(app)
-      .put('/api/v1/notifications/919191919')
+      .put(`/api/v1/notifications/${fakeId}`)
       .set({
         Authorization: `Bearer ${adminToken}`,
       })
@@ -248,7 +248,7 @@ describe('API delete notification by id', () => {
 
   it('failed delete notification: notification not found', async () => {
     const response = await request(app)
-      .delete('/api/v1/notifications/919191919')
+      .delete(`/api/v1/notifications/${fakeId}`)
       .set({
         Authorization: `Bearer ${adminToken}`,
       })

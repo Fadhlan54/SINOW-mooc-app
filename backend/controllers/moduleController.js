@@ -1,7 +1,5 @@
 const { Op } = require('sequelize')
-const {
-  Module, Chapter, User, UserCourse,
-} = require('../models')
+const { Module, Chapter, User, MyCourse } = require('../models')
 const ApiError = require('../utils/ApiError')
 
 const { uploadVideo } = require('../utils/imagekitUploader')
@@ -20,8 +18,8 @@ const createModule = async (req, res, next) => {
       )
     }
 
-    if (Number.isNaN(Number(no)) || Number.isNaN(Number(chapterId))) {
-      return next(new ApiError('Nomor dan chapterId harus berupa angka', 400))
+    if (Number.isNaN(Number(no))) {
+      return next(new ApiError('Nomor module harus berupa angka', 400))
     }
     no = parseInt(no, 10)
 
@@ -39,14 +37,14 @@ const createModule = async (req, res, next) => {
       )
     }
 
-    const checkUserCourse = await UserCourse.findOne({
+    const checkMyCourse = await MyCourse.findOne({
       where: {
         courseId: checkChapter.courseId,
         isFollowing: true,
       },
     })
 
-    if (checkUserCourse) {
+    if (checkMyCourse) {
       return next(
         new ApiError(
           'Modul tidak dapat ditambahkan karena sudah ada user yang mengikuti course ini',
@@ -70,7 +68,7 @@ const createModule = async (req, res, next) => {
       const errorMessage = []
 
       if (existingModule.name === name) {
-        errorMessage.push('Nama modul sudah ada dalam chapter ini')
+        errorMessage.push('Nomor modul sudah digunakan dalam chapter ini')
       }
 
       if (existingModule.no === no) {
@@ -90,7 +88,6 @@ const createModule = async (req, res, next) => {
       videoUrl: uploadedFile.videoUrl,
       chapterId,
       duration: uploadedFile.videoDuration,
-      createdBy: req.user.id,
     })
 
     return res.status(201).json({
@@ -111,15 +108,6 @@ const getAllModule = async (req, res, next) => {
           model: Chapter,
           attributes: ['no', 'name'],
           as: 'chapter',
-        },
-        {
-          model: User,
-          as: 'moduleCreator',
-          attributes: ['id', 'name'],
-        },
-        {
-          model: User,
-          as: 'users',
         },
       ],
       order: [['id', 'ASC']],
@@ -148,15 +136,6 @@ const getModuleById = async (req, res, next) => {
           attributes: ['no', 'name'],
           as: 'chapter',
         },
-        {
-          model: User,
-          as: 'moduleCreator',
-          attributes: ['id', 'name'],
-        },
-        {
-          model: User,
-          as: 'users',
-        },
       ],
     })
 
@@ -177,7 +156,7 @@ const getModuleById = async (req, res, next) => {
 const updateModule = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { name, no, chapterId } = req.body
+    const { name, no } = req.body
 
     const module = await Module.findByPk(id)
     if (!module) {
@@ -187,20 +166,6 @@ const updateModule = async (req, res, next) => {
     const updateData = {}
 
     if (name) {
-      const existingModule = await Module.findOne({
-        where: {
-          name,
-          chapterId:
-            chapterId && !Number.isNaN(Number(chapterId))
-              ? chapterId
-              : module.chapterId,
-          id: { [Op.not]: id },
-        },
-      })
-
-      if (existingModule) {
-        return next(new ApiError('Nama modul sudah ada dalam chapter ini', 400))
-      }
       updateData.name = name
     }
 
@@ -213,10 +178,7 @@ const updateModule = async (req, res, next) => {
       const checkNumber = await Module.findOne({
         where: {
           no: parsedNo,
-          chapterId:
-            chapterId && !Number.isNaN(Number(chapterId))
-              ? chapterId
-              : module.chapterId,
+          chapterId: module.chapterId,
           id: { [Op.not]: id },
         },
       })
@@ -227,23 +189,6 @@ const updateModule = async (req, res, next) => {
         )
       }
       updateData.no = parsedNo
-    }
-
-    if (chapterId) {
-      if (Number.isNaN(Number(chapterId))) {
-        return next(new ApiError('Chapter ID harus berupa angka', 400))
-      }
-
-      const checkChapter = await Chapter.findByPk(chapterId)
-      if (!checkChapter) {
-        return next(
-          new ApiError(
-            'Chapter tidak ditemukan, silahkan cek daftar chapter untuk melihat chapter yang tersedia',
-            404,
-          ),
-        )
-      }
-      updateData.chapterId = chapterId
     }
 
     if (req.file) {
@@ -277,14 +222,14 @@ const deleteModule = async (req, res, next) => {
 
     const checkChapter = await Chapter.findByPk(module.chapterId)
     if (checkChapter) {
-      const checkUserCourse = await UserCourse.findOne({
+      const checkMyCourse = await MyCourse.findOne({
         where: {
           courseId: checkChapter.courseId,
           isFollowing: true,
         },
       })
 
-      if (checkUserCourse) {
+      if (checkMyCourse) {
         return next(
           new ApiError(
             'Module ini tidak dapat di hapus karena sudah ada user yang mengikuti course ini',

@@ -89,7 +89,7 @@ const createCourse = async (req, res, next) => {
       name,
       level,
       rating,
-      categoryId: Math.floor(categoryId),
+      categoryId: categoryId,
       description,
       classCode,
       totalDuration: 0,
@@ -120,7 +120,7 @@ const getAllCourse = async (req, res, next) => {
     const {
       // eslint-disable-next-line comma-dangle
       search,
-      category,
+      categoryId,
       level,
       type,
       sortBy,
@@ -133,14 +133,14 @@ const getAllCourse = async (req, res, next) => {
       }
     }
 
-    if (category) {
-      validateCategory(category, next)
-      if (Array.isArray(category)) {
+    if (categoryId) {
+      validateCategory(categoryId, next)
+      if (Array.isArray(categoryId)) {
         where.categoryId = {
-          [Op.in]: category.map((cat) => parseInt(cat, 10)),
+          [Op.in]: categoryId,
         }
       } else {
-        where.categoryId = parseInt(category, 10)
+        where.categoryId = categoryId
       }
     }
 
@@ -197,6 +197,7 @@ const getAllCourse = async (req, res, next) => {
 const getCourseById = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const course = await Course.findByPk(id, {
       include: [
         {
@@ -252,6 +253,7 @@ const getCourseById = async (req, res, next) => {
 const updateCourse = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const {
       name,
       level,

@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
-const {
-  User, Auth, OTP, sequelize,
-} = require('../models')
+const { google } = require('googleapis')
+const { User, Auth, OTP, sequelize } = require('../models')
 const ApiError = require('../utils/ApiError')
 const { createNotification } = require('../utils/notificationUtils')
 const { createToken } = require('../utils/jwtUtils')
@@ -12,9 +11,28 @@ const {
   sendResetPasswordEmail,
 } = require('../utils/sendMailUtils')
 
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'http://localhost:3000/api/v1/auth/login/google/callback',
+)
+
+const scopes = [
+  'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+const authorizationUrl = oauth2Client.generateAuthUrl({
+  access_type: 'offline',
+  scope: scopes,
+  include_granted_scopes: true,
+})
+
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body
+
+    console.log(email, password)
 
     if (!email || !password) {
       return next(new ApiError('Email dan password harus diisi', 400))
@@ -63,6 +81,144 @@ const login = async (req, res, next) => {
   }
 }
 
+const loginWithGoogle = async (req, res, next) => {
+  res.redirect(authorizationUrl)
+}
+
+const loginWithGoogleCallback = async (req, res) => {
+  try {
+    const { code } = req.query
+
+    const { tokens } = await oauth2Client.getToken(code)
+    console.log(tokens)
+
+    oauth2Client.setCredentials(tokens)
+    const userInfo = google.oauth2({
+      auth: oauth2Client,
+      version: 'v2',
+    })
+
+    const { data } = await userInfo.userinfo.get()
+
+    if (!data.email || !data.name) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Error saat autentikasi',
+        data,
+      })
+    }
+
+    let user = await Auth.findOne({
+      where: {
+        email: data.email,
+      },
+      include: ['User'],
+    })
+
+    if (user) {
+      if (!user.isEmailVerified) {
+        await user.update({
+          isEmailVerified: true,
+        })
+      }
+
+      const token = createToken({
+        id: user.userId,
+        name: user.User.name,
+        role: user.User.role,
+      })
+
+      return res.redirect(
+        `${process.env.CLIENT_URL}/auth/oauth-success?token=${token}`,
+      )
+    }
+
+    const newUser = await User.create({
+      name: data.name,
+      role: 'user',
+    })
+
+    const newAuth = await Auth.create({
+      email: data.email,
+      userId: newUser.id,
+      isEmailVerified: true,
+    })
+
+    const token = createToken({
+      id: newUser.id,
+      name: newUser.name,
+      role: newUser.role,
+    })
+
+    return res.redirect(
+      `${process.env.CLIENT_URL}/oauth-success?token=${token}`,
+    )
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
+
+const checkToken = async function (req, res, next) {
+  try {
+    const bearerToken = req.headers.authorization
+
+    if (!bearerToken) {
+      return next(new ApiError('Tidak ada token', 401))
+    }
+
+    const token = bearerToken.split(' ')[1]
+    console.log(token)
+
+    let decoded
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch {
+      return res.status(401).json({
+        status: 'Failed',
+        message: 'Token tidak valid',
+      })
+    }
+
+    console.log(decoded)
+
+    const user = await User.findByPk(decoded.id, {
+      include: [
+        {
+          model: Auth,
+          attributes: ['id', 'email', 'phoneNumber', 'userId'],
+        },
+      ],
+    })
+
+    console.log(user)
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'Failed',
+        message: 'User tidak ditemukan',
+      })
+    }
+
+    return res.status(200).json({
+      status: 'Success',
+      message: 'Token valid',
+      data: {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.Auth.email,
+          role: user.role,
+        },
+      },
+    })
+  } catch (error) {
+    return res.status(500).json({
+      status: 'Failed',
+      message: 'Server Error',
+    })
+  }
+}
+
 const register = async (req, res, next) => {
   try {
     let { email, phoneNumber } = req.body
@@ -97,10 +253,6 @@ const register = async (req, res, next) => {
     }
     if (password.length < 8) {
       return next(new ApiError('Password min 8 karakter', 400))
-    }
-
-    if (password.length > 12) {
-      return next(new ApiError('Password max 12 karakter', 400))
     }
 
     const isEmailExist = await Auth.findOne({ where: { email } })
@@ -163,10 +315,22 @@ const register = async (req, res, next) => {
       userId: newUser.id,
     })
 
+    const token = jwt.sign(
+      {
+        email,
+      },
+      process.env.JWT_SECRET,
+      {
+        issuer: process.env.JWT_ISSUER,
+        expiresIn: 300,
+      },
+    )
+
     return res.status(201).json({
       status: 'Success',
       message:
         'Registrasi berhasil & OTP berhasil dikirim ke email anda, silahkan verifikasi OTP sebelum login',
+      token,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -220,9 +384,21 @@ const resendOtp = async (req, res, next) => {
       otpValue: otpCode,
     })
 
+    const token = jwt.sign(
+      {
+        email,
+      },
+      process.env.JWT_SECRET,
+      {
+        issuer: process.env.JWT_ISSUER,
+        expiresIn: 300,
+      },
+    )
+
     return res.status(200).json({
       status: 'Success',
       message: 'Kode OTP berhasil dikirim ulang ke email',
+      token,
     })
   } catch (error) {
     return next(new ApiError(error.message, 500))
@@ -231,19 +407,32 @@ const resendOtp = async (req, res, next) => {
 
 const verifyEmail = async (req, res, next) => {
   try {
-    const { email, otpCode } = req.body
+    const { token: tokenReq, otpCode } = req.body
 
-    if (!email || !otpCode) {
-      return next(new ApiError('Email dan kode OTP harus diisi', 400))
+    console.log(tokenReq, otpCode)
+
+    if (!otpCode) {
+      return next(new ApiError('Kode OTP harus diisi', 400))
     }
 
-    if (!validator.isEmail(email)) {
-      return next(new ApiError('Email tidak valid', 400))
+    let decoded
+
+    try {
+      decoded = jwt.verify(tokenReq, process.env.JWT_SECRET)
+    } catch (error) {
+      if (error.message === 'jwt expired') {
+        return next(new ApiError('Kode OTP sudah kadaluarsa', 400))
+      }
+      return next(new ApiError('Token tidak valid', 400))
     }
 
-    if (!validator.isNumeric(otpCode) || otpCode.length !== 6) {
+    console.log(decoded)
+
+    const { email } = decoded
+
+    if (!validator.isNumeric(otpCode) || otpCode.length !== 4) {
       return next(
-        new ApiError('Kode OTP harus terdiri dari 6 digit numerik', 400),
+        new ApiError('Kode OTP harus terdiri dari 4 digit numerik', 400),
       )
     }
 
@@ -429,4 +618,7 @@ module.exports = {
   resendOtp,
   reqResetPassword,
   resetPassword,
+  loginWithGoogle,
+  loginWithGoogleCallback,
+  checkToken,
 }

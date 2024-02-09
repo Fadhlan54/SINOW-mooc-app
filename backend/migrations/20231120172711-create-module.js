@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('Modules', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       name: {
         type: Sequelize.STRING,
@@ -18,12 +18,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       chapterId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       duration: {
-        type: Sequelize.INTEGER,
-      },
-      createdBy: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

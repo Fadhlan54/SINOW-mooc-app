@@ -4,6 +4,8 @@ const ApiError = require('../utils/ApiError')
 
 module.exports = async (req, res, next) => {
   try {
+    const cookies = req.cookies
+    console.log(cookies)
     const bearerToken = req.headers.authorization
 
     if (!bearerToken) {

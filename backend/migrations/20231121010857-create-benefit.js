@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('Benefits', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       no: {
         type: Sequelize.INTEGER,
@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       courseId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       createdAt: {
         allowNull: false,

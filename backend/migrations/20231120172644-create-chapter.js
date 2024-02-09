@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('Chapters', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       no: {
         type: Sequelize.INTEGER,
@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       courseId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       totalDuration: {
         type: Sequelize.INTEGER,

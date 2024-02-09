@@ -1,0 +1,23 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+  padding: 16px 0;
+}
+
+.swiper-slide {
+  text-align: center;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-slide {
+  width: fit-content !important;
+}
+
+.icon:hover {
+  @apply transform scale-125; /* Ubah nilai scaling sesuai kebutuhan */
+  @apply transition-transform duration-300 ease-in-out; /* Animasikan perubahan scaling */
+}

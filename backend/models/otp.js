@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   OTP.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       userId: DataTypes.INTEGER,
       userEmail: DataTypes.STRING,
       otpValue: DataTypes.STRING,

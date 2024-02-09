@@ -4,12 +4,12 @@ module.exports = {
     await queryInterface.createTable('OTPs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       userEmail: {
         type: Sequelize.STRING,

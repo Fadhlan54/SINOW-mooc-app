@@ -4,8 +4,8 @@ const Midtrans = require('midtrans-client')
 const {
   Transaction,
   Course,
-  UserCourse,
-  UserModule,
+  MyCourse,
+  MyModule,
   Category,
   Chapter,
   Module,
@@ -137,23 +137,23 @@ const createTransaction = async (req, res, next) => {
       }
     }
 
-    const checkUserCourse = await UserCourse.findOne({
+    const checkMyCourse = await MyCourse.findOne({
       where: {
         userId: user.id,
         courseId,
       },
     })
 
-    if (checkUserCourse) {
-      if (checkUserCourse.isAccessible) {
+    if (checkMyCourse) {
+      if (checkMyCourse.isAccessible) {
         return next(
           new ApiError('Anda sudah memiliki akses untuk course ini', 400),
         )
       }
     }
 
-    if (!checkUserCourse) {
-      const createUserCourse = await UserCourse.create({
+    if (!checkMyCourse) {
+      const createMyCourse = await MyCourse.create({
         userId: user.id,
         courseId,
         isAccessible: false,
@@ -162,7 +162,7 @@ const createTransaction = async (req, res, next) => {
         lastSeen: new Date(),
       })
 
-      const userCourseBuffer = await UserCourse.findByPk(createUserCourse.id, {
+      const myCourseBuffer = await MyCourse.findByPk(createMyCourse.id, {
         include: [
           {
             model: Course,
@@ -188,29 +188,27 @@ const createTransaction = async (req, res, next) => {
         ],
       })
 
-      if (userCourseBuffer.Course.chapters.length > 0) {
+      if (myCourseBuffer.Course.chapters.length > 0) {
         await Promise.all(
-          userCourseBuffer.Course.chapters.map(
-            async (chapter, chapterIndex) => {
-              if (chapter.modules.length > 0) {
-                await Promise.all(
-                  chapter.modules.map(async (module, moduleIndex) => {
-                    await UserModule.create({
-                      userId: user.id,
-                      moduleId: module.id,
-                      chapterId: chapter.id,
-                      status:
-                        (module.no === 1
-                          && (chapter.no === 1 || chapterIndex === 0))
-                        || (moduleIndex === 0 && chapterIndex === 0)
-                          ? 'terbuka'
-                          : 'terkunci',
-                    })
-                  }),
-                )
-              }
-            },
-          ),
+          myCourseBuffer.Course.chapters.map(async (chapter, chapterIndex) => {
+            if (chapter.modules.length > 0) {
+              await Promise.all(
+                chapter.modules.map(async (module, moduleIndex) => {
+                  await MyModule.create({
+                    userId: user.id,
+                    moduleId: module.id,
+                    chapterId: chapter.id,
+                    status:
+                      (module.no === 1
+                        && (chapter.no === 1 || chapterIndex === 0))
+                      || (moduleIndex === 0 && chapterIndex === 0)
+                        ? 'terbuka'
+                        : 'terkunci',
+                  })
+                }),
+              )
+            }
+          }),
         )
       }
     }
@@ -396,14 +394,14 @@ const paymentCallback = async (req, res, next) => {
       || transaction_status === 'settlement'
     ) {
       if (fraud_status === 'accept') {
-        const userCourse = await UserCourse.findOne({
+        const myCourse = await MyCourse.findOne({
           where: {
             userId: transaction.userId,
             courseId: transaction.courseId,
           },
         })
 
-        await userCourse.update({
+        await myCourse.update({
           isAccessible: true,
           isFollowing: true,
         })

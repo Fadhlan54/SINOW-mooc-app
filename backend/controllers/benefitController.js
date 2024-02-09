@@ -19,10 +19,8 @@ const createBenefit = async (req, res, next) => {
       )
     }
 
-    if (Number.isNaN(Number(no)) || Number.isNaN(Number(courseId))) {
-      return next(
-        new ApiError('Nomor benefit dan course ID harus berupa angka', 400),
-      )
+    if (Number.isNaN(Number(no))) {
+      return next(new ApiError('Nomor benefit harus berupa angka', 400))
     }
 
     const existingBenefit = await Benefit.findOne({
@@ -41,10 +39,6 @@ const createBenefit = async (req, res, next) => {
 
       if (existingBenefit.no === no) {
         errorMessage.push('Nomor benefit sudah digunakan dalam course ini')
-      }
-
-      if (existingBenefit.description === description) {
-        errorMessage.push('Benefit sudah ada dalam course ini')
       }
 
       if (errorMessage.length > 0) {
@@ -100,6 +94,7 @@ const getAllBenefit = async (req, res, next) => {
 const getBenefitById = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const benefit = await Benefit.findByPk(id)
 
     if (!benefit) {
@@ -119,7 +114,7 @@ const getBenefitById = async (req, res, next) => {
 const updateBenefit = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { no, description, courseId } = req.body
+    const { no, description } = req.body
 
     const benefit = await Benefit.findByPk(id)
     if (!benefit) {
@@ -134,14 +129,10 @@ const updateBenefit = async (req, res, next) => {
         return next(new ApiError('Nomor benefit harus berupa angka', 400))
       }
 
-      const validCourseId = courseId && !Number.isNaN(Number(courseId))
-        ? courseId
-        : benefit.courseId
-
       const checkNumber = await Benefit.findOne({
         where: {
           no: parsedNo,
-          courseId: validCourseId,
+          courseId: benefit.courseId,
           id: { [Op.not]: id },
         },
       })
@@ -155,39 +146,7 @@ const updateBenefit = async (req, res, next) => {
     }
 
     if (description) {
-      const validCourseId = courseId && !Number.isNaN(Number(courseId))
-        ? courseId
-        : benefit.courseId
-
-      const existingBenefit = await Benefit.findOne({
-        where: {
-          description,
-          courseId: validCourseId,
-          id: { [Op.not]: id },
-        },
-      })
-
-      if (existingBenefit) {
-        return next(new ApiError('Benefit sudah ada dalam course ini', 400))
-      }
       updateData.description = description
-    }
-
-    if (courseId) {
-      if (Number.isNaN(Number(courseId))) {
-        return next(new ApiError('Course ID harus berupa angka', 400))
-      }
-
-      const course = await Course.findByPk(courseId)
-      if (!course) {
-        return next(
-          new ApiError(
-            'Kursus tidak tersedia, silahkan cek daftar kursus untuk melihat kursus yang tersedia',
-            404,
-          ),
-        )
-      }
-      updateData.courseId = courseId
     }
 
     await benefit.update(updateData)
@@ -204,6 +163,7 @@ const updateBenefit = async (req, res, next) => {
 const deleteBenefit = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const benefit = await Benefit.findByPk(id)
 
     if (!benefit) {

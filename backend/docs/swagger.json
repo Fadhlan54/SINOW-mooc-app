@@ -15,15 +15,15 @@
       "description": "API ini untuk mengelola data user resources"
     },
     {
-      "name": "User Course",
-      "description": "API ini untuk mengelola user course resources"
+      "name": "My Course",
+      "description": "API ini untuk mengelola my course resources"
     },
     {
-      "name": "User Notification",
+      "name": "My Notification",
       "description": "API ini untuk mengelola user notification resources"
     },
     {
-      "name": "User Transaction",
+      "name": "My Transaction",
       "description": "API ini untuk mengelola user transaction resources"
     },
     {
@@ -808,7 +808,8 @@
                     "description": "Kota asal user"
                   },
                   "image": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Foto profil user"
                   }
                 }
@@ -1032,7 +1033,7 @@
     },
     "/user/my-courses": {
       "get": {
-        "tags": ["User Course"],
+        "tags": ["My Course"],
         "summary": "API untuk mengecek semua data course user",
         "description": "API ini digunakan untuk user mengecek semua data course user",
         "security": [
@@ -1160,7 +1161,7 @@
     },
     "/user/my-courses/{courseId}": {
       "get": {
-        "tags": ["User Course"],
+        "tags": ["My Course"],
         "summary": "API untuk mengambil data course user",
         "description": "API ini digunakan untuk user mengambil data course user",
         "security": [
@@ -1174,8 +1175,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string"
             }
           }
         ],
@@ -1285,7 +1285,7 @@
     },
     "/user/my-courses/{courseId}/follow-course": {
       "post": {
-        "tags": ["User Course"],
+        "tags": ["My Course"],
         "summary": "API untuk follow course",
         "description": "API ini digunakan untuk user follow course",
         "security": [
@@ -1299,8 +1299,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string"
             }
           }
         ],
@@ -1388,9 +1387,9 @@
         }
       }
     },
-    "/user/my-courses/{courseId}/modules/{userModuleId}": {
+    "/user/my-courses/{courseId}/modules/{myModuleId}": {
       "get": {
-        "tags": ["User Course"],
+        "tags": ["My Course"],
         "summary": "API untuk mengambil data module user",
         "description": "API ini digunakan untuk user mengambil data module user",
         "security": [
@@ -1404,17 +1403,15 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string"
             }
           },
           {
-            "name": "userModuleId",
+            "name": "myModuleId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string"
             }
           }
         ],
@@ -1472,7 +1469,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Data tidak ditemukan: course tidak ditemukan, tidak ada relasi antara user course dengan user module"
+                      "example": "Data tidak ditemukan: course tidak ditemukan, tidak ada relasi antara my course dengan my module"
                     }
                   }
                 }
@@ -1504,7 +1501,7 @@
     },
     "/user/notifications": {
       "get": {
-        "tags": ["User Notification"],
+        "tags": ["My Notification"],
         "summary": "API ini untuk menampilkan data notifikasi dari user yang login",
         "description": "API ini digunakan untuk user menampilkan data notifikasi mereka",
         "security": [
@@ -1598,7 +1595,7 @@
     },
     "/user/notifications/{id}": {
       "get": {
-        "tags": ["User Notification"],
+        "tags": ["My Notification"],
         "summary": "API ini untuk menampilkan detail data notifikasi dari user yang login",
         "description": "API ini digunakan untuk user menampilkan detail data notifikasi mereka",
         "security": [
@@ -1611,7 +1608,7 @@
             "name": "id",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "description": "ID notifikasi",
             "required": true
@@ -1721,7 +1718,7 @@
         }
       },
       "delete": {
-        "tags": ["User Notification"],
+        "tags": ["My Notification"],
         "summary": "API ini untuk menghapus data notifikasi dari user yang login",
         "description": "API ini digunakan untuk user menghapus data notifikasi mereka",
         "security": [
@@ -1735,7 +1732,8 @@
             "in": "path",
             "schema": {
               "type": "integer"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -1844,7 +1842,7 @@
     },
     "/user/transaction": {
       "get": {
-        "tags": ["User Transaction"],
+        "tags": ["My Transaction"],
         "summary": "API untuk mengambil data transaksi user",
         "description": "API ini digunakan untuk user mengambil data transaksi user",
         "security": [
@@ -1930,7 +1928,7 @@
     },
     "/user/transaction/{transactionId}": {
       "get": {
-        "tags": ["User Transaction"],
+        "tags": ["My Transaction"],
         "summary": "API untuk mengambil data transaksi user berdasarkan id",
         "description": "API ini digunakan untuk user mengambil data transaksi user berdasarkan id",
         "security": [
@@ -2028,7 +2026,7 @@
         }
       },
       "delete": {
-        "tags": ["User Transaction"],
+        "tags": ["My Transaction"],
         "summary": "API untuk menghapus transaksi user",
         "description": "API ini digunakan untuk user menghapus transaksi user",
         "security": [
@@ -2198,11 +2196,13 @@
                     "description": "Pembuat course"
                   },
                   "image": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Gambar course"
                   },
                   "video": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Video course"
                   }
                 }
@@ -2454,7 +2454,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -2620,11 +2620,13 @@
                     "description": "Pembuat course"
                   },
                   "image": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Gambar course"
                   },
                   "video": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Video course"
                   }
                 }
@@ -2867,7 +2869,8 @@
                     "description": "Urutan module di dalam chapter"
                   },
                   "video": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Video materi"
                   },
                   "chapterId": {
@@ -3151,7 +3154,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -3325,7 +3328,8 @@
                     "description": "Urutan module di dalam chapter"
                   },
                   "video": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Video materi"
                   },
                   "chapterId": {
@@ -3877,7 +3881,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "description": "ID chapter"
           }
@@ -4294,7 +4298,8 @@
                     "description": "Nama category"
                   },
                   "image": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Gambar category"
                   }
                 }
@@ -4471,7 +4476,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "description": "ID category"
           }
@@ -4569,7 +4574,8 @@
                     "description": "Nama category"
                   },
                   "image": {
-                    "type": "file",
+                    "type": "string",
+                    "format": "binary",
                     "description": "Gambar category"
                   }
                 }
@@ -5086,9 +5092,10 @@
             "name": "id",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
-            "description": "ID notifikasi"
+            "description": "ID notifikasi",
+            "required": true
           }
         ],
         "requestBody": {
@@ -5231,7 +5238,7 @@
             "name": "id",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "description": "ID notifikasi",
             "required": true
@@ -5333,7 +5340,8 @@
             "in": "path",
             "schema": {
               "type": "string"
-            }
+            },
+            "required": true
           }
         ],
         "requestBody": {
@@ -5459,7 +5467,8 @@
             "in": "path",
             "schema": {
               "type": "string"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -5782,7 +5791,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "description": "ID Benefit"
           }
@@ -6334,7 +6343,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],

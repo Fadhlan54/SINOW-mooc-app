@@ -1,24 +1,24 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class UserModule extends Model {
+  class MyModule extends Model {
     static associate(models) {
       // define association here
-      UserModule.belongsTo(models.User, {
+      MyModule.belongsTo(models.User, {
         foreignKey: {
           name: 'userId',
           allowNull: false,
         },
         as: 'user',
       })
-      UserModule.belongsTo(models.Module, {
+      MyModule.belongsTo(models.Module, {
         foreignKey: {
           name: 'moduleId',
           allowNull: false,
         },
         as: 'moduleData',
       })
-      UserModule.belongsTo(models.Chapter, {
+      MyModule.belongsTo(models.Chapter, {
         foreignKey: {
           name: 'chapterId',
           allowNull: false,
@@ -27,8 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  UserModule.init(
+  MyModule.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       userId: DataTypes.INTEGER,
       moduleId: DataTypes.INTEGER,
       chapterId: DataTypes.INTEGER,
@@ -39,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'UserModule',
+      modelName: 'MyModule',
     },
   )
-  return UserModule
+  return MyModule
 }

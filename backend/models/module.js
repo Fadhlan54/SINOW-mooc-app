@@ -5,17 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Module.belongsToMany(models.User, {
-        through: 'UserModules',
+        through: 'MyModules',
         foreignKey: 'moduleId',
         otherKey: 'userId',
         as: 'users',
-      })
-      Module.belongsTo(models.User, {
-        foreignKey: {
-          name: 'createdBy',
-          allowNull: false,
-        },
-        as: 'moduleCreator',
       })
       Module.belongsTo(models.Chapter, {
         foreignKey: {
@@ -29,12 +22,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Module.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       name: DataTypes.STRING,
       no: DataTypes.INTEGER,
       videoUrl: DataTypes.STRING,
       chapterId: DataTypes.INTEGER,
       duration: DataTypes.INTEGER,
-      createdBy: DataTypes.INTEGER,
     },
     {
       hooks: {

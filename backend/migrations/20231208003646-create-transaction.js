@@ -14,10 +14,10 @@ module.exports = {
         unique: true,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       courseId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       coursePrice: {
         type: Sequelize.INTEGER,

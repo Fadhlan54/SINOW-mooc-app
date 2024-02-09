@@ -2,6 +2,7 @@ const router = require('express').Router()
 const Notification = require('../controllers/notificationController')
 const authenticate = require('../middlewares/authenticate')
 const checkRole = require('../middlewares/checkRole')
+const { checkUUIDParams } = require('../middlewares/checkUUID')
 
 router.post(
   '/',
@@ -19,13 +20,14 @@ router.get(
 
 router.put(
   '/:id',
+  checkUUIDParams(),
   authenticate,
   checkRole('admin'),
   Notification.updateNotification,
 )
 
 router.put(
-  '/title/:titleParam',
+  '/title/:title',
   authenticate,
   checkRole('admin'),
   Notification.updateNotificationByTitle,
@@ -33,6 +35,7 @@ router.put(
 
 router.delete(
   '/:id',
+  checkUUIDParams(),
   authenticate,
   checkRole('admin'),
   Notification.deleteNotificationById,

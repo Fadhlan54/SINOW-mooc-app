@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       })
       User.belongsToMany(models.Course, {
-        through: 'UserCourses',
+        through: 'MyCourses',
         foreignKey: 'userId',
         otherKey: 'courseId',
         as: 'courses',
       })
       User.belongsToMany(models.Module, {
-        through: 'UserModules',
+        through: 'MyModules',
         foreignKey: 'userId',
         otherKey: 'moduleId',
         as: 'modules',
@@ -38,6 +38,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       name: DataTypes.STRING,
       photoProfileUrl: DataTypes.STRING,
       country: DataTypes.STRING,

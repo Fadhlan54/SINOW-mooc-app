@@ -4,23 +4,33 @@ const Module = require('../controllers/moduleController')
 const authenticate = require('../middlewares/authenticate')
 const checkRole = require('../middlewares/checkRole')
 const uploader = require('../middlewares/uploader')
+const { checkUUIDParams } = require('../middlewares/checkUUID')
 
 router.post(
   '/',
   authenticate,
   checkRole('admin'),
   uploader.single('video'),
+  checkUUIDParams(),
   Module.createModule,
 )
 router.get('/', Module.getAllModule)
-router.get('/:id', Module.getModuleById)
+router.get('/:id', checkUUIDParams(), Module.getModuleById)
 router.put(
   '/:id',
+  checkUUIDParams(),
   authenticate,
   checkRole('admin'),
   uploader.single('video'),
+  checkUUIDParams(),
   Module.updateModule,
 )
-router.delete('/:id', authenticate, checkRole('admin'), Module.deleteModule)
+router.delete(
+  '/:id',
+  checkUUIDParams(),
+  authenticate,
+  checkRole('admin'),
+  Module.deleteModule,
+)
 
 module.exports = router

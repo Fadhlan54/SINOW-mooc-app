@@ -16,7 +16,8 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-const generateOTP = () => randomString.generate({ length: 6, charset: 'numeric' })
+const generateOTP = () =>
+  randomString.generate({ length: 4, charset: 'numeric' })
 
 const sendMail = async (mailOptions, next) => {
   try {

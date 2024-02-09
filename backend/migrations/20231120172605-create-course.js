@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('Courses', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       name: {
         type: Sequelize.STRING,
@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.FLOAT,
       },
       categoryId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       description: {
         type: Sequelize.TEXT,
@@ -58,7 +58,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       createdBy: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       createdAt: {
         allowNull: false,

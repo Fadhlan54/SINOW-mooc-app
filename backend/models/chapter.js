@@ -26,17 +26,23 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'cascade',
       })
 
-      Chapter.hasMany(models.UserModule, {
+      Chapter.hasMany(models.MyModule, {
         foreignKey: {
           name: 'chapterId',
           allowNull: false,
         },
-        as: 'userModules',
+        as: 'myModules',
       })
     }
   }
   Chapter.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       no: DataTypes.INTEGER,
       name: DataTypes.STRING,
       courseId: DataTypes.INTEGER,

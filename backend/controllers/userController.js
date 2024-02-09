@@ -5,13 +5,13 @@ const {
   User,
   Auth,
   Course,
-  UserCourse,
+  MyCourse,
   Module,
   Category,
   Benefit,
   Chapter,
   Notification,
-  UserModule,
+  MyModule,
   Transaction,
 } = require('../models')
 const ApiError = require('../utils/ApiError')
@@ -26,7 +26,7 @@ const {
 
 const { uploadImage } = require('../utils/imagekitUploader')
 
-const userCourseRelation = (id) => {
+const myCourseRelation = (id) => {
   const data = {
     include: [
       {
@@ -53,8 +53,8 @@ const userCourseRelation = (id) => {
             attributes: ['id', 'no', 'name', 'totalDuration'],
             include: [
               {
-                model: UserModule,
-                as: 'userModules',
+                model: MyModule,
+                as: 'myModules',
                 attributes: ['id', 'status'],
                 where: {
                   userId: id,
@@ -76,7 +76,7 @@ const userCourseRelation = (id) => {
       ['Course', 'id', 'ASC'],
       ['Course', 'chapters', 'no', 'ASC'],
       ['Course', 'benefits', 'no', 'ASC'],
-      ['Course', 'chapters', 'userModules', 'moduleData', 'no', 'ASC'],
+      ['Course', 'chapters', 'myModules', 'moduleData', 'no', 'ASC'],
     ],
   }
   return data
@@ -255,22 +255,22 @@ const changeMyPassword = async (req, res, next) => {
   }
 }
 
-const getUserNotification = async (req, res, next) => {
+const getMyNotification = async (req, res, next) => {
   try {
-    const userNotifications = await Notification.findAll({
+    const myNotifications = await Notification.findAll({
       where: {
         userId: req.user.id,
       },
       order: [['createdAt', 'DESC']],
     })
 
-    if (userNotifications.length === 0 || !userNotifications) {
+    if (myNotifications.length === 0 || !myNotifications) {
       return next(new ApiError('Tidak ada notifikasi', 404))
     }
 
     return res.status(200).json({
       status: 'Success',
-      data: userNotifications,
+      data: myNotifications,
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))
@@ -333,9 +333,7 @@ const getMyCourses = async (req, res, next) => {
   try {
     const { user } = req
 
-    const {
-      search, category, level, type, progress,
-    } = req.query
+    const { search, categoryId, level, type, progress } = req.query
     const where = {}
 
     if (search) {
@@ -344,14 +342,14 @@ const getMyCourses = async (req, res, next) => {
       }
     }
 
-    if (category) {
-      validateCategory(category, next)
-      if (Array.isArray(category)) {
+    if (categoryId) {
+      validateCategory(categoryId, next)
+      if (Array.isArray(categoryId)) {
         where.categoryId = {
-          [Op.in]: category.map((cat) => parseInt(cat, 10)),
+          [Op.in]: categoryId.map((cat) => parseInt(cat, 10)),
         }
       } else {
-        where.categoryId = parseInt(category, 10)
+        where.categoryId = parseInt(categoryId, 10)
       }
     }
 
@@ -371,7 +369,7 @@ const getMyCourses = async (req, res, next) => {
       validateProgress(progress, next)
     }
 
-    const course = await UserCourse.findAll({
+    const course = await MyCourse.findAll({
       where: {
         userId: user.id,
         isAccessible: true,
@@ -419,17 +417,17 @@ const openCourse = async (req, res, next) => {
       return next(new ApiError('Course tidak ditemukan', 404))
     }
 
-    const userCourse = await UserCourse.findOne({
+    const myCourse = await MyCourse.findOne({
       where: {
         userId: user.id,
         courseId,
       },
-      include: userCourseRelation(user.id).include,
-      order: userCourseRelation(user.id).order,
+      include: myCourseRelation(user.id).include,
+      order: myCourseRelation(user.id).order,
     })
 
-    if (userCourse) {
-      await userCourse.update({
+    if (myCourse) {
+      await myCourse.update({
         lastSeen: new Date(),
       })
 
@@ -437,12 +435,12 @@ const openCourse = async (req, res, next) => {
         status: 'Success',
         message: 'Berhasil mendapatkan detail course user',
         data: {
-          userCourse,
+          myCourse,
         },
       })
     }
 
-    const createUserCourse = await UserCourse.create({
+    const createMyCourse = await MyCourse.create({
       userId: user.id,
       courseId,
       isAccessible: course.type === 'gratis',
@@ -452,7 +450,7 @@ const openCourse = async (req, res, next) => {
       lastSeen: new Date(),
     })
 
-    const userCourseBuffer = await UserCourse.findByPk(createUserCourse.id, {
+    const myCourseBuffer = await MyCourse.findByPk(createMyCourse.id, {
       include: [
         {
           model: Course,
@@ -478,22 +476,22 @@ const openCourse = async (req, res, next) => {
       ],
     })
 
-    if (userCourseBuffer.Course.chapters.length > 0) {
+    if (myCourseBuffer.Course.chapters.length > 0) {
       await Promise.all(
-        userCourseBuffer.Course.chapters.map(async (chapter, chapterIndex) => {
+        myCourseBuffer.Course.chapters.map(async (chapter, chapterIndex) => {
           if (chapter.modules.length > 0) {
             await Promise.all(
               // eslint-disable-next-line
               chapter.modules.map(async (module, moduleIndex) => {
                 try {
-                  await UserModule.create({
+                  await MyModule.create({
                     userId: user.id,
                     moduleId: module.id,
                     chapterId: chapter.id,
                     status:
-                      (module.no === 1
-                        && (chapter.no === 1 || chapterIndex === 0))
-                      || (moduleIndex === 0 && chapterIndex === 0)
+                      (module.no === 1 &&
+                        (chapter.no === 1 || chapterIndex === 0)) ||
+                      (moduleIndex === 0 && chapterIndex === 0)
                         ? 'terbuka'
                         : 'terkunci',
                   })
@@ -507,16 +505,16 @@ const openCourse = async (req, res, next) => {
       )
     }
 
-    const newUserCourse = await UserCourse.findByPk(createUserCourse.id, {
-      include: userCourseRelation(user.id).include,
-      order: userCourseRelation(user.id).order,
+    const newMyCourse = await MyCourse.findByPk(createMyCourse.id, {
+      include: myCourseRelation(user.id).include,
+      order: myCourseRelation(user.id).order,
     })
 
     return res.status(201).json({
       status: 'Success',
       message: 'Berhasil mengikuti course',
       data: {
-        userCourse: newUserCourse,
+        myCourse: newMyCourse,
       },
     })
   } catch (error) {
@@ -535,18 +533,18 @@ const followCourse = async (req, res, next) => {
       return next(new ApiError('Course tidak ditemukan', 404))
     }
 
-    const userCourse = await UserCourse.findOne({
+    const myCourse = await MyCourse.findOne({
       where: {
         userId: user.id,
         courseId,
       },
     })
 
-    if (!userCourse) {
-      return next(new ApiError('User Course tidak ditemukan', 404))
+    if (!myCourse) {
+      return next(new ApiError('My Course tidak ditemukan', 404))
     }
 
-    if (!userCourse.isAccessible) {
+    if (!myCourse.isAccessible) {
       return next(
         new ApiError(
           'Course ini adalah course premium, silahkan beli course premium terlebih dahulu',
@@ -555,11 +553,11 @@ const followCourse = async (req, res, next) => {
       )
     }
 
-    if (userCourse.isFollowing) {
+    if (myCourse.isFollowing) {
       return next(new ApiError('Anda sudah mengikuti course ini', 400))
     }
 
-    await userCourse.update({
+    await myCourse.update({
       isFollowing: true,
     })
 
@@ -572,29 +570,29 @@ const followCourse = async (req, res, next) => {
   }
 }
 
-const openUserModule = async (req, res, next) => {
+const openMyModule = async (req, res, next) => {
   try {
     const { user } = req
-    const { courseId, userModuleId } = req.params
+    const { courseId, myModuleId } = req.params
 
-    const userCourse = await UserCourse.findOne({
+    const myCourse = await MyCourse.findOne({
       where: {
         userId: user.id,
         courseId,
       },
-      include: userCourseRelation(user.id).include,
-      order: [['Course', 'chapters', 'userModules', 'moduleData', 'no', 'ASC']],
+      include: myCourseRelation(user.id).include,
+      order: [['Course', 'chapters', 'myModules', 'moduleData', 'no', 'ASC']],
     })
 
-    if (!userCourse) {
-      return next(new ApiError('User Course tidak ditemukan', 404))
+    if (!myCourse) {
+      return next(new ApiError('My Course tidak ditemukan', 404))
     }
 
-    const mergedUserModules = userCourse.Course.chapters.flatMap(
-      (chapter) => chapter.userModules,
+    const mergedMyModules = myCourse.Course.chapters.flatMap(
+      (chapter) => chapter.myModules,
     )
 
-    const userModule = await UserModule.findByPk(userModuleId, {
+    const myModule = await MyModule.findByPk(myModuleId, {
       include: [
         {
           model: Module,
@@ -604,30 +602,27 @@ const openUserModule = async (req, res, next) => {
       ],
     })
 
-    if (!userModule) {
-      return next(new ApiError('User Module tidak ditemukan', 404))
+    if (!myModule) {
+      return next(new ApiError('My Module tidak ditemukan', 404))
     }
 
-    const indexUserModule = mergedUserModules.findIndex(
-      (module) => module.id === parseInt(userModuleId, 10),
+    const indexMyModule = mergedMyModules.findIndex(
+      (module) => module.id === parseInt(myModuleId, 10),
     )
 
-    if (indexUserModule === -1) {
+    if (indexMyModule === -1) {
       return next(
-        new ApiError(
-          'Tidak ada relasi antara user course dan user module',
-          403,
-        ),
+        new ApiError('Tidak ada relasi antara my course dan my module', 403),
       )
     }
 
-    const totalModuleStudied = mergedUserModules.reduce(
+    const totalModuleStudied = mergedMyModules.reduce(
       (count, module) => (module.status === 'dipelajari' ? count + 1 : count),
       0,
     )
 
-    if (userModule.status === 'terkunci') {
-      if (!userCourse.isAccessible) {
+    if (myModule.status === 'terkunci') {
+      if (!myCourse.isAccessible) {
         return next(
           new ApiError(
             'Anda perlu menyelesaikan pembayaran terlebih dahulu untuk mengakses course ini',
@@ -635,7 +630,7 @@ const openUserModule = async (req, res, next) => {
           ),
         )
       }
-      if (!userCourse.isFollowing) {
+      if (!myCourse.isFollowing) {
         return next(new ApiError('Anda belum mengikuti course ini', 403))
       }
       return next(
@@ -647,43 +642,43 @@ const openUserModule = async (req, res, next) => {
     }
 
     if (
-      userModule.status === 'terbuka'
-      && userCourse.isAccessible === true
-      && userCourse.isFollowing === true
+      myModule.status === 'terbuka' &&
+      myCourse.isAccessible === true &&
+      myCourse.isFollowing === true
     ) {
-      const nextUserModule = mergedUserModules[indexUserModule + 1]
-      if (nextUserModule) {
-        await nextUserModule.update({
+      const nextMyModule = mergedMyModules[indexMyModule + 1]
+      if (nextMyModule) {
+        await nextMyModule.update({
           status: 'terbuka',
         })
       }
 
       const progressPercentage = Math.ceil(
-        ((totalModuleStudied + 1) / mergedUserModules.length) * 100,
+        ((totalModuleStudied + 1) / mergedMyModules.length) * 100,
       )
 
       if (progressPercentage === 100) {
-        await userCourse.update({
+        await myCourse.update({
           progress: 'completed',
         })
       }
 
-      await userCourse.update({
+      await myCourse.update({
         progressPercentage,
       })
 
-      await userModule.update({
+      await myModule.update({
         status: 'dipelajari',
       })
 
-      await userModule.reload()
+      await myModule.reload()
     }
 
     return res.status(200).json({
       status: 'Success',
       message: 'Berhasil membuka module',
       data: {
-        module: userModule.moduleData,
+        module: myModule.moduleData,
       },
     })
   } catch (error) {
@@ -691,7 +686,7 @@ const openUserModule = async (req, res, next) => {
   }
 }
 
-const getAllUserTransaction = async (req, res, next) => {
+const getAllMyTransaction = async (req, res, next) => {
   try {
     const { user } = req
 
@@ -729,7 +724,7 @@ const getAllUserTransaction = async (req, res, next) => {
   }
 }
 
-const getUserTransactionById = async (req, res, next) => {
+const getMyTransactionById = async (req, res, next) => {
   try {
     const { user } = req
     const { transactionId } = req.params
@@ -814,15 +809,15 @@ const deleteTransaction = async (req, res, next) => {
 module.exports = {
   myDetails,
   updateMyDetails,
-  getUserNotification,
+  getMyNotification,
   openNotification,
   deleteNotification,
   changeMyPassword,
   getMyCourses,
   openCourse,
   followCourse,
-  openUserModule,
-  getAllUserTransaction,
-  getUserTransactionById,
+  openMyModule,
+  getAllMyTransaction,
+  getMyTransactionById,
   deleteTransaction,
 }

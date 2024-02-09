@@ -7,6 +7,10 @@ require('dotenv').config()
 
 let token = null
 let courseId = null
+let categoryId = null
+const fakeId = '12345678-ab12-4321-8888-1234567890ab'
+
+let courseData = null
 
 beforeAll(async () => {
   try {
@@ -15,79 +19,31 @@ beforeAll(async () => {
       password: '12345678',
     })
     token = loginResponse.body.data.token
+
+    const getCategory = await request(app).get('/api/v1/category')
+    categoryId = getCategory.body.data[0].id
+
+    courseData = {
+      name: 'Fullstack Web Development',
+      level: 'advanced',
+      rating: 4,
+      categoryId: categoryId,
+      description: 'Testing',
+      classCode: 'FSW123',
+      type: 'gratis',
+      price: 0,
+      promoDiscountPercentage: 0,
+      courseBy: 'John Doe',
+    }
   } catch (error) {
     console.log('error saat login: ')
     console.log(error)
   }
 })
 
-const course = {
-  name: 'Fullstack Web Development',
-  level: 'advanced',
-  rating: 4,
-  categoryId: 1,
-  description: 'Testing',
-  classCode: 'FSW123',
-  type: 'gratis',
-  price: 0,
-  promoDiscountPercentage: 0,
-  courseBy: 'John Doe',
-}
-
 const imagePath = path.join(__dirname, '../public/images/image.png')
 
 const videoPath = path.join(__dirname, '../public/videos/video.mp4')
-
-describe('API Get All Course Data', () => {
-  it('success get course', async () => {
-    const response = await request(app).get('/api/v1/courses')
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Success')
-  })
-
-  it('failed get course: no course data', async () => {
-    const response = await request(app).get('/api/v1/courses?search=sdfasdfas')
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-  })
-
-  it('failed get course: category id not valid', async () => {
-    const response = await request(app).get('/api/v1/courses?category=asd')
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-  })
-  it('failed get course: category id not found', async () => {
-    const response = await request(app).get('/api/v1/courses?category=912321')
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-  })
-
-  it('failed get course: level not valid', async () => {
-    const response = await request(app).get('/api/v1/courses?level=asd')
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-  })
-
-  it('failed get course: type not valid', async () => {
-    const response = await request(app).get('/api/v1/courses?type=asd')
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-  })
-})
-
-describe('API Get Course by Id', () => {
-  it('success get course by id', async () => {
-    const response = await request(app).get('/api/v1/courses/1')
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Success')
-  })
-
-  it('failed get course by id', async () => {
-    const response = await request(app).get('/api/v1/courses/919191')
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-  })
-})
 
 describe('API Create Course', () => {
   it('success create course', async () => {
@@ -96,9 +52,10 @@ describe('API Create Course', () => {
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
       .attach('image', imagePath)
       .attach('video', videoPath)
+    console.log('\n\n\n\n\n', response.body)
     courseId = response.body.data.id
     expect(response.statusCode).toBe(201)
     expect(response.body.status).toBe('Success')
@@ -110,7 +67,7 @@ describe('API Create Course', () => {
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
       .attach('image', videoPath)
       .attach('video', videoPath)
     expect(response.statusCode).toBe(400)
@@ -123,7 +80,7 @@ describe('API Create Course', () => {
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
       .attach('image', imagePath)
       .attach('video', imagePath)
     expect(response.statusCode).toBe(400)
@@ -135,7 +92,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -161,7 +118,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -187,7 +144,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -213,7 +170,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'level tidak valid',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -239,7 +196,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 100,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -265,7 +222,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 'isNaN',
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -291,7 +248,7 @@ describe('API Create Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 3.5,
-      categoryId: 19191919,
+      categoryId: fakeId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -312,38 +269,12 @@ describe('API Create Course', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed create course: categoryId isNaN', async () => {
-    const failCourse = {
-      name: 'Fullstack Web Development',
-      level: 'beginner',
-      rating: 3.5,
-      categoryId: 'isNaN',
-      description: 'Testing',
-      classCode: 'FSW123',
-      type: 'premium',
-      price: 20000,
-      promoDiscountPercentage: 10,
-      courseBy: 'John Doe',
-    }
-
-    const response = await request(app)
-      .post(`/api/v1/courses`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .field(failCourse)
-      .attach('image', imagePath)
-      .attach('video', videoPath)
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-  })
-
   it('failed create course: type not valid', async () => {
     const failCourse = {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 3.5,
-      categoryId: 'isNaN',
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'akwoakwao',
@@ -370,7 +301,7 @@ describe('API Create Course', () => {
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
     expect(response.statusCode).toBe(400)
     expect(response.body.status).toBe('Failed')
   })
@@ -380,8 +311,61 @@ describe('API Create Course', () => {
       .set({
         Authorization: `Bearer ${token}123`,
       })
-      .field(course)
+      .field(courseData)
     expect(response.statusCode).toBe(401)
+    expect(response.body.status).toBe('Failed')
+  })
+})
+
+describe('API Get All Course Data', () => {
+  it('success get course', async () => {
+    const response = await request(app).get('/api/v1/courses')
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('Success')
+  })
+
+  it('failed get course: no course data', async () => {
+    const response = await request(app).get('/api/v1/courses?search=sdfasdfas')
+    expect(response.statusCode).toBe(404)
+    expect(response.body.status).toBe('Failed')
+  })
+
+  it('failed get course: category id not valid', async () => {
+    const response = await request(app).get(`/api/v1/courses?categoryId=12321`)
+    expect(response.statusCode).toBe(400)
+    expect(response.body.status).toBe('Failed')
+  })
+  it('failed get course: category id not found', async () => {
+    const response = await request(app).get(
+      `/api/v1/courses?categoryId=${fakeId}`,
+    )
+    expect(response.statusCode).toBe(404)
+    expect(response.body.status).toBe('Failed')
+  })
+
+  it('failed get course: level not valid', async () => {
+    const response = await request(app).get('/api/v1/courses?level=asd')
+    expect(response.statusCode).toBe(400)
+    expect(response.body.status).toBe('Failed')
+  })
+
+  it('failed get course: type not valid', async () => {
+    const response = await request(app).get('/api/v1/courses?type=asd')
+    expect(response.statusCode).toBe(400)
+    expect(response.body.status).toBe('Failed')
+  })
+})
+
+describe('API Get Course by Id', () => {
+  it('success get course by id', async () => {
+    const response = await request(app).get(`/api/v1/courses/${courseId}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('Success')
+  })
+
+  it('failed get course by id', async () => {
+    const response = await request(app).get(`/api/v1/courses/${fakeId}`)
+    expect(response.statusCode).toBe(404)
     expect(response.body.status).toBe('Failed')
   })
 })
@@ -389,32 +373,32 @@ describe('API Create Course', () => {
 describe('API Update Course', () => {
   it('success update course', async () => {
     const response = await request(app)
-      .put('/api/v1/courses/1')
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe('Success')
   })
   it('failed update course: course not found', async () => {
     const response = await request(app)
-      .put('/api/v1/courses/91919203')
+      .put(`/api/v1/courses/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
     expect(response.statusCode).toBe(404)
     expect(response.body.status).toBe('Failed')
   })
 
   it('failed update course: image not valid', async () => {
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
       .attach('image', videoPath)
     expect(response.statusCode).toBe(400)
     expect(response.body.status).toBe('Failed')
@@ -425,7 +409,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -435,7 +419,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -451,7 +435,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -461,7 +445,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -477,7 +461,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'advanced',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -487,7 +471,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -503,7 +487,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'level tidak valid',
       rating: 4,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -513,7 +497,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -529,7 +513,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 100,
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -539,7 +523,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -555,7 +539,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 'isNaN',
-      categoryId: 1,
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -565,7 +549,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -581,7 +565,7 @@ describe('API Update Course', () => {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 3.5,
-      categoryId: 19191919,
+      categoryId: fakeId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'premium',
@@ -591,7 +575,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -602,38 +586,12 @@ describe('API Update Course', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed update course: categoryId isNaN', async () => {
-    const failCourse = {
-      name: 'Fullstack Web Development',
-      level: 'beginner',
-      rating: 3.5,
-      categoryId: 'isNaN',
-      description: 'Testing',
-      classCode: 'FSW123',
-      type: 'premium',
-      price: 20000,
-      promoDiscountPercentage: 10,
-      courseBy: 'John Doe',
-    }
-
-    const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .field(failCourse)
-      .attach('image', imagePath)
-      .attach('video', videoPath)
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-  })
-
   it('failed update course: type not valid', async () => {
     const failCourse = {
       name: 'Fullstack Web Development',
       level: 'beginner',
       rating: 3.5,
-      categoryId: 'isNaN',
+      categoryId: categoryId,
       description: 'Testing',
       classCode: 'FSW123',
       type: 'akwoakwao',
@@ -643,7 +601,7 @@ describe('API Update Course', () => {
     }
 
     const response = await request(app)
-      .put(`/api/v1/courses/${courseId || 1}`)
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -656,22 +614,22 @@ describe('API Update Course', () => {
 
   it('failed update course: video not valid', async () => {
     const response = await request(app)
-      .put('/api/v1/courses/1')
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field(course)
+      .field(courseData)
       .attach('video', imagePath)
     expect(response.statusCode).toBe(400)
     expect(response.body.status).toBe('Failed')
   })
   it('failed update course: token not valid', async () => {
     const response = await request(app)
-      .put('/api/v1/courses/1')
+      .put(`/api/v1/courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}123`,
       })
-      .field(course)
+      .field(courseData)
     expect(response.statusCode).toBe(401)
     expect(response.body.status).toBe('Failed')
   })
@@ -690,7 +648,7 @@ describe('API Delete Course', () => {
 
   it('failed delete course: course not found', async () => {
     const response = await request(app)
-      .delete(`/api/v1/courses/919191`)
+      .delete(`/api/v1/courses/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })

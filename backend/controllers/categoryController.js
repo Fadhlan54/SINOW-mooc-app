@@ -77,6 +77,7 @@ const getAllCategory = async (req, res, next) => {
 const getCategoryById = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const category = await Category.findByPk(id)
     if (!category) {
       return next(new ApiError('Category tidak ditemukan', 404))

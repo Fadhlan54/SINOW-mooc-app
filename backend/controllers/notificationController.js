@@ -28,6 +28,11 @@ const createNotificationForAllUsers = async (req, res, next) => {
     return res.status(201).json({
       status: 'Success',
       message: 'Notifications berhasil dibuat',
+      data: {
+        type,
+        title,
+        content,
+      },
     })
   } catch (err) {
     return next(new ApiError(err.message, 500))
@@ -36,9 +41,7 @@ const createNotificationForAllUsers = async (req, res, next) => {
 
 const getAllNotifications = async (req, res, next) => {
   try {
-    const {
-      limit = 100, type, title, userId,
-    } = req.query
+    const { limit = 100, type, title, userId } = req.query
 
     if (Number.isNaN(Number(limit)) || limit <= 0) {
       return next(new ApiError('Batas jumlah notifikasi tidak valid', 400))
@@ -129,7 +132,7 @@ const updateNotification = async (req, res, next) => {
 
 const updateNotificationByTitle = async (req, res, next) => {
   try {
-    const { titleParam } = req.params
+    const { title: titleParam } = req.params
     const { type, content, title } = req.body
 
     const notification = await Notification.findOne({

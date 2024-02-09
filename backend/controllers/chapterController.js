@@ -17,10 +17,8 @@ const createChapter = async (req, res, next) => {
       )
     }
 
-    if (Number.isNaN(Number(no)) || Number.isNaN(Number(courseId))) {
-      return next(
-        new ApiError('Nomor chapter dan courseId harus berupa angka', 400),
-      )
+    if (Number.isNaN(Number(no))) {
+      return next(new ApiError('Nomor chapter harus berupa angka', 400))
     }
 
     no = parseInt(no, 10)
@@ -48,10 +46,6 @@ const createChapter = async (req, res, next) => {
 
     if (existingChapter) {
       const errorMessage = []
-
-      if (existingChapter.name === name) {
-        errorMessage.push('Nama chapter sudah ada dalam course ini')
-      }
 
       if (existingChapter.no === no) {
         errorMessage.push('Nomor chapter sudah digunakan dalam course ini')
@@ -133,7 +127,7 @@ const getChapterById = async (req, res, next) => {
 const updateChapter = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { no, name, courseId } = req.body
+    const { no, name } = req.body
 
     const chapter = await Chapter.findByPk(id)
     if (!chapter) {
@@ -151,10 +145,7 @@ const updateChapter = async (req, res, next) => {
       const checkNumber = await Chapter.findOne({
         where: {
           no: parsedNo,
-          courseId:
-            courseId && !Number.isNaN(Number(courseId))
-              ? courseId
-              : chapter.courseId,
+          courseId: chapter.courseId,
           id: { [Op.not]: id },
         },
       })
@@ -168,39 +159,7 @@ const updateChapter = async (req, res, next) => {
     }
 
     if (name) {
-      const existingChapter = await Chapter.findOne({
-        where: {
-          name,
-          courseId:
-            courseId && !Number.isNaN(Number(courseId))
-              ? courseId
-              : chapter.courseId,
-          id: { [Op.not]: id },
-        },
-      })
-
-      if (existingChapter) {
-        return next(
-          new ApiError('Nama chapter sudah ada dalam course ini', 400),
-        )
-      }
       updateData.name = name
-    }
-
-    if (courseId) {
-      if (Number.isNaN(Number(courseId))) {
-        return next(new ApiError('Course ID harus berupa angka', 400))
-      }
-      const checkCourse = await Course.findByPk(courseId)
-      if (!checkCourse) {
-        return next(
-          new ApiError(
-            'Kursus tidak tersedia, silahkan cek daftar kursus untuk melihat kursus yang tersedia',
-            404,
-          ),
-        )
-      }
-      updateData.courseId = courseId
     }
 
     await chapter.update(updateData)

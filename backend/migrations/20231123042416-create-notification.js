@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('Notifications', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
       },
       type: {
         type: Sequelize.STRING,
@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       isRead: {
         type: Sequelize.BOOLEAN,

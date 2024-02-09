@@ -6,6 +6,9 @@ require('dotenv').config()
 
 let token = null
 let chapterId = null
+let courseId = null
+const fakeId = '12345678-ab12-4321-8888-1234567890ab'
+let chapterData = null
 
 beforeAll(async () => {
   try {
@@ -14,43 +17,19 @@ beforeAll(async () => {
       password: '12345678',
     })
     token = loginResponse.body.data.token
+
+    const getCourse = await request(app).get('/api/v1/courses')
+    courseId = getCourse.body.data[0].id
+
+    chapterData = {
+      no: 3,
+      name: 'Memulai Desain Web',
+      courseId: courseId,
+    }
   } catch (error) {
     console.log('error saat login: ')
     console.log(error)
   }
-})
-
-const chapterData = {
-  no: 3,
-  name: 'Memulai Desain Web',
-  courseId: 1,
-}
-
-describe('API Get All Chapter Data', () => {
-  it('success get chapter', async () => {
-    const response = await request(app).get('/api/v1/chapters')
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Success')
-    expect(response.body.message).toBe('Berhasil mendapatkan data chapter')
-  })
-})
-
-describe('API Get Chapter by Id', () => {
-  it('success get chapter by id', async () => {
-    const response = await request(app).get('/api/v1/chapters/1')
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Success')
-    expect(response.body.message).toBe(
-      'Berhasil mendapatkan data Chapter id: 1',
-    )
-  })
-
-  it('failed get chapter by id', async () => {
-    const response = await request(app).get('/api/v1/chapters/2002')
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe('Chapter tidak ditemukan')
-  })
 })
 
 describe('API Create Chapter', () => {
@@ -62,7 +41,9 @@ describe('API Create Chapter', () => {
       })
       .send(chapterData)
 
+    console.log('\n\n\n\n\n', response.body)
     chapterId = response.body.data.id
+
     expect(response.statusCode).toBe(201)
     expect(response.body.status).toBe('Success')
     expect(response.body.message).toBe('Berhasil menambahkan data chapter')
@@ -81,11 +62,11 @@ describe('API Create Chapter', () => {
     expect(response.body.status).toBe('Failed')
     expect(response.body.message).toBe('Field no, name, courseId harus di isi')
   })
-  it('failed create chapter: duplikat name', async () => {
+  it('failed create chapter: duplicate name', async () => {
     const failChapter = {
       no: 5,
       name: 'Memulai Desain Web',
-      courseId: 1,
+      courseId: courseId,
     }
 
     const response = await request(app)
@@ -105,7 +86,7 @@ describe('API Create Chapter', () => {
     const failChapter = {
       no: 'tiga',
       name: 'Memulai Desain Web',
-      courseId: 1,
+      courseId: courseId,
     }
 
     const response = await request(app)
@@ -116,16 +97,14 @@ describe('API Create Chapter', () => {
       .send(failChapter)
     expect(response.statusCode).toBe(400)
     expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe(
-      'Nomor chapter dan courseId harus berupa angka',
-    )
+    expect(response.body.message).toBe('Nomor chapter harus berupa angka')
   })
 
   it('failed create chapter: course not found', async () => {
     const failChapter = {
       no: 3,
       name: 'Memulai Desain Web',
-      courseId: 10000,
+      courseId: fakeId,
     }
 
     const response = await request(app)
@@ -141,26 +120,6 @@ describe('API Create Chapter', () => {
     )
   })
 
-  it('failed create chapter: course isNaN', async () => {
-    const failChapter = {
-      no: 3,
-      name: 'Memulai Desain Web',
-      courseId: 'satudua',
-    }
-
-    const response = await request(app)
-      .post(`/api/v1/chapters`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .send(failChapter)
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe(
-      'Nomor chapter dan courseId harus berupa angka',
-    )
-  })
-
   it('failed create chapter: token not valid', async () => {
     const response = await request(app)
       .post('/api/v1/chapters')
@@ -172,15 +131,42 @@ describe('API Create Chapter', () => {
     expect(response.body.status).toBe('Failed')
   })
 })
+
+describe('API Get All Chapter Data', () => {
+  it('success get chapter', async () => {
+    const response = await request(app).get('/api/v1/chapters')
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('Success')
+    expect(response.body.message).toBe('Berhasil mendapatkan data chapter')
+  })
+})
+
+describe('API Get Chapter by Id', () => {
+  it('success get chapter by id', async () => {
+    const response = await request(app).get(`/api/v1/chapters/${chapterId}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.status).toBe('Success')
+    expect(response.body.message).toBe(
+      `Berhasil mendapatkan data Chapter id: ${chapterId}`,
+    )
+  })
+
+  it('failed get chapter by id', async () => {
+    const response = await request(app).get(`/api/v1/chapters/${fakeId}`)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.status).toBe('Failed')
+    expect(response.body.message).toBe('Chapter tidak ditemukan')
+  })
+})
+
 describe('API Update chapter', () => {
   it('success update chapter', async () => {
     const chapterData = {
       no: 4,
       name: 'Memulai Desain Figma',
-      courseId: 1,
     }
     const response = await request(app)
-      .put('/api/v1/chapters/2')
+      .put(`/api/v1/chapters/${chapterId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -188,37 +174,19 @@ describe('API Update chapter', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe('Success')
-    expect(response.body.message).toBe('Berhasil mengupdate data chapter id: 2')
-  })
-
-  it('failed update chapter: duplikat name', async () => {
-    const failChapter = {
-      no: 6,
-      name: 'Pendahuluan',
-      courseId: 1,
-    }
-
-    const response = await request(app)
-      .put(`/api/v1/chapters/${chapterId || 2}`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .send(failChapter)
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
     expect(response.body.message).toBe(
-      'Nama chapter sudah ada dalam course ini',
+      `Berhasil mengupdate data chapter id: ${chapterId}`,
     )
   })
+
   it('failed update chapter: duplikat number', async () => {
     const failChapter = {
       no: 1,
       name: 'Memulai Desain Figma',
-      courseId: 1,
     }
 
     const response = await request(app)
-      .put(`/api/v1/chapters/${chapterId || 2}`)
+      .put(`/api/v1/chapters/${chapterId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -234,11 +202,10 @@ describe('API Update chapter', () => {
     const failchapter = {
       no: 'empat',
       name: 'Memulai Desain Web',
-      courseId: 1,
     }
 
     const response = await request(app)
-      .put(`/api/v1/chapters/${chapterId || 2}`)
+      .put(`/api/v1/chapters/${chapterId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -248,47 +215,9 @@ describe('API Update chapter', () => {
     expect(response.body.message).toBe('Nomor chapter harus berupa angka')
   })
 
-  it('failed update chapter: course not found', async () => {
-    const failChapter = {
-      no: 4,
-      name: 'Memulai Desain Web',
-      courseId: 10000000,
-    }
-
-    const response = await request(app)
-      .put(`/api/v1/chapters/${chapterId || 2}`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .send(failChapter)
-    expect(response.statusCode).toBe(404)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe(
-      'Kursus tidak tersedia, silahkan cek daftar kursus untuk melihat kursus yang tersedia',
-    )
-  })
-
-  it('failed update chapter: course isNaN', async () => {
-    const failChapter = {
-      no: 9,
-      name: 'Memulai Desain Web',
-      courseId: 'satu',
-    }
-
-    const response = await request(app)
-      .put(`/api/v1/chapters/${chapterId || 2}`)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .send(failChapter)
-    expect(response.statusCode).toBe(400)
-    expect(response.body.status).toBe('Failed')
-    expect(response.body.message).toBe('Course ID harus berupa angka')
-  })
-
   it('failed update chapter: token not valid', async () => {
     const response = await request(app)
-      .put('/api/v1/chapters/2')
+      .put(`/api/v1/chapters/${chapterId}`)
       .set({
         Authorization: `Bearer ${token}123`,
       })
@@ -311,7 +240,7 @@ describe('API Delete chapter', () => {
 
   it('failed delete chapter: chapter not found', async () => {
     const response = await request(app)
-      .delete(`/api/v1/chapters/919191`)
+      .delete(`/api/v1/chapters/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })

@@ -1,7 +1,7 @@
 const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class UserCourse extends Model {
+  class MyCourse extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      UserCourse.belongsTo(models.User, {
+      MyCourse.belongsTo(models.User, {
         foreignKey: {
           name: 'userId',
           allowNull: false,
         },
       })
-      UserCourse.belongsTo(models.Course, {
+      MyCourse.belongsTo(models.Course, {
         foreignKey: {
           name: 'courseId',
           allowNull: false,
@@ -23,8 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  UserCourse.init(
+  MyCourse.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       userId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
       isAccessible: {
@@ -54,15 +60,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: async (userCourse) => {
-          const course = await userCourse.getCourse()
+        beforeCreate: async (myCourse) => {
+          const course = await myCourse.getCourse()
 
           await course.update({
             totalUser: course.totalUser + 1,
           })
         },
-        beforeDestroy: async (userCourse) => {
-          const course = await userCourse.getCourse()
+        beforeDestroy: async (myCourse) => {
+          const course = await myCourse.getCourse()
 
           await course.update({
             totalUser: course.totalUser - 1,
@@ -70,8 +76,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       sequelize,
-      modelName: 'UserCourse',
+      modelName: 'MyCourse',
     },
   )
-  return UserCourse
+  return MyCourse
 }

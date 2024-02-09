@@ -3,7 +3,14 @@ const notificationData = require('../seed_data/notification')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
-    await queryInterface.bulkInsert('Notifications', notificationData, {})
+    const userId = await queryInterface.sequelize.query(
+      'SELECT id FROM public."Users" WHERE role = \'user\'',
+    )
+    await queryInterface.bulkInsert(
+      'Notifications',
+      notificationData(userId[0]),
+      {},
+    )
   },
 
   async down(queryInterface) {

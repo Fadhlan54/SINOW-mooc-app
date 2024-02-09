@@ -2,16 +2,19 @@
 
 const request = require('supertest')
 const app = require('../index')
-const { UserCourse, Transaction, UserModule } = require('../models')
+const { MyCourse, Transaction, MyModule } = require('../models')
 const { Op } = require('sequelize')
 require('dotenv').config()
 
 let token = null
 let token2 = null
 let notifications = null
-let userModuleId = null
-let lockedUserModuleId = null
+let myModuleId = null
+let lockedMyModuleId = null
 let transactionId = null
+let courseId = null
+let courseId2 = null
+const fakeId = '12345678-ab12-4321-8888-1234567890ab'
 
 beforeAll(async () => {
   try {
@@ -28,11 +31,14 @@ beforeAll(async () => {
 
     token2 = loginResponse2.body.data.token
 
+    const getCourse = await request(app).get('/api/v1/courses')
+    courseId = getCourse.body.data[0].id
     await request(app)
-      .get('/api/v1/user/my-courses/1')
+      .get(`/api/v1/user/my-courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token2}`,
       })
+    courseId2 = getCourse.body.data[1].id
   } catch (error) {
     console.log('error saat login: ')
     console.log(error)
@@ -41,7 +47,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   try {
-    await UserCourse.destroy({
+    await MyCourse.destroy({
       where: {
         userId: {
           [Op.or]: [1, 2],
@@ -261,7 +267,7 @@ describe('API get notification details by id', () => {
 
   it('failed get notification details by id: notification not found', async () => {
     const response = await request(app)
-      .get('/api/v1/user/notifications/999999')
+      .get(`/api/v1/user/notifications/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -307,7 +313,7 @@ describe('API delete notification by id', () => {
 
   it('failed delete notification by id: notification not found', async () => {
     const response = await request(app)
-      .delete('/api/v1/user/notifications/999999')
+      .delete(`/api/v1/user/notifications/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -330,10 +336,10 @@ describe('API delete notification by id', () => {
   })
 })
 
-describe('API create User Course', () => {
-  it('success create user course', async () => {
+describe('API create My Course', () => {
+  it('success create my course', async () => {
     const response = await request(app)
-      .get('/api/v1/user/my-courses/1')
+      .get(`/api/v1/user/my-courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -341,17 +347,19 @@ describe('API create User Course', () => {
     expect(response.body.status).toBe('Success')
   })
 
-  it('failed create user course by id: no token', async () => {
-    const response = await request(app).get('/api/v1/user/my-courses/1').send({
-      courseId: 1,
-    })
+  it('failed create my course by id: no token', async () => {
+    const response = await request(app)
+      .get(`/api/v1/user/my-courses/${courseId}`)
+      .send({
+        courseId: courseId,
+      })
     expect(response.statusCode).toBe(401)
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed create user course by id: course not found', async () => {
+  it('failed create my course by id: course not found', async () => {
     const response = await request(app)
-      .get('/api/v1/user/my-courses/999999')
+      .get(`/api/v1/user/my-courses/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -360,10 +368,10 @@ describe('API create User Course', () => {
   })
 })
 
-describe('API follow User Course', () => {
-  it('success follow user course', async () => {
+describe('API follow My Course', () => {
+  it('success follow my course', async () => {
     const response = await request(app)
-      .post('/api/v1/user/my-courses/1/follow-course')
+      .post(`/api/v1/user/my-courses/${courseId}/follow-course`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -371,9 +379,9 @@ describe('API follow User Course', () => {
     expect(response.body.status).toBe('Success')
   })
 
-  it('failed follow user course: course not found', async () => {
+  it('failed follow my course: course not found', async () => {
     const response = await request(app)
-      .post('/api/v1/user/my-courses/999999/follow-course')
+      .post(`/api/v1/user/my-courses/${fakeId}/follow-course`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -381,9 +389,9 @@ describe('API follow User Course', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed follow user course: User Course not found', async () => {
+  it('failed follow my course: My Course not found', async () => {
     const response = await request(app)
-      .post('/api/v1/user/my-courses/2/follow-course')
+      .post(`/api/v1/user/my-courses/${fakeId}/follow-course`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -391,9 +399,9 @@ describe('API follow User Course', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed follow user course: No access to course', async () => {
+  it('failed follow my course: No access to course', async () => {
     await request(app)
-      .get('/api/v1/user/my-courses/4')
+      .get(`/api/v1/user/my-courses/${courseId2}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -407,9 +415,9 @@ describe('API follow User Course', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed follow user course: course already followed', async () => {
+  it('failed follow my course: course already followed', async () => {
     const response = await request(app)
-      .post('/api/v1/user/my-courses/1/follow-course')
+      .post(`/api/v1/user/my-courses/${courseId}/follow-course`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -418,24 +426,23 @@ describe('API follow User Course', () => {
   })
 })
 
-describe('API open User Course', () => {
-  it('success open user course', async () => {
+describe('API open My Course', () => {
+  it('success open my course', async () => {
     const response = await request(app)
-      .get('/api/v1/user/my-courses/1')
+      .get(`/api/v1/user/my-courses/${courseId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
-    userModuleId =
-      response.body.data.userCourse.Course.chapters[0].userModules[0].id
-    lockedUserModuleId =
-      response.body.data.userCourse.Course.chapters[1].userModules[0].id
+    myModuleId = response.body.data.myCourse.Course.chapters[0].myModules[0].id
+    lockedMyModuleId =
+      response.body.data.myCourse.Course.chapters[1].myModules[0].id
     expect(response.statusCode).toBe(200)
     expect(response.body.status).toBe('Success')
   })
 })
 
-describe('API get all userCourses', () => {
-  it('success get all user courses', async () => {
+describe('API get all myCourses', () => {
+  it('success get all my courses', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses')
       .set({
@@ -445,13 +452,13 @@ describe('API get all userCourses', () => {
     expect(response.body.status).toBe('Success')
   })
 
-  it('failed get all user courses: no token', async () => {
+  it('failed get all my courses: no token', async () => {
     const response = await request(app).get('/api/v1/user/my-courses')
     expect(response.statusCode).toBe(401)
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get all user courses: course not found', async () => {
+  it('failed get all my courses: course not found', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses')
       .set({
@@ -461,7 +468,7 @@ describe('API get all userCourses', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get all user courses: category not valid', async () => {
+  it('failed get all my courses: category not valid', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses?category=invalid')
       .set({
@@ -471,7 +478,7 @@ describe('API get all userCourses', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get all user courses: level not valid', async () => {
+  it('failed get all my courses: level not valid', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses?level=invalid')
       .set({
@@ -481,7 +488,7 @@ describe('API get all userCourses', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get all user courses: type not valid', async () => {
+  it('failed get all my courses: type not valid', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses?type=invalid')
       .set({
@@ -491,7 +498,7 @@ describe('API get all userCourses', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get all user courses: type not valid', async () => {
+  it('failed get all my courses: type not valid', async () => {
     const response = await request(app)
       .get('/api/v1/user/my-courses?progress=invalid')
       .set({
@@ -502,10 +509,10 @@ describe('API get all userCourses', () => {
   })
 })
 
-describe('API get userModule', () => {
-  it('success get user modules', async () => {
+describe('API get myModule', () => {
+  it('success get my modules', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/${userModuleId}`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${myModuleId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -513,9 +520,9 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Success')
   })
 
-  it('success get locked user modules', async () => {
+  it('success get locked my modules', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/${lockedUserModuleId}`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${lockedMyModuleId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -523,17 +530,17 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user module: no token', async () => {
+  it('failed get my module: no token', async () => {
     const response = await request(app).get(
-      `/api/v1/user/my-courses/1/modules/${userModuleId}`,
+      `/api/v1/user/my-courses/${courseId}/modules/${myModuleId}`,
     )
     expect(response.statusCode).toBe(401)
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user module: token not valid', async () => {
+  it('failed get my module: token not valid', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/${userModuleId}`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${myModuleId}`)
       .set({
         Authorization: `Bearer ${token}12`,
       })
@@ -541,9 +548,9 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user modules: no relation', async () => {
+  it('failed get my modules: no relation', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/${userModuleId}`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${myModuleId}`)
       .set({
         Authorization: `Bearer ${token2}`,
       })
@@ -551,9 +558,9 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user module: course not found', async () => {
+  it('failed get my module: course not found', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/99999999/modules/${userModuleId}`)
+      .get(`/api/v1/user/my-courses/${fakeId}/modules/${myModuleId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -561,9 +568,9 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user module: module not found', async () => {
+  it('failed get my module: module not found', async () => {
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/9191919`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${fakeId}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -571,18 +578,20 @@ describe('API get userModule', () => {
     expect(response.body.status).toBe('Failed')
   })
 
-  it('failed get user module: module is inaccessible', async () => {
+  it('failed get my module: module is inaccessible', async () => {
     const coursePremium = await request(app)
-      .get('/api/v1/user/my-courses/4')
+      .get(`/api/v1/user/my-courses/${courseId2}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
 
+    const coursePremiumId = coursePremium.body.data.myCourse.Course.id
     const modulePremiumId =
-      coursePremium.body.data.userCourse.Course.chapters[0].userModules[2].id
-
+      coursePremium.body.data.myCourse.Course.chapters[0].myModules[2].id
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/4/modules/${modulePremiumId}`)
+      .get(
+        `/api/v1/user/my-courses/${coursePremiumId}/modules/${modulePremiumId}`,
+      )
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -593,17 +602,17 @@ describe('API get userModule', () => {
     )
   })
 
-  it('failed get user modules: course is not followed', async () => {
-    const userCourse = await UserCourse.findOne({
+  it('failed get my modules: course is not followed', async () => {
+    const myCourse = await MyCourse.findOne({
       where: {
-        userId: 1,
+        name: 1,
         courseId: 1,
       },
     })
 
-    await userCourse.update({ isFollowing: false })
+    await myCourse.update({ isFollowing: false })
 
-    const userModule = await UserModule.findOne({
+    const myModule = await MyModule.findOne({
       where: {
         userId: 1,
         status: 'terkunci',
@@ -611,7 +620,7 @@ describe('API get userModule', () => {
     })
 
     const response = await request(app)
-      .get(`/api/v1/user/my-courses/1/modules/${userModule.id}`)
+      .get(`/api/v1/user/my-courses/${courseId}/modules/${myModule.id}`)
       .set({
         Authorization: `Bearer ${token}`,
       })
@@ -621,7 +630,7 @@ describe('API get userModule', () => {
   })
 })
 
-describe('API get userTransaction', () => {
+describe('API get myTransaction', () => {
   it('failed get user transaction: no transaction', async () => {
     const response = await request(app)
       .get('/api/v1/user/transaction')
@@ -658,7 +667,7 @@ describe('API get userTransaction', () => {
   })
 })
 
-describe('API get userTransaction by id', () => {
+describe('API get myTransaction by id', () => {
   it('success get user transaction by id', async () => {
     const response = await request(app)
       .get(`/api/v1/user/transaction/${transactionId}`)
@@ -690,7 +699,7 @@ describe('API get userTransaction by id', () => {
   })
 })
 
-describe('API delete userTransaction by id', () => {
+describe('API delete myTransaction by id', () => {
   it('failed delete user transaction by id: no access', async () => {
     const response = await request(app)
       .delete(`/api/v1/user/transaction/${transactionId}`)
