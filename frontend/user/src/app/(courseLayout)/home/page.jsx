@@ -75,7 +75,7 @@ export default function Home() {
           className="mySwiper"
           centeredSlides={true}
           autoplay={{
-            delay: 4000,
+            delay: 2500,
             disableOnInteraction: false,
           }}
           modules={[Autoplay]}
@@ -340,7 +340,9 @@ export default function Home() {
                     </h1>
                     <div className="flex ">
                       <FaStar className="text-alert-attention" />
-                      <p className="text-sm font-semibold ml-1">4.8</p>
+                      <p className="text-sm font-semibold ml-1">
+                        {course.rating}
+                      </p>
                     </div>
                   </div>
                   <h2 className="text-sm truncate font-bold mt-1">
