@@ -56,7 +56,7 @@ export default function ResetPasswordPage() {
             <p>
               Kembali ke halaman{" "}
               <Link
-                href={"/login"}
+                href={"/auth/login"}
                 className="font-semibold text-primary-01 hover:text-primary-02"
               >
                 Login

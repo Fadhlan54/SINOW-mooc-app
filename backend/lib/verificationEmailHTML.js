@@ -86,7 +86,7 @@ module.exports = (otpCode) => `
                 <tr>
                 <td align="center" valign="top" style="padding-top: 36px">
                     <a
-                    href="https://www.sinow.com"
+                    href="https://sinow.vercel.app"
                     target="_blank"
                     style="display: inline-block"
                     >

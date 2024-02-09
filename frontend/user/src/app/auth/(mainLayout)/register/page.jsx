@@ -53,7 +53,7 @@ export default function LoginPage() {
       );
 
       if (res.status === "Success") {
-        push(`/verify-email?token=${res.token}`);
+        push(`/auth/verify-email?token=${res.token}`);
         return;
       }
 
@@ -168,7 +168,7 @@ export default function LoginPage() {
         <p>
           Sudah punya akun?{" "}
           <Link
-            href={"/login"}
+            href={"/auth/login"}
             className="font-semibold text-primary-01 hover:text-primary-02"
           >
             Login disini

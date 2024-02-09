@@ -33,7 +33,7 @@ function VerifyEmail() {
 
   useEffect(() => {
     if (!token) {
-      push("/login");
+      push("/auth/login");
     }
 
     const decoded = jwtDecode(token);

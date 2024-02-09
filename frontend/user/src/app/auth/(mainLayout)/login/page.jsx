@@ -147,7 +147,7 @@ export default function LoginPage() {
         <p>
           Belum punya akun?{" "}
           <Link
-            href={"/register"}
+            href={"/auth/register"}
             className="font-semibold text-primary-01 hover:text-primary-02"
           >
             Daftar Sekarang
