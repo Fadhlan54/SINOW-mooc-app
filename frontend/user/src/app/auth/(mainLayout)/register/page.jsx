@@ -69,6 +69,7 @@ export default function LoginPage() {
       className="w-full lg:w-3/4 max-w-[452px] mt-4 pt-10"
       onSubmit={(e) => handleSubmit(e)}
     >
+      {isLoading && <LoadingScreen />}
       {errorMessage && (
         <div className="absolute top-10 bg-alert-danger rounded-lg ps-4 pe-2 py-2 text-white justify-self-end self-end right-0 text flex opacity-80">
           <p className="text-sm">{errorMessage}</p>

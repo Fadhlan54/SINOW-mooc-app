@@ -160,8 +160,9 @@ function VerifyEmail() {
         setCountdownTimer(60);
         push(`${pathname}?${createQueryString("token", res.token)}`);
         return;
+      } else {
+        setErrorMessage(res.message);
       }
-      setErrorMessage(res.message);
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
