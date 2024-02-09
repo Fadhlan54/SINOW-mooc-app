@@ -14,7 +14,7 @@ const {
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:3000/api/v1/auth/login/google/callback',
+  `${process.env.BASE_URL}/api/v1/auth/login/google/callback`,
 )
 
 const scopes = [

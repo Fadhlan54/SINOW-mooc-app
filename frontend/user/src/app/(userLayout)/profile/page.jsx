@@ -10,6 +10,7 @@ import {
 } from "react-icons/lu";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function ProfilePage() {
   const { push } = useRouter();
@@ -63,8 +64,16 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </div>
-              <div className="w-1/2 flex items-center justify-center">
-                <p>Masih dalam pengembangan...</p>
+              <div className="w-1/2 flex flex-col items-center justify-center">
+                <Image
+                  src={
+                    "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/onboarding.png?updatedAt=1707366179905"
+                  }
+                  width={188}
+                  height={143}
+                  alt="Sinow Mascot onboarding"
+                />
+                <p className="mt-4">Masih dalam pengembangan...</p>
               </div>
             </div>
           </div>

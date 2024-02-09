@@ -20,7 +20,7 @@ const validateCategory = async (categoryId, next) => {
     if (!checkCategory) {
       return next(
         new ApiError(
-          "Category tidak tersedia, cek 'localhost:3000/api/v1/category' untuk melihat daftar kategori yang tersedia",
+          `Category tidak tersedia, cek '${process.env.BASE_URL}/api/v1/category' untuk melihat daftar kategori yang tersedia`,
           404,
         ),
       )
