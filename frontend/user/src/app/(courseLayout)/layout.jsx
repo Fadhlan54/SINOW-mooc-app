@@ -137,18 +137,31 @@ export default function MainLayout({ children }) {
             <h2 className="text-xl hidden min-[300px]:block">SINOW</h2>
           </Link>
           <div className="flex gap-3 text-2xl text-neutral-04">
-            <Link
-              href={"/notifications"}
-              className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
-            >
-              <GoBell />
-            </Link>
-            <Link
-              href={"/profile"}
-              className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
-            >
-              <GoPerson />
-            </Link>
+            {isLogin ? (
+              <>
+                <Link
+                  href={"/notifications"}
+                  className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
+                >
+                  <GoBell />
+                </Link>
+                <Link
+                  href={"/profile"}
+                  className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
+                >
+                  <GoPerson />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href={"/auth/login"}
+                  className="flex items-center gap-2 font-semibold  rounded-2xl text-sm"
+                >
+                  <FiLogIn className="text-lg" /> Masuk
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="flex items-center relative ">
