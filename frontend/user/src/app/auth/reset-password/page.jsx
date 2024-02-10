@@ -1,7 +1,13 @@
+"use client";
+
 import Button from "@/components/Button";
+import { reqResetPassword } from "@/services/auth.service";
 import { Montserrat, Poppins } from "next/font/google";
+import Swal from "sweetalert2";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import LoadingScreen from "@/components/loading-animation/LoadingScreen";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -10,10 +16,46 @@ const poppins = Poppins({
 });
 
 export default function ResetPasswordPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    const email = e.target.email.value;
+
+    try {
+      const res = await reqResetPassword(email);
+      if (res.status === "Success") {
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Tautan reset password telah dikirim ke email Anda",
+        });
+        e.target.email.value = "";
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal",
+          text: res.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div
       className={`flex min-h-screen justify-center items-center border border-neutral-03 ${poppins.className}`}
     >
+      {" "}
+      {isLoading && <LoadingScreen />}
       <div className="border rounded-lg flex flex-col justify-center items-center py-7 px-4 mx-6 shadow-xl">
         <Link href={"/"}>
           <Image
@@ -26,7 +68,10 @@ export default function ResetPasswordPage() {
             className="mb-8"
           />
         </Link>
-        <form action="" className="w-full lg:w-3/4 max-w-[452px] ">
+        <form
+          className="w-full lg:w-3/4 max-w-[452px]"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <h3
             className={`text-primary-01 font-bold text text-2xl mb-2 ${montserrat.className}`}
           >
@@ -49,7 +94,10 @@ export default function ResetPasswordPage() {
             />
           </div>
 
-          <Button additionalClass={"w-full mt-4 hover:bg-primary-02"}>
+          <Button
+            additionalClass={"w-full mt-4 hover:bg-primary-02"}
+            type={"submit"}
+          >
             Selanjutnya
           </Button>
           <div className="text-center text-sm mt-6">

@@ -6,6 +6,10 @@ import { useState } from "react";
 import { Montserrat, Poppins } from "next/font/google";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Button from "@/components/Button";
+import Swal from "sweetalert2";
+import { resetPassword } from "@/services/auth.service";
+import LoadingScreen from "@/components/loading-animation/LoadingScreen";
+import { useRouter } from "next/navigation";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -13,9 +17,12 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPage(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { token } = props.params;
+  const { push } = useRouter();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -24,8 +31,66 @@ export default function ResetPasswordPage() {
   const toggleShowConfirmedPassword = () => {
     setShowConfirmedPassword(!showConfirmedPassword);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const password = e.target.password.value;
+    const confirmedPassword = e.target.confirmPassword.value;
+
+    if (password.length < 8) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Kata sandi minimal 8 karakter",
+      });
+      return;
+    }
+    if (password !== confirmedPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Kata sandi tidak cocok",
+      });
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await resetPassword(token, password);
+      console.log(res);
+      if (res.status === "Success") {
+        const result = await Swal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Kata sandi telah diubah",
+          showConfirmButton: true,
+          allowOutsideClick: false,
+        });
+
+        if (result.isConfirmed) {
+          push("/auth/login");
+          return;
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal",
+          text: res.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className={`flex min-h-screen ${poppins.className}`}>
+      {isLoading && <LoadingScreen />}
       <div className="flex items-center flex-col justify-center w-full lg:w-1/2 mx-6">
         <Image
           src={
@@ -36,7 +101,10 @@ export default function ResetPasswordPage() {
           height={164}
           className="mt-14 mb-8 sm:mt-0"
         />
-        <form action="" className="w-full lg:w-3/4 max-w-[452px] ">
+        <form
+          className="w-full lg:w-3/4 max-w-[452px]"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <h3
             className={`text-primary-01 font-bold text text-2xl mb-4 ${montserrat.className}`}
           >
@@ -93,8 +161,11 @@ export default function ResetPasswordPage() {
               </div>
             </div>
           </div>
-          <Button additionalClass={"w-full mt-4 hover:bg-primary-02"}>
-            Setel ulang kata sandi
+          <Button
+            additionalClass={"w-full mt-4 hover:bg-primary-02"}
+            type={"submit"}
+          >
+            reset kata sandi
           </Button>
           <div className="text-center text-sm mt-6">
             <p>

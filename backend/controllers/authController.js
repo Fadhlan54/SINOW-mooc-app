@@ -550,7 +550,7 @@ const reqResetPassword = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   try {
-    const { token } = req.params
+    const { token, password } = req.body
 
     let decoded
     try {
@@ -559,23 +559,15 @@ const resetPassword = async (req, res, next) => {
       return next(new ApiError('Token tidak valid', 400))
     }
 
-    const { password, confirmPassword } = req.body
-
     if (!password) {
       return next(new ApiError('Password harus diisi', 400))
     }
 
-    if (!confirmPassword) {
-      return next(new ApiError('Konfirmasi password harus diisi', 400))
-    }
     if (password.length < 8) {
       return next(new ApiError('Panjang password minimal 8 karakter', 400))
     }
     if (password.length > 12) {
       return next(new ApiError('Panjang password maksimal 12 karakter', 400))
-    }
-    if (password !== confirmPassword) {
-      return next(new ApiError('Password tidak cocok', 400))
     }
 
     const auth = await Auth.findOne({

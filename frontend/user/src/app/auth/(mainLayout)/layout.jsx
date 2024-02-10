@@ -10,7 +10,7 @@ const poppins = Poppins({
 export default function AuthLayout({ children }) {
   return (
     <div className={`flex min-h-screen ${poppins.className}`}>
-      <div className="flex items-center flex-col justify-center w-full lg:w-1/2 mx-6 relative">
+      <div className="flex items-center flex-col sm:justify-center  w-full lg:w-1/2 mx-6 relative">
         <Link href={"/"}>
           <Image
             src={
@@ -19,7 +19,7 @@ export default function AuthLayout({ children }) {
             alt="sinow logo dark with text dark"
             width={120}
             height={120}
-            className="mt-14 mb-8 sm:mt-0 lg:hidden"
+            className="mt-8 sm:mt-6 lg:mt-0 lg:hidden"
           />
         </Link>
         {children}
