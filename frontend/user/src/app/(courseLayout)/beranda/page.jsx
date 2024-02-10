@@ -248,7 +248,13 @@ export default function Home() {
         </div>
       </div>
       <div className="px-8 pt-2 pb-8 md:px-0 md:w-4/5 mx-auto ">
-        <h1 className="font-bold text-2xl">Kursus Populer</h1>
+        <div className="flex justify-between">
+          <h1 className="font-bold text-2xl">Kursus Populer</h1>
+          <Link href={"/kursus"} className="font-bold text-sm text-primary-01">
+            Lihat semua
+          </Link>
+        </div>
+
         <Swiper
           slidesPerView={"auto"}
           spaceBetween={10}

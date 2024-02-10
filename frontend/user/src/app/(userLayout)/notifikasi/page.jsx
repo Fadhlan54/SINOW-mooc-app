@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MyCoursePage() {
+export default function NotificationsPage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="flex flex-col items-center border p-6 rounded-xl shadow-md">
@@ -13,11 +13,11 @@ export default function MyCoursePage() {
           height={143}
           alt="Sinow Mascot onboarding"
         />
-        <h1 className="font-bold text-2xl mt-4 mb-2">Kursus Saya</h1>
+        <h1 className="font-bold text-2xl mt-4 mb-2">Notifikasi</h1>
         <h3>Halaman ini sedang dibuat heheh...</h3>
         <p>
           Pergi ke{" "}
-          <Link href="/home" className="text-primary-01">
+          <Link href="/beranda" className="text-primary-01">
             Beranda
           </Link>
         </p>

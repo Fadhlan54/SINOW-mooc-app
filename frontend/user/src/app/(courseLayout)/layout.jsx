@@ -41,7 +41,7 @@ export default function MainLayout({ children }) {
   }, [prevScrollPos]);
 
   return (
-    <div className="bg-neutral-02 min-h-screen">
+    <div className="bg-neutral-02 min-h-screen min-[520px]:px-6 min-[580px]:px-10 sm:px-0">
       {/* Navbar for desktop */}
       <div className="hidden sm:flex items-center justify-between sticky top-0 left-0 bg-primary-01 w-full px-4 lg:px-8 py-4 z-50 shadow-md">
         <Link href={"/"} className="flex items-center gap-2">
@@ -74,14 +74,14 @@ export default function MainLayout({ children }) {
         </div>
         <div className="flex items-center gap-2 text-white">
           <Link
-            href={"/home"}
+            href={"/beranda"}
             className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
           >
             <GoHome className="text-2xl" />
           </Link>
           <span className="h-6 border-r-2 border-white"></span>
           <Link
-            href={"/course"}
+            href={"/kursus"}
             className="p-1 hover:bg-primary-04 px-2 py-1.5  rounded-2xl"
           >
             <GoBook className="text-2xl" />
@@ -91,21 +91,21 @@ export default function MainLayout({ children }) {
             <>
               <span className="h-6 border-r-2 border-white"></span>
               <Link
-                href={"/my-course"}
+                href={"/kursus-berjalan"}
                 className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
               >
                 <GoVideo className="text-2xl" />
               </Link>
               <span className="h-6 border-r-2 border-white"></span>
               <Link
-                href={"/notifications"}
+                href={"/notifikasi"}
                 className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
               >
                 <GoBell className="text-2xl" />
               </Link>
               <span className="h-6 border-r-2 border-white"></span>
               <Link
-                href={"/profile"}
+                href={"/profil"}
                 className="p-1 hover:bg-primary-04 px-2 py-1 rounded-2xl"
               >
                 <GoPerson className="text-2xl" />
@@ -140,13 +140,13 @@ export default function MainLayout({ children }) {
             {isLogin ? (
               <>
                 <Link
-                  href={"/notifications"}
+                  href={"/notifikasi"}
                   className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
                 >
                   <GoBell />
                 </Link>
                 <Link
-                  href={"/profile"}
+                  href={"/profil"}
                   className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
                 >
                   <GoPerson />
@@ -185,23 +185,23 @@ export default function MainLayout({ children }) {
       {/* Bottom Navigation */}
       <div className="w-full h-12 sm:hidden"></div>
       <div
-        className={`fixed z-50 sm:hidden bottom-0 left-0 bg-primary-01 w-full flex justify-evenly pt-2 rounded-t-[2rem] text-2xl text-white 
+        className={`fixed z-40 sm:hidden bottom-0 left-0 bg-primary-01 w-full flex justify-evenly pt-2 rounded-t-[2rem] text-2xl text-white 
         transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"} `}
       >
         <Link
-          href={"/home"}
+          href={"/beranda"}
           className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
         >
           <GoHome className="icon" />
         </Link>
         <Link
-          href={"/my-course"}
+          href={"/kursus-berjalan"}
           className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
         >
           <GoVideo className="icon" />
         </Link>
         <Link
-          href={"/course"}
+          href={"/kursus"}
           className="py-2.5 px-4 hover:bg-primary-03 rounded-t-2xl"
         >
           <GoBook className="icon" />

@@ -30,6 +30,7 @@ module.exports = {
           success: "#73CA5C",
           attention: "#F9CC00",
         },
+        "black-transparent": "rgba(0, 0, 0, 0.6)",
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],

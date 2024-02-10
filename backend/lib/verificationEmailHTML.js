@@ -193,7 +193,7 @@ module.exports = (otpCode) => `
                                 <h2
                                 style="
                                     text-align: center;
-                                    background-color: #6148ff;
+                                    background-color: #00CCF4;
                                     display: inline-block;
                                     padding: 8px 16px;
                                     color: #fff;

@@ -69,7 +69,7 @@ export default function ResetPasswordPage() {
           />
         </Link>
         <form
-          className="w-full lg:w-3/4 max-w-[452px]"
+          className="w-full lg:w-3/4 max-w-[452px] px-6 lg:px-0"
           onSubmit={(e) => handleSubmit(e)}
         >
           <h3
