@@ -22,7 +22,7 @@ export default function LandingPage() {
         <h1 className="mt-4">Landing page sedang dibuat heheh...</h1>
         <p>
           Pergi ke{" "}
-          <Link href="/beranda" className="text-primary-01 font-bold">
+          <Link href="/home" className="text-primary-01 font-bold">
             Beranda
           </Link>
         </p>

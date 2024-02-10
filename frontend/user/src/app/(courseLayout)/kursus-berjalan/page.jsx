@@ -17,7 +17,7 @@ export default function MyCoursePage() {
         <h3>Halaman ini sedang dibuat heheh...</h3>
         <p>
           Pergi ke{" "}
-          <Link href="/beranda" className="text-primary-01">
+          <Link href="/home" className="text-primary-01">
             Beranda
           </Link>
         </p>

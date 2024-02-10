@@ -74,7 +74,7 @@ export default function MainLayout({ children }) {
         </div>
         <div className="flex items-center gap-2 text-white">
           <Link
-            href={"/beranda"}
+            href={"/home"}
             className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
           >
             <GoHome className="text-2xl" />
@@ -189,7 +189,7 @@ export default function MainLayout({ children }) {
         transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"} `}
       >
         <Link
-          href={"/beranda"}
+          href={"/home"}
           className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
         >
           <GoHome className="icon" />
