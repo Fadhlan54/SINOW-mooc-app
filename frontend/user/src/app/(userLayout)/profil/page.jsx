@@ -26,7 +26,7 @@ export default function ProfilePage() {
         <div className="flex flex-col w-full sm:w-11/12 md:w-4/5 lg:w-3/4 items-center  rounded-2xl  ">
           <div className="w-full px-4 py-2">
             <Link
-              href={"/home"}
+              href={"/beranda"}
               className="text-primary-01 hover:text-primary-02"
             >
               <LuArrowLeft className="inline-block text-xl mr-1" />
@@ -81,7 +81,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
-        <Link href={"/home"}>
+        <Link href={"/beranda"}>
           <LuArrowLeft className="text-2xl" />
         </Link>
         <h1 className="font-bold text-2xl mt-5 mb-2 p-2">Akun</h1>
