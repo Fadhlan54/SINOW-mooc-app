@@ -1,6 +1,7 @@
 "use client";
 
 import CourseCard from "@/components/CourseCard";
+import Loading from "@/components/loading-animation/Loading";
 import { getCourse } from "@/services/course.service";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { IoMdClose } from "react-icons/io";
 export default function CoursePage() {
   const [courses, setCourses] = useState([]);
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
+  const [filterType, setFilterType] = useState("semua");
   const [isLoading, setIsLoading] = useState([]);
   const filterRef = useRef(null);
 
@@ -17,7 +19,9 @@ export default function CoursePage() {
     const getCourses = async () => {
       setIsLoading(true);
       try {
-        const res = await getCourse();
+        console.log(filterType);
+        const res = await getCourse({ type: filterType });
+        console.log(res);
         setCourses(res.data);
       } catch (e) {
         setError(e.message);
@@ -26,7 +30,7 @@ export default function CoursePage() {
       }
     };
     getCourses();
-  }, []);
+  }, [filterType]);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -88,7 +92,8 @@ export default function CoursePage() {
       <div className="flex justify-between gap-12">
         <div className="hidden lg:flex justify-center py-6 bg-white rounded-2xl shadow-md w-1/5   h-fit">
           <form>
-            <h3 className="text-lg font-semibold mb-1">Filter</h3>
+            <h2 className="text-xl font-bold mb-3 text-primary-01">Filter</h2>
+            <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
             <ul className="text-xs">
               <li>
                 <div className="flex items-center gap-1 my-1">
@@ -220,20 +225,33 @@ export default function CoursePage() {
         </div>
         <div className="w-full lg:w-4/5">
           <div className="flex gap-3 sm:gap-6 md:gap-8">
-            <button className="text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold bg-white text-neutral-04 hover:bg-primary-01 hover:text-white shadow-sm">
+            <button
+              className={`text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold hover:bg-primary-01 hover:text-white shadow-sm ${filterType === "semua" ? "bg-primary-01 text-white" : "bg-white text-neutral-04"}`}
+              onClick={() => setFilterType("semua")}
+            >
               All
             </button>
-            <button className="text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold bg-white text-neutral-04 hover:bg-primary-01 hover:text-white shadow-sm">
+            <button
+              className={`text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold hover:bg-primary-01 hover:text-white shadow-sm ${filterType === "premium" ? "bg-primary-01 text-white" : "bg-white text-neutral-04"}`}
+              onClick={() => setFilterType("premium")}
+            >
               Kursus Berbayar
             </button>
-            <button className="text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold bg-white text-neutral-04 hover:bg-primary-01 hover:text-white shadow-sm">
+            <button
+              className={`text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold  hover:bg-primary-01 hover:text-white shadow-sm ${filterType === "gratis" ? "bg-primary-01 text-white" : "bg-white text-neutral-04"}`}
+              onClick={() => setFilterType("gratis")}
+            >
               Kursus Gratis
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
-            {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
+            {isLoading ? (
+              <Loading className="col-span-full" />
+            ) : (
+              courses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))
+            )}
           </div>
 
           {/* filter for mobile */}

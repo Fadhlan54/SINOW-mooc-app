@@ -9,36 +9,57 @@ import { RiShieldStarLine } from "react-icons/ri";
 import { PiBooks, PiClockFill } from "react-icons/pi";
 import { IoDiamondSharp, IoGiftSharp } from "react-icons/io5";
 import { FreeMode, Autoplay } from "swiper/modules";
-
 import "swiper/swiper-bundle.css";
 import "swiper/css";
 import "./style.css";
 import { getCourse } from "@/services/course.service";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading-animation/Loading";
+import { getCategories } from "@/services/category.service";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export default function Home() {
   const [courses, setCourses] = useState([]);
-  const [error, setError] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [filterCategory, setFilterCategory] = useState("semua");
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    const getCourses = async () => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getCategories();
+        console.log(res);
+        if (res.status === "Success") {
+          setCategories(res.data);
+        } else {
+          setCategories([]);
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
       setIsLoading(true);
       try {
-        const res = await getCourse();
+        const res = await getCourse({ categoryId: filterCategory });
         console.log(res.data);
         setCourses(res.data);
       } catch (e) {
-        setError(e.message);
+        console.log(e.message);
       } finally {
         setIsLoading(false);
       }
     };
-    getCourses();
-  }, []);
+    fetchCourses();
+  }, [filterCategory]);
+
   return (
     <>
       <div className="bg-primary-01 pt-2 px-3 hidden sm:flex w-full">
@@ -60,7 +81,7 @@ export default function Home() {
             <h1>Belajar</h1>
             <h1>dari Praktisi Terbaik!</h1>
             <Link
-              href="#"
+              href="/kursus"
               className="w-full bg-white hover:bg-neutral-02 text-center rounded-2xl sm:text-base md:text-lg mt-4 py-1 text-primary-01 "
             >
               Ikuti Kelas
@@ -132,7 +153,22 @@ export default function Home() {
       <div className="px-8 pt-2 pb-8 md:px-0 md:w-4/5 mx-auto">
         <h1 className="font-bold text-2xl mb-4">Kategori</h1>
         {/* <div className="grid grid-cols-2 min-[300px]:grid-cols-3 min-[440px]:grid-cols-4   md:grid-cols-5 lg:grid-cols-8 gap-4  "> */}
+
         <div className="flex items-center justify-center gap-10 md:gap-10 lg:gap-11 min-[1200px]:gap-12  flex-wrap">
+          {categories.map((category) => (
+            <Link
+              href={`/kursus?categoryId=${category.id}`}
+              className="flex flex-col items-center text-center justify-between w-16 md:w-20"
+            >
+              <Image
+                src={category.imageUrl}
+                width={80}
+                height={80}
+                alt={`${category.name} icon`}
+              />
+              <p className="text-xs md:text-sm mt-1">{category.name}</p>
+            </Link>
+          ))}
           <Link
             href={"#"}
             className="flex flex-col items-center text-center justify-between w-16 md:w-20"
@@ -247,8 +283,8 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="px-8 pt-2 pb-8 md:px-0 md:w-4/5 mx-auto ">
-        <div className="flex justify-between">
+      <div className="px-8 pt-2 pb-8 md:px-0 md:w-4/5 mx-auto">
+        <div className="flex justify-between items-center">
           <h1 className="font-bold text-2xl">Kursus Populer</h1>
           <Link href={"/kursus"} className="font-bold text-sm text-primary-01">
             Lihat semua
@@ -264,61 +300,26 @@ export default function Home() {
           autoHeight={true}
         >
           <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
+            <button
               className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
+              onClick={() => setFilterCategory("semua")}
             >
               Semua
-            </Link>
+            </button>
           </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              UI/UX Design
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              Product Management
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              Web Development
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              Android Development
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              iOS Development
-            </Link>
-          </SwiperSlide>
-          <SwiperSlide className="category-slide">
-            <Link
-              href={"#"}
-              className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
-            >
-              Data Science
-            </Link>
-          </SwiperSlide>
+          {categories.map(
+            (category) =>
+              category.isPopular && (
+                <SwiperSlide className="category-slide" key={category.id}>
+                  <button
+                    className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
+                    onClick={() => setFilterCategory(category.id)}
+                  >
+                    {category.name}
+                  </button>
+                </SwiperSlide>
+              )
+          )}
         </Swiper>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 ">
           {isLoading ? (

@@ -46,12 +46,25 @@ const createCategory = async (req, res, next) => {
 
 const getAllCategory = async (req, res, next) => {
   try {
-    const { name } = req.query
+    const { name, isPopular } = req.query
 
+    console.log('\n\n\n\nmasuk sini')
     const where = {}
     if (name) {
       where.name = {
         [Op.iLike]: `%${name}%`,
+      }
+    }
+
+    console.log('isPopular: ', isPopular)
+
+    if (isPopular) {
+      if (isPopular === 'true') {
+        where.isPopular = true
+      } else if (isPopular === 'false') {
+        where.isPopular = false
+      } else {
+        return next(new ApiError('isPopular harus true atau false', 400))
       }
     }
 

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       imageUrl: DataTypes.STRING,
+      isPopular: DataTypes.BOOLEAN,
     },
     {
       sequelize,

@@ -14,6 +14,9 @@ module.exports = {
       imageUrl: {
         type: Sequelize.STRING,
       },
+      isPopular: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
