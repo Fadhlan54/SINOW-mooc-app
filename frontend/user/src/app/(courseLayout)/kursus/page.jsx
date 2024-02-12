@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import Swal from "sweetalert2";
 
 export default function CoursePage() {
   const [courses, setCourses] = useState([]);
@@ -24,7 +25,11 @@ export default function CoursePage() {
         console.log(res);
         setCourses(res.data);
       } catch (e) {
-        setError(e.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: e.message,
+        });
       } finally {
         setIsLoading(false);
       }

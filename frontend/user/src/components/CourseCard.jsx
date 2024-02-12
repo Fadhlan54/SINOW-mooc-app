@@ -1,10 +1,12 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa";
 import { IoDiamondSharp, IoGiftSharp } from "react-icons/io5";
 import { PiBooks, PiClockFill } from "react-icons/pi";
 import { RiShieldStarLine } from "react-icons/ri";
 
 export default function CourseCard({ course }) {
+  const { push } = useRouter();
   return (
     <div className="rounded-3xl bg-white shadow-lg ">
       <Image
@@ -50,7 +52,12 @@ export default function CourseCard({ course }) {
             <p className="text-[0.65rem] ml-1">{course.totalDuration} Menit</p>
           </div>
         </div>
-        <button className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-4 rounded-2xl text-white font-semibold text-xs">
+        <button
+          onClick={() => {
+            push(`/kursus/${course.id}`);
+          }}
+          className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-4 rounded-2xl text-white font-semibold text-xs"
+        >
           {course.type === "premium" ? (
             <>
               <span className="flex mr-4">

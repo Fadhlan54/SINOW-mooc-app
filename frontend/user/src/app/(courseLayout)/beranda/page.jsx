@@ -16,10 +16,11 @@ import { getCourse } from "@/services/course.service";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading-animation/Loading";
 import { getCategories } from "@/services/category.service";
+import CourseLayout from "@/components/courseLayout";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
-export default function Home() {
+function Home() {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -294,5 +295,13 @@ export default function Home() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <CourseLayout>
+      <Home />
+    </CourseLayout>
   );
 }
