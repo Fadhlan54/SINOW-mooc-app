@@ -42,10 +42,17 @@ router.get(
 )
 
 router.post(
-  '/my-courses/:courseId/follow-course',
+  '/my-courses/:courseId/follow',
   checkUUIDParams(),
   authenticate,
   User.followCourse,
+)
+
+router.post(
+  '/my-courses/:courseId/unfollow',
+  checkUUIDParams(),
+  authenticate,
+  User.unfollowCourse,
 )
 
 router.get(

@@ -33,21 +33,6 @@ const myCourseRelation = (id) => {
         model: Course,
         include: [
           {
-            model: Category,
-            attributes: ['id', 'name'],
-            as: 'category',
-          },
-          {
-            model: User,
-            as: 'courseCreator',
-            attributes: ['id', 'name'],
-          },
-          {
-            model: Benefit,
-            as: 'benefits',
-            attributes: ['id', 'no', 'description'],
-          },
-          {
             model: Chapter,
             as: 'chapters',
             attributes: ['id', 'no', 'name', 'totalDuration'],
@@ -75,7 +60,6 @@ const myCourseRelation = (id) => {
     order: [
       ['Course', 'id', 'ASC'],
       ['Course', 'chapters', 'no', 'ASC'],
-      ['Course', 'benefits', 'no', 'ASC'],
       ['Course', 'chapters', 'myModules', 'moduleData', 'no', 'ASC'],
     ],
   }
@@ -435,7 +419,15 @@ const openCourse = async (req, res, next) => {
         status: 'Success',
         message: 'Berhasil mendapatkan detail course user',
         data: {
-          myCourse,
+          myCourse: {
+            id: myCourse.id,
+            isAccessible: myCourse.isAccessible,
+            isFollowing: myCourse.isFollowing,
+            progress: myCourse.progress,
+            progressPercentage: myCourse.progressPercentage,
+            lastSeen: myCourse.lastSeen,
+          },
+          chapters: myCourse.Course.chapters,
         },
       })
     }
@@ -514,7 +506,15 @@ const openCourse = async (req, res, next) => {
       status: 'Success',
       message: 'Berhasil mengikuti course',
       data: {
-        myCourse: newMyCourse,
+        myCourse: {
+          id: newMyCourse.id,
+          isAccessible: newMyCourse.isAccessible,
+          isFollowing: newMyCourse.isFollowing,
+          progress: newMyCourse.progress,
+          progressPercentage: newMyCourse.progressPercentage,
+          lastSeen: newMyCourse.lastSeen,
+        },
+        chapters: newMyCourse.Course.chapters,
       },
     })
   } catch (error) {
@@ -570,6 +570,41 @@ const followCourse = async (req, res, next) => {
   }
 }
 
+const unfollowCourse = async (req, res, next) => {
+  try {
+    const { user } = req
+    const { courseId } = req.params
+
+    const course = await Course.findByPk(courseId)
+
+    if (!course) {
+      return next(new ApiError('Course tidak ditemukan', 404))
+    }
+
+    const myCourse = await MyCourse.findOne({
+      where: {
+        userId: user.id,
+        courseId,
+      },
+    })
+
+    if (!myCourse) {
+      return next(new ApiError('My Course tidak ditemukan', 404))
+    }
+
+    await myCourse.update({
+      isFollowing: false,
+    })
+
+    return res.status(200).json({
+      status: 'Success',
+      message: 'Berhasil berhenti mengikuti course',
+    })
+  } catch (error) {
+    return next(new ApiError(error.message, 500))
+  }
+}
+
 const openMyModule = async (req, res, next) => {
   try {
     const { user } = req
@@ -587,6 +622,8 @@ const openMyModule = async (req, res, next) => {
     if (!myCourse) {
       return next(new ApiError('My Course tidak ditemukan', 404))
     }
+
+    console.log(myCourse)
 
     const mergedMyModules = myCourse.Course.chapters.flatMap(
       (chapter) => chapter.myModules,
@@ -607,7 +644,8 @@ const openMyModule = async (req, res, next) => {
     }
 
     const indexMyModule = mergedMyModules.findIndex(
-      (module) => module.id === parseInt(myModuleId, 10),
+      (module) => module.id === myModuleId,
+      10,
     )
 
     if (indexMyModule === -1) {
@@ -820,4 +858,5 @@ module.exports = {
   getAllMyTransaction,
   getMyTransactionById,
   deleteTransaction,
+  unfollowCourse,
 }
