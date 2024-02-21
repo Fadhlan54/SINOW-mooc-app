@@ -56,7 +56,6 @@ export default function ResetPasswordPage(props) {
     setIsLoading(true);
     try {
       const res = await resetPassword(token, password);
-      console.log(res);
       if (res.status === "Success") {
         const result = await Swal.fire({
           icon: "success",

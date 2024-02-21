@@ -22,9 +22,7 @@ function Course() {
     const getCourses = async () => {
       setIsLoading(true);
       try {
-        console.log(filterType);
         const res = await getCourse({ type: filterType });
-        console.log(res);
         setCourses(res.data);
       } catch (e) {
         Swal.fire({

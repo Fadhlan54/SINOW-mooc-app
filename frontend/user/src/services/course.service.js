@@ -31,7 +31,6 @@ export const getCourse = async ({ categoryId, type, search } = {}) => {
 
 export const getCouseById = async (id) => {
   try {
-    console.log("getting data");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/courses/${id}`,
       {
@@ -41,7 +40,6 @@ export const getCouseById = async (id) => {
         },
       }
     );
-    console.log(res);
     return {
       status: res.status,
       data: await res.json(),
@@ -120,9 +118,6 @@ export const unfollowCourse = async (id, token) => {
 
 export const openModuleUser = async (courseId, moduleId, token) => {
   try {
-    console.log(courseId);
-    console.log(moduleId);
-    console.log(token);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/my-courses/${courseId}/modules/${moduleId}`,
       {

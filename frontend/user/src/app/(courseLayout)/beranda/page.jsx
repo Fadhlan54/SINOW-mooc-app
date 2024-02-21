@@ -33,7 +33,6 @@ export default function Home() {
     const fetchCategories = async () => {
       try {
         const res = await getCategories();
-        console.log(res);
         if (res.status === "Success") {
           setCategories(res.data);
         } else {
