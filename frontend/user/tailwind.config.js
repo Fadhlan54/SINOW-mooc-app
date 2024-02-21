@@ -29,6 +29,7 @@ module.exports = {
           "danger-transparent": "rgba(255, 0, 0, 0.08)",
           warning: "#F9CC00",
           success: "#73CA5C",
+          "success-hover": "#539F3F",
           attention: "#F9CC00",
         },
         "black-transparent": "rgba(0, 0, 0, 0.6)",

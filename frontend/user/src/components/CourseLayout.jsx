@@ -6,6 +6,7 @@ import { FiLogIn } from "react-icons/fi";
 import { GoBell, GoHome, GoPerson, GoBook, GoVideo } from "react-icons/go";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function CourseLayout({
   children,
@@ -16,6 +17,8 @@ export default function CourseLayout({
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const { push } = useRouter();
 
   useEffect(() => {
     if (Cookies.get("token")) {
@@ -26,16 +29,10 @@ export default function CourseLayout({
   }, []);
 
   useEffect(() => {
-    let timer;
-
     const handleScroll = () => {
-      clearTimeout(timer);
-      // Set timeout to detect when scrolling stops
-      timer = setTimeout(() => {
-        const currentScrollPos = window.pageYOffset;
-        setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
-        setPrevScrollPos(currentScrollPos);
-      }, 150);
+      const currentScrollPos = window.pageYOffset;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -45,8 +42,28 @@ export default function CourseLayout({
     };
   }, [prevScrollPos]);
 
+  const handleSearch = (e) => {
+    const key = e?.key;
+
+    if (key) {
+      if (key === "Enter") {
+        if (searchValue) {
+          push(`/kursus?cari=${searchValue}`);
+        } else {
+          push("/kursus");
+        }
+      }
+    } else {
+      if (searchValue) {
+        push(`/kursus?cari=${searchValue}`);
+      } else {
+        push("/kursus");
+      }
+    }
+  };
+
   return (
-    <div className="bg-neutral-02 min-h-screen px-4 min-[520px]:px-6 min-[580px]:px-10 sm:px-0">
+    <div className="bg-neutral-02 min-h-screen">
       {/* Navbar for desktop */}
       {!disableWebNavbar && (
         <div className="hidden sm:flex items-center justify-between sticky top-0 left-0 bg-primary-01 w-full px-4 lg:px-8 py-4 z-50 shadow-md">
@@ -65,11 +82,21 @@ export default function CourseLayout({
           <div className="flex w-56 md:w-[360px] lg:w-[420px]  items-center relative ">
             <input
               type="text"
+              name="search"
               placeholder="Cari kursus"
               className="w-full px-6 py-3 rounded-xl text-sm focus:outline-none text-neutral-04 shadow-md"
               id="search-1"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+              onKeyDown={(e) => handleSearch(e)}
             />
-            <button className="absolute right-2 bg-primary-01 hover:bg-primary-04 p-1 rounded-xl">
+            <button
+              className="absolute right-2 bg-primary-01 hover:bg-primary-04 p-1 rounded-xl"
+              type="submit"
+              onClick={() => {
+                handleSearch();
+              }}
+            >
               <Image
                 src="https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Icons/bx_search-alt.png?updatedAt=1706898652084"
                 width={24}
@@ -78,6 +105,7 @@ export default function CourseLayout({
               />
             </button>
           </div>
+
           <div className="flex items-center gap-2 text-white">
             <Link
               href={"/beranda"}
@@ -133,7 +161,7 @@ export default function CourseLayout({
       )}
       {/* Navbar for mobile */}
       {!disableMobileNavbar && (
-        <div className=" py-2 sm:hidden">
+        <div className="px-3 py-2 sm:hidden">
           <div className="flex justify-between items-center p-2 pb-4">
             <Link href={"/"} className={`flex items-center gap-2 font-bold`}>
               <Image
@@ -172,14 +200,24 @@ export default function CourseLayout({
               )}
             </div>
           </div>
+
           <div className="flex items-center relative ">
             <input
               type="text"
+              name="search"
               placeholder="Cari kursus"
               className="w-full px-6 py-3 rounded-xl text-sm focus:outline-none text-neutral-04 shadow-md"
               id="search-2"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+              onKeyUp={(e) => handleSearch(e)}
             />
-            <button className="absolute right-2 bg-primary-01 p-1 rounded-xl">
+            <button
+              className="absolute right-2 bg-primary-01 p-1 rounded-xl"
+              onClick={() => {
+                handleSearch();
+              }}
+            >
               <Image
                 src="https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Icons/bx_search-alt.png?updatedAt=1706898652084"
                 width={24}
