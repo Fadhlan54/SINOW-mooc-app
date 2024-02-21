@@ -126,7 +126,7 @@ export default function DetailCoursePage({ params }) {
         const res = await unfollowCourse(id, token);
         if (res?.data?.status === "Success") {
           const res = await getCourseUser(id, token);
-          if (res.data.status === "Success") {
+          if (res?.data?.status === "Success") {
             setCourseUser(res.data?.data?.myCourse);
             setShiftContent(false);
           } else {
