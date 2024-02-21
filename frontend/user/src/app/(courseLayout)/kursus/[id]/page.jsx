@@ -34,18 +34,14 @@ export default function DetailCoursePage({ params }) {
   const id = params.id || "";
 
   useEffect(() => {
-    console.log(id);
     const fetchCoursesById = async () => {
       setIsLoading(true);
       setError(undefined);
-      console.log(id);
       const res = await getCouseById(id);
-      console.log(res);
 
-      if (res.data.status === "Success") {
-        console.log(res.data.data.description);
+      if (res?.data?.status === "Success") {
         setCourse(res.data?.data);
-        setVideoContentURL(res.data?.data?.videoPreviewUrl);
+        setVideoContentURL(res?.data?.data?.videoPreviewUrl);
       } else {
         setError({ status: res.status, message: res.data.message });
       }
@@ -55,8 +51,7 @@ export default function DetailCoursePage({ params }) {
     const fetchCourseUser = async () => {
       setError(undefined);
       const res = await getCourseUser(id, token);
-      if (res.data.status === "Success") {
-        console.log(res);
+      if (res?.data?.status === "Success") {
         setCourseUser(res.data?.data?.myCourse);
         setchaptersUser(res.data?.data?.chapters);
       } else {
@@ -67,7 +62,6 @@ export default function DetailCoursePage({ params }) {
     if (token) {
       fetchCourseUser();
     }
-    console.log(error);
     fetchCoursesById();
   }, []);
 
@@ -87,11 +81,9 @@ export default function DetailCoursePage({ params }) {
     } else {
       try {
         const res = await followCourse(id, token);
-        console.log(res);
-        if (res.data.status === "Success") {
+        if (res?.data?.status === "Success") {
           const res = await getCourseUser(id, token);
           if (res.data.status === "Success") {
-            console.log(res);
             setCourseUser(res.data?.data?.myCourse);
             setchaptersUser(res.data?.data?.chapters);
           } else {
@@ -132,11 +124,9 @@ export default function DetailCoursePage({ params }) {
     } else {
       try {
         const res = await unfollowCourse(id, token);
-        console.log(res);
-        if (res.data.status === "Success") {
+        if (res?.data?.status === "Success") {
           const res = await getCourseUser(id, token);
           if (res.data.status === "Success") {
-            console.log(res);
             setCourseUser(res.data?.data?.myCourse);
             setShiftContent(false);
           } else {
@@ -278,12 +268,10 @@ export default function DetailCoursePage({ params }) {
     }
     try {
       const res = await openModuleUser(id, moduleId, token);
-      console.log(res);
-      if (res.data.status === "Success") {
+      if (res?.data?.status === "Success") {
         setVideoContentURL(res.data?.data?.module?.videoUrl);
         const courseUser = await getCourseUser(id, token);
-        if (courseUser.data.status === "Success") {
-          console.log(courseUser);
+        if (courseUser?.data?.status === "Success") {
           setCourseUser(courseUser.data?.data?.myCourse);
           setchaptersUser(courseUser.data?.data?.chapters);
         } else {

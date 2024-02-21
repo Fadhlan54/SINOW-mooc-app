@@ -48,15 +48,12 @@ const getAllCategory = async (req, res, next) => {
   try {
     const { name, isPopular } = req.query
 
-    console.log('\n\n\n\nmasuk sini')
     const where = {}
     if (name) {
       where.name = {
         [Op.iLike]: `%${name}%`,
       }
     }
-
-    console.log('isPopular: ', isPopular)
 
     if (isPopular) {
       if (isPopular === 'true') {

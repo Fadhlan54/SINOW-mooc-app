@@ -32,8 +32,6 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body
 
-    console.log(email, password)
-
     if (!email || !password) {
       return next(new ApiError('Email dan password harus diisi', 400))
     }
@@ -90,7 +88,6 @@ const loginWithGoogleCallback = async (req, res) => {
     const { code } = req.query
 
     const { tokens } = await oauth2Client.getToken(code)
-    console.log(tokens)
 
     oauth2Client.setCredentials(tokens)
     const userInfo = google.oauth2({
@@ -167,7 +164,6 @@ const checkToken = async function (req, res, next) {
     }
 
     const token = bearerToken.split(' ')[1]
-    console.log(token)
 
     let decoded
     try {
@@ -179,8 +175,6 @@ const checkToken = async function (req, res, next) {
       })
     }
 
-    console.log(decoded)
-
     const user = await User.findByPk(decoded.id, {
       include: [
         {
@@ -189,8 +183,6 @@ const checkToken = async function (req, res, next) {
         },
       ],
     })
-
-    console.log(user)
 
     if (!user) {
       return res.status(404).json({
@@ -409,8 +401,6 @@ const verifyEmail = async (req, res, next) => {
   try {
     const { token: tokenReq, otpCode } = req.body
 
-    console.log(tokenReq, otpCode)
-
     if (!otpCode) {
       return next(new ApiError('Kode OTP harus diisi', 400))
     }
@@ -425,8 +415,6 @@ const verifyEmail = async (req, res, next) => {
       }
       return next(new ApiError('Token tidak valid', 400))
     }
-
-    console.log(decoded)
 
     const { email } = decoded
 

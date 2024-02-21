@@ -623,8 +623,6 @@ const openMyModule = async (req, res, next) => {
       return next(new ApiError('My Course tidak ditemukan', 404))
     }
 
-    console.log(myCourse)
-
     const mergedMyModules = myCourse.Course.chapters.flatMap(
       (chapter) => chapter.myModules,
     )
