@@ -50,7 +50,6 @@ export default function Home() {
       setIsLoading(true);
       try {
         const res = await getCourse({ categoryId: filterCategory });
-        console.log(res.data);
         setCourses(res.data);
       } catch (e) {
         console.log(e.message);
