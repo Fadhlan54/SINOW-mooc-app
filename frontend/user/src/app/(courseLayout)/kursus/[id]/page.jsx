@@ -20,6 +20,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/loading-animation/LoadingScreen";
 
 export default function DetailCoursePage({ params }) {
   const [shiftContent, setShiftContent] = useState(false);
@@ -28,6 +29,7 @@ export default function DetailCoursePage({ params }) {
   const [chaptersUser, setchaptersUser] = useState([]);
   const [videoContentURL, setVideoContentURL] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(false);
   const [error, setError] = useState(undefined);
   const { push } = useRouter();
   const token = Cookies.get("token");
@@ -267,6 +269,7 @@ export default function DetailCoursePage({ params }) {
       return;
     }
     try {
+      setLoadingScreen(true);
       const res = await openModuleUser(id, moduleId, token);
       if (res?.data?.status === "Success") {
         setVideoContentURL(res.data?.data?.module?.videoUrl);
@@ -283,12 +286,16 @@ export default function DetailCoursePage({ params }) {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoadingScreen(false);
     }
   };
 
   return (
     <CourseLayout disableMobileNavbar>
-      {error ? (
+      {loadingScreen ? (
+        <LoadingScreen />
+      ) : error ? (
         <div className="flex flex-col items-center justify-center mt-20">
           <div className="flex flex-col items-center border p-6 rounded-xl shadow-md">
             <div className="flex flex-col items-center justify-center">
@@ -321,17 +328,20 @@ export default function DetailCoursePage({ params }) {
       ) : (
         course && (
           <div className="mx-auto px-3 py-4 md:px-6 xl:px-10 lg:mx-auto max-w-7xl">
+            <div className="px-4">
+              <Link
+                href={"/kursus"}
+                className="flex items-center gap-4 font-semibold mb-6 w-fit md:relative md:-left-4"
+              >
+                <LuArrowLeft className="text-lg" />
+                Kursus lainnya
+              </Link>
+            </div>
+
             <div className="flex md:gap-8 lg:gap-12 xl:gap-20 sm:px-4">
               <div
                 className={`w-full ${(courseUser && !courseUser.isFollowing && !courseUser.isAccessible) || !token ? "md:w-full max-w-3xl" : "md:w-3/5"} mx-auto`}
               >
-                <Link
-                  href={"/kursus"}
-                  className="flex items-center gap-4 font-semibold mb-6 w-fit md:relative md:-left-4"
-                >
-                  <LuArrowLeft className="text-lg" />
-                  Kelas lainnya
-                </Link>
                 <video
                   src={videoContentURL}
                   className="w-full rounded-[32px] shadow-lg"
