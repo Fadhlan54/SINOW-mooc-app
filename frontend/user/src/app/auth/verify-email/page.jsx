@@ -130,7 +130,7 @@ function VerifyEmail() {
     try {
       const res = await verifyEmail(token, otp);
       if (res.status === "Success") {
-        Cookies.set("token", res.data.token);
+        Cookies.set("token", res.data.token, { expires: 30 });
         push("/");
       }
       setErrorMessage(res.message);

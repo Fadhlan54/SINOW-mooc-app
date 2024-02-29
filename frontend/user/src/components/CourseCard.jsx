@@ -1,3 +1,4 @@
+import { currencyFormatterIDR } from "@/lib/formatter";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa";
@@ -60,11 +61,8 @@ export default function CourseCard({ course }) {
         >
           {course.type === "premium" ? (
             <>
-              <span className="flex mr-4">
-                <IoDiamondSharp className="mr-1 text-base inline-block" />
-                Beli
-              </span>
-              <span>Rp. {course.price}</span>
+              <IoDiamondSharp className="mr-1 text-base inline-block" />
+              <span>{currencyFormatterIDR(course.price)}</span>
             </>
           ) : (
             <p className=" w-20 flex items-center justify-center">

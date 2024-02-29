@@ -83,7 +83,7 @@ const loginWithGoogle = async (req, res, next) => {
   res.redirect(authorizationUrl)
 }
 
-const loginWithGoogleCallback = async (req, res) => {
+const loginWithGoogleCallback = async (req, res, next) => {
   try {
     const { code } = req.query
 
@@ -135,11 +135,19 @@ const loginWithGoogleCallback = async (req, res) => {
       role: 'user',
     })
 
-    const newAuth = await Auth.create({
+    await Auth.create({
       email: data.email,
       userId: newUser.id,
       isEmailVerified: true,
     })
+
+    await createNotification(
+      'Notifikasi',
+      'Yeay! Akun mu berhasil dibuat',
+      newUser.id,
+      `Selamat Bergabung di SINOW!\n\nKami dengan senang hati menyambut Anda di SINOW, tempat terbaik untuk belajar melalui kursus daring. Sekarang Anda memiliki akses penuh ke ribuan kursus berkualitas dari berbagai bidang IT.\n\nDengan SINOW, belajar menjadi lebih fleksibel dan mudah. Temukan kursus yang sesuai dengan minat dan tujuan karir Anda, ikuti perkembangan terbaru dalam industri IT, dan tingkatkan keterampilan Anda dengan materi pembelajaran terkini.\n\nJangan lewatkan kesempatan untuk:\n\n📚 Menjelajahi kursus-kursus unggulan dari instruktur terbaik.\n🎓 Mendapatkan\n🌐 Bergabung dengan komunitas pembelajar aktif dan berbagi pengetahuan.\n🚀 Memulai perjalanan pendidikan online Anda menuju kesuksesan.\n\nSelamat belajar,\nTim SINOW 🫡`,
+      next,
+    )
 
     const token = createToken({
       id: newUser.id,
@@ -413,7 +421,7 @@ const verifyEmail = async (req, res, next) => {
       if (error.message === 'jwt expired') {
         return next(new ApiError('Kode OTP sudah kadaluarsa', 400))
       }
-      return next(new ApiError('Token tidak valid', 400))
+      return next(new ApiError('Token tidak valid', 401))
     }
 
     const { email } = decoded
@@ -544,7 +552,7 @@ const resetPassword = async (req, res, next) => {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET)
     } catch (error) {
-      return next(new ApiError('Token tidak valid', 400))
+      return next(new ApiError('Token tidak valid', 401))
     }
 
     if (!password) {
@@ -565,7 +573,7 @@ const resetPassword = async (req, res, next) => {
     })
 
     if (!auth) {
-      return next(new ApiError('Token tidak valid', 400))
+      return next(new ApiError('Token tidak valid', 401))
     }
 
     const passwordHash = await bcrypt.hash(password, 10)

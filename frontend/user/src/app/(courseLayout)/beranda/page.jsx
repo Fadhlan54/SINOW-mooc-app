@@ -78,7 +78,7 @@ export default function Home() {
           <div
             className={`flex flex-col items-start justify-center sm:text-xl md:text-2xl text-white font-bold ${montserrat.className}`}
           >
-            <h1>Belajars</h1>
+            <h1>Belajar</h1>
             <h1>dari Praktisi Terbaik!</h1>
             <Link
               href="/kursus"
@@ -154,11 +154,10 @@ export default function Home() {
           </SwiperSlide>
         </Swiper>
       </div>
-      <div className="px-3 md:px-6 lg:w-11/12 lg:mx-auto max-w-7xl">
+      <div className="px-4 md:px-6 lg:w-11/12 lg:mx-auto max-w-7xl">
         <div className="pt-2 pb-8 mx-auto">
-          <h1 className="font-bold text-2xl mb-4">Kategori</h1>
-          {/* <div className="grid grid-cols-2 min-[300px]:grid-cols-3 min-[440px]:grid-cols-4   md:grid-cols-5 lg:grid-cols-8 gap-4  "> */}
-
+          <h1 className="font-bold  text-2xl mb-4">Kategori</h1>
+          {/* <div className="grid grid-cols-2 min-[300px]:grid-cols-3 min-[440px]:grid-cols-4   md:grid-cols-5 lg:grid-cols-8 gap-4 px-2"> */}
           <div className="flex justify-center md:justify-start gap-10 lg:gap-11 xl:gap-12  flex-wrap">
             {categories.map((category) => (
               <Link
@@ -176,7 +175,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="pt-2 pb-8 mx-auto">
+        <div className="pt-2 mx-auto">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-2xl">Kursus Populer</h1>
             <Link
@@ -197,7 +196,7 @@ export default function Home() {
           >
             <SwiperSlide className="category-slide">
               <button
-                className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
+                className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
                 onClick={() => setFilterCategory("semua")}
               >
                 Semua
@@ -208,7 +207,7 @@ export default function Home() {
                 category.isPopular && (
                   <SwiperSlide className="category-slide" key={category.id}>
                     <button
-                      className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl"
+                      className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
                       onClick={() => setFilterCategory(category.id)}
                     >
                       {category.name}

@@ -40,7 +40,7 @@ export default function LoginPage() {
 
     try {
       if (res.status === "Success") {
-        Cookies.set("token", res.data.token);
+        Cookies.set("token", res.data.token, { expires: 30 });
         push("/");
         return;
       } else {

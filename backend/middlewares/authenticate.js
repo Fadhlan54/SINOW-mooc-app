@@ -4,7 +4,6 @@ const ApiError = require('../utils/ApiError')
 
 module.exports = async (req, res, next) => {
   try {
-    const cookies = req.cookies
     const bearerToken = req.headers.authorization
 
     if (!bearerToken) {
@@ -30,7 +29,7 @@ module.exports = async (req, res, next) => {
     })
 
     if (!user) {
-      return next(new ApiError('Token tidak valid', 404))
+      return next(new ApiError('Token tidak valid', 401))
     }
 
     req.user = user

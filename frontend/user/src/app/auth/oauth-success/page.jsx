@@ -44,7 +44,7 @@ function CheckToken() {
             return;
           }
         } else {
-          Cookies.set("token", token);
+          Cookies.set("token", token, { expires: 30 });
           push("/");
           return;
         }

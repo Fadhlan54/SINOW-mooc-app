@@ -18,6 +18,7 @@ export default function LandingPage() {
           width={188}
           height={143}
           alt="Sinow Mascot onboarding"
+          priority
         />
         <h1 className="mt-4">Landing page sedang dibuat heheh...</h1>
         <p>
