@@ -21,6 +21,7 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/loading-animation/LoadingScreen";
+import { currencyFormatterIDR } from "@/lib/formatter";
 
 export default function DetailCoursePage({ params }) {
   const [shiftContent, setShiftContent] = useState(false);
@@ -327,18 +328,18 @@ export default function DetailCoursePage({ params }) {
         </div>
       ) : (
         course && (
-          <div className="mx-auto px-3 py-4 md:px-6 xl:px-10 lg:mx-auto max-w-7xl">
-            <div className="px-4">
+          <div className="mx-auto px-3 md:px-4 pt-3 pb-4 lg:px-10 lg:mx-auto max-w-7xl">
+            <div className="">
               <Link
                 href={"/kursus"}
-                className="flex items-center gap-4 font-semibold mb-6 w-fit md:relative md:-left-4"
+                className="flex items-center gap-4 font-semibold mb-2 w-fit "
               >
                 <LuArrowLeft className="text-lg" />
                 Kursus lainnya
               </Link>
             </div>
 
-            <div className="flex md:gap-8 lg:gap-12 xl:gap-20 sm:px-4">
+            <div className="flex md:gap-5 lg:gap-10">
               <div
                 className={`w-full ${(courseUser && !courseUser.isFollowing && !courseUser.isAccessible) || !token ? "md:w-full max-w-3xl" : "md:w-3/5"} mx-auto`}
               >
@@ -349,8 +350,8 @@ export default function DetailCoursePage({ params }) {
                 ></video>
                 <div className="bg-white rounded-[32px] px-4 sm:px-6 py-8 mt-8 shadow-lg relative">
                   <div className="mb-4">
-                    <div className="flex justify-between items-center  mb-2">
-                      <h2 className="text-xl font-bold text-primary-01">
+                    <div className="flex justify-between items-center mb-2">
+                      <h2 className="text-lg sm:text-xl font-bold text-primary-01">
                         {course.category?.name}
                       </h2>
                       <div className="flex items-center gap-1">
@@ -361,7 +362,7 @@ export default function DetailCoursePage({ params }) {
                         </p>
                       </div>
                     </div>
-                    <h2 className="text-lg font-bold">{course.name}</h2>
+                    <h2 className="sm:text-lg font-bold">{course.name}</h2>
                     <h4 className="text-sm mt-1"> {course.courseBy}</h4>
                     <div className="flex items-center mt-2 justify-between md:justify-start md:gap-4 lg:gap-8 text-xs font-medium">
                       <div className="flex items-center gap-1">
@@ -384,7 +385,7 @@ export default function DetailCoursePage({ params }) {
                       courseUser.isFollowing &&
                       courseUser.isAccessible && (
                         <button
-                          className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-sm shadow-md"
+                          className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md"
                           onClick={() => handleUnfollowModal()}
                         >
                           <FaCheck className="mr-1" />
@@ -398,27 +399,28 @@ export default function DetailCoursePage({ params }) {
                         <>
                           {course.promoDiscountPercentage > 0 ? (
                             <div className="flex items-center">
-                              <p className="mt-2 mb-1 mr-2 font-bold text-lg">
-                                Rp{" "}
-                                {course.price -
-                                  (course.price *
-                                    course.promoDiscountPercentage) /
-                                    100}
+                              <p className="mt-2 mb-1 mr-2 font-bold  sm:text-lg">
+                                {currencyFormatterIDR(
+                                  course.price -
+                                    (course.price *
+                                      course.promoDiscountPercentage) /
+                                      100
+                                )}
                               </p>
                               <p className="text-sm text-neutral-04 font-semibold mr-1 line-through">
-                                Rp {course.price}
+                                {currencyFormatterIDR(course.price)}
                               </p>
                               <p className="text-xs text-neutral-04">
                                 Diskon {course.promoDiscountPercentage}%
                               </p>
                             </div>
                           ) : (
-                            <p className="mt-2 mb-1 font-bold text-lg">
-                              Rp {course.price}
+                            <p className="mt-2 mb-1 font-bold sm:text-lg">
+                              {currencyFormatterIDR(course.price)}
                             </p>
                           )}
 
-                          <button className="flex items-center justify-between  bg-alert-success  hover:bg-alert-success-hover py-1 px-6 rounded-2xl text-white font-semibold text-sm shadow-md">
+                          <button className="flex items-center justify-between  bg-alert-success  hover:bg-alert-success-hover py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md">
                             <FaCartPlus className="mr-1" />
                             Beli Kursus
                           </button>
@@ -430,7 +432,7 @@ export default function DetailCoursePage({ params }) {
                       courseUser.isAccessible) ||
                       !token) && (
                       <button
-                        className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-sm shadow-md"
+                        className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md"
                         onClick={() => handleFollowModal()}
                       >
                         <FaPlus className="mr-1" />
@@ -501,11 +503,11 @@ export default function DetailCoursePage({ params }) {
                           {chaptersUser.length > 0 &&
                             chaptersUser.map((chapter) => (
                               <>
-                                <div className="flex justify-between items-center text-sm font-extrabold gap-1">
+                                <div className="flex justify-between items-start text-sm font-extrabold gap-3">
                                   <h4 className="text-primary-01 ">
                                     Chapter {chapter.no} - {chapter.name}
                                   </h4>
-                                  <p className="text-right">
+                                  <p className="text-right min-w-fit ">
                                     {chapter.totalDuration} Menit
                                   </p>
                                 </div>
@@ -632,11 +634,11 @@ export default function DetailCoursePage({ params }) {
                         {chaptersUser.length > 0 &&
                           chaptersUser.map((chapter) => (
                             <>
-                              <div className="flex justify-between items-center text-sm font-extrabold gap-1">
+                              <div className="flex justify-between items-start text-sm font-extrabold gap-3">
                                 <h4 className="text-primary-01 ">
                                   Chapter {chapter.no} - {chapter.name}
                                 </h4>
-                                <p className="text-right">
+                                <p className="text-right min-w-fit">
                                   {chapter.totalDuration} Menit
                                 </p>
                               </div>

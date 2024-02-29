@@ -259,7 +259,7 @@ function Course() {
                 className={`text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold hover:bg-primary-01 hover:text-white shadow-sm ${filterType === "semua" ? "bg-primary-01 text-white" : "bg-white text-neutral-04"}`}
                 onClick={() => setFilterType("semua")}
               >
-                All
+                Semua
               </button>
               <button
                 className={`text-xs px-4 min-[390px]:text-sm sm:text-base sm:px-8 md:px-12 py-2 rounded-3xl font-bold hover:bg-primary-01 hover:text-white shadow-sm ${filterType === "premium" ? "bg-primary-01 text-white" : "bg-white text-neutral-04"}`}

@@ -75,7 +75,7 @@ const getAllNotifications = async (req, res, next) => {
     const notifications = await Notification.findAll({
       where,
       limit,
-      order: [['updatedAt', 'DESC']],
+      order: [['createdAt', 'DESC']],
     })
 
     if (!notifications || notifications.length === 0) {

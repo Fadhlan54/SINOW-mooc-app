@@ -7,7 +7,7 @@ module.exports = {
     const users = [
       {
         id: uuidv4(),
-        name: 'Toto',
+        name: 'Tono',
         country: 'Indonesia',
         city: 'Jakarta',
         role: 'user',
@@ -16,79 +16,7 @@ module.exports = {
       },
       {
         id: uuidv4(),
-        name: 'Awan',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Asep',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Jojo',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Ilyas',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Kukuh',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Albin',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Juki',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Adi',
-        country: 'Indonesia',
-        city: 'Jakarta',
-        role: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: uuidv4(),
-        name: 'Adit',
+        name: 'Joni',
         country: 'Indonesia',
         city: 'Jakarta',
         role: 'user',
@@ -100,7 +28,8 @@ module.exports = {
       returning: true,
     })
 
-    const password = '$2a$10$VOZdAZlTEN6tuhmMU1g1xOJ9OPvlJutSqSa0m1AT7bJC2PZgJRzVa'
+    const password =
+      '$2a$10$VOZdAZlTEN6tuhmMU1g1xOJ9OPvlJutSqSa0m1AT7bJC2PZgJRzVa'
 
     const lastThreeDigit = 200
     const auths = insertUsers.map((user, index) => ({

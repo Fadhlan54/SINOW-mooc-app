@@ -239,7 +239,7 @@ const changeMyPassword = async (req, res, next) => {
   }
 }
 
-const getMyNotification = async (req, res, next) => {
+const getMyNotifications = async (req, res, next) => {
   try {
     const myNotifications = await Notification.findAll({
       where: {
@@ -845,7 +845,7 @@ const deleteTransaction = async (req, res, next) => {
 module.exports = {
   myDetails,
   updateMyDetails,
-  getMyNotification,
+  getMyNotifications,
   openNotification,
   deleteNotification,
   changeMyPassword,

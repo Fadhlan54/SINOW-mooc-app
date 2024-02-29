@@ -16,7 +16,7 @@ router.patch(
 
 router.patch('/change-password', authenticate, User.changeMyPassword)
 
-router.get('/notifications', authenticate, User.getMyNotification)
+router.get('/notifications', authenticate, User.getMyNotifications)
 
 router.get(
   '/notifications/:id',
