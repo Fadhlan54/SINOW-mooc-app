@@ -89,11 +89,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="pt-4 sm:pt-6 sm:mb-1 lg:pt-8 lg:mb-3 xl:px-4 max-w-7xl mx-auto">
+      <div className="mt-4 max-w-7xl mx-auto">
         <Swiper
-          slidesPerView={1.5}
+          slidesPerView={1.25}
           spaceBetween={20}
-          className="mySwiper"
+          className="mySwiper banner-swiper"
           centeredSlides={true}
           autoplay={{
             delay: 2500,
@@ -102,11 +102,11 @@ export default function Home() {
           modules={[Autoplay]}
           breakpoints={{
             0: {
-              slidesPerView: 1.5,
+              slidesPerView: 1,
               spaceBetween: 20,
             },
             640: {
-              slidesPerView: 2.5,
+              slidesPerView: 2,
               spaceBetween: 25,
             },
             1024: {
@@ -124,8 +124,8 @@ export default function Home() {
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_learn.png?updatedAt=1707381013622"
               }
-              width={544}
-              height={306}
+              width={540}
+              height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner learn sinow"
             />
@@ -135,8 +135,8 @@ export default function Home() {
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_promo.png?updatedAt=1707381013791"
               }
-              width={544}
-              height={306}
+              width={540}
+              height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner promo sinow"
             />
@@ -146,36 +146,62 @@ export default function Home() {
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_tags.png?updatedAt=1707381013979"
               }
-              width={544}
-              height={306}
+              width={540}
+              height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner tags sinow"
             />
           </SwiperSlide>
         </Swiper>
       </div>
-      <div className="px-4 md:px-6 lg:w-11/12 lg:mx-auto max-w-7xl">
-        <div className="pt-2 pb-8 mx-auto">
-          <h1 className="font-bold  text-2xl mb-4">Kategori</h1>
-          {/* <div className="grid grid-cols-2 min-[300px]:grid-cols-3 min-[440px]:grid-cols-4   md:grid-cols-5 lg:grid-cols-8 gap-4 px-2"> */}
-          <div className="flex justify-center md:justify-start gap-10 lg:gap-11 xl:gap-12  flex-wrap">
-            {categories.map((category) => (
-              <Link
-                href={`/kursus?categoryId=${category.id}`}
-                className="flex flex-col items-center text-center justify-between w-16 md:w-20"
-              >
-                <Image
-                  src={category.imageUrl}
-                  width={80}
-                  height={80}
-                  alt={`${category.name} icon`}
-                />
-                <p className="text-xs md:text-sm mt-1">{category.name}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
+      <div className="px-4 md:px-6 pb-6 lg:w-11/12 lg:mx-auto max-w-7xl">
         <div className="pt-2 mx-auto">
+          <h1 className="font-bold text-2xl mb-2">Kategori</h1>
+          <Swiper
+            slidesPerView={"auto"}
+            freeMode={true}
+            modules={[FreeMode]}
+            className="category-swiper mb-2 "
+            autoHeight={true}
+            breakpoints={{
+              0: {
+                slidesPerView: "auto",
+                spaceBetween: 20,
+              },
+              640: {
+                slidesPerView: "auto",
+                spaceBetween: 30,
+              },
+              1024: {
+                slidesPerView: "auto",
+                spaceBetween: 35,
+              },
+            }}
+          >
+            {categories.map((category) => (
+              <SwiperSlide
+                className="cat-slide min-h-full bg-primary-01 hover:bg-primary-04 shadow-md rounded-lg"
+                key={category.id}
+              >
+                <Link
+                  href={`/kursus?categoryId=${category.id}`}
+                  className="flex flex-col items-center text-center justify-between w-24  px-3 pt-3 pb-2  "
+                >
+                  <Image
+                    src={category.imageUrl}
+                    width={80}
+                    height={80}
+                    alt={`${category.name} icon`}
+                  />
+                  <p className="text-[0.66rem] mt-2 font-bold text-white">
+                    {category.name}
+                  </p>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        <div className="mx-auto">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-2xl">Kursus Populer</h1>
             <Link
@@ -191,10 +217,10 @@ export default function Home() {
             spaceBetween={10}
             freeMode={true}
             modules={[FreeMode]}
-            className="category-swiper mySwiper mb-2"
+            className="pop-category-swiper mySwiper mt-1 mb-4"
             autoHeight={true}
           >
-            <SwiperSlide className="category-slide">
+            <SwiperSlide className="cat-slide">
               <button
                 className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
                 onClick={() => setFilterCategory("semua")}
@@ -205,7 +231,7 @@ export default function Home() {
             {categories.map(
               (category) =>
                 category.isPopular && (
-                  <SwiperSlide className="category-slide" key={category.id}>
+                  <SwiperSlide className="cat-slide" key={category.id}>
                     <button
                       className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
                       onClick={() => setFilterCategory(category.id)}
@@ -216,7 +242,7 @@ export default function Home() {
                 )
             )}
           </Swiper>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6 ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {isLoading ? (
               <div className="col-span-full">
                 <Loading />
