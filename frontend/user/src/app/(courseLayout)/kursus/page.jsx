@@ -8,68 +8,65 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import { useSearchParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectSearchFilter } from "@/store/slices/filterSlice";
+import { fetchCategories } from "@/services/category.service";
 
 function Course() {
   const [courses, setCourses] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
   const [filterType, setFilterType] = useState("semua");
   const [isLoading, setIsLoading] = useState([]);
   const filterRef = useRef(null);
-  const searchParams = useSearchParams();
-  const searchFilter = searchParams.get("cari");
+  const searchFilter = useSelector(selectSearchFilter);
+
+  const [filterForm, setFilterForm] = useState({
+    sortBy: "",
+    categoryId: [],
+    level: [],
+  });
 
   useEffect(() => {
-    const getCourses = async () => {
-      setIsLoading(true);
+    const handleGetCategories = async () => {
       try {
-        const res = await getCourse({ type: filterType });
-        setCourses(res.data);
+        const res = await fetchCategories({ sortByName: true });
+        if (res.status === "Success") {
+          setCategories(res.data);
+        } else {
+          setCategories([]);
+        }
       } catch (e) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: e.message,
-        });
-      } finally {
-        setIsLoading(false);
+        console.log(e.message);
       }
     };
-    getCourses();
-  }, [filterType]);
-
-  useEffect(() => {
-    const getCourses = async () => {
-      setIsLoading(true);
-      try {
-        const res = await getCourse({ search: searchFilter });
-        console.log(res);
-        setCourses(res.data);
-      } catch (e) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: e.message,
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getCourses();
-  }, [searchFilter]);
-
-  useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.keyCode === 27) {
-        setIsMobileFilterVisible(false);
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
+    handleGetCategories();
   }, []);
+
+  useEffect(() => {
+    const getCourses = async () => {
+      setIsLoading(true);
+      try {
+        const res = await getCourse({
+          search: searchFilter,
+          type: filterType,
+          categoryId: filterForm.categoryId,
+          level: filterForm.level,
+          sortBy: filterForm.sortBy,
+        });
+        setCourses(res.data);
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: e.message,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getCourses();
+  }, [searchFilter, filterForm, filterType]);
 
   useEffect(() => {
     if (isMobileFilterVisible) {
@@ -100,10 +97,26 @@ function Course() {
     };
   }, [isMobileFilterVisible]);
 
+  const handleFilterForm = async (e) => {
+    const { name, value, checked } = e.target;
+
+    if (name === "sortBy") {
+      setFilterForm({ ...filterForm, sortBy: value });
+    } else if (name === "categoryId" || name === "level") {
+      let updatedValues;
+      if (checked) {
+        updatedValues = [...filterForm[name], value];
+      } else {
+        updatedValues = filterForm[name].filter((item) => item !== value);
+      }
+      setFilterForm({ ...filterForm, [name]: updatedValues });
+    }
+  };
+
   return (
     <CourseLayout>
       <div className="py-6 px-4 min-[420px]:px-8 min-[480px]:px-10 sm:px-4 md:px-6 lg:px-20 xl:px-10 mx-auto max-w-7xl">
-        <div className="flex items-center mb-6 justify-between">
+        <div className="flex items-center mb-3 justify-between">
           <h1 className="font-bold text-2xl">Topik Kelas</h1>
           <button
             className="text-lg font-bold text-primary-01 lg:hidden"
@@ -116,131 +129,96 @@ function Course() {
           </button>
         </div>
         <div className="flex justify-between lg:gap-10 xl:gap-8">
-          <div className="hidden lg:flex justify-center py-6 bg-white rounded-2xl shadow-md w-1/5   h-fit">
-            <form>
-              <h2 className="text-xl font-bold mb-3 text-primary-01">Filter</h2>
+          <div className="hidden lg:flex justify-center pt-4 pb-6 bg-white rounded-2xl shadow-md w-1/5 h-fit">
+            <form onChange={(e) => handleFilterForm(e)}>
+              <h2 className="text-xl font-bold text-primary-01">Filter</h2>
               <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
               <ul className="text-xs">
                 <li>
                   <div className="flex items-center gap-1 my-1">
                     <input
                       type="radio"
-                      id="paling-terbaru"
-                      value={"paling-terbaru"}
-                      name="filter"
+                      id="terbaru"
+                      value={"terbaru"}
+                      name="sortBy"
                     />
-                    <label htmlFor="paling-terbaru ml-4">Paling Terbaru</label>
+                    <label htmlFor="terbaru ml-4">Terbaru</label>
                   </div>
                 </li>
                 <li>
                   <div className="flex items-center gap-1 my-1">
                     <input
                       type="radio"
-                      id="paling-populer"
-                      value={"paling-populer"}
-                      name="filter"
+                      id="terpopuler"
+                      value={"terpopuler"}
+                      name="sortBy"
                     />
-                    <label htmlFor="paling-populer">Paling Populer</label>
+                    <label htmlFor="terpopuler">Paling Populer</label>
                   </div>
                 </li>
                 <li>
                   <div className="flex items-center gap-1 my-1">
                     <input
                       type="radio"
-                      id="rating-tertinggi"
-                      value={"rating-tertinggi"}
-                      name="filter"
+                      id="rating"
+                      value={"rating"}
+                      name="sortBy"
                     />
-                    <label htmlFor="rating-tertinggi">Rating Tertinggi</label>
+                    <label htmlFor="rating">Rating Tertinggi</label>
                   </div>
                 </li>
               </ul>
               <h3 className="text-lg font-semibold mb-1 mt-3">Kategori</h3>
               <ul className="text-xs">
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="kategori" id="uiux" />
-                    <label htmlFor="uiux">UI/UX Design</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="kategori"
-                      id="product-management"
-                    />
-                    <label htmlFor="product-management">
-                      Product Management
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="kategori" id="web-dev" />
-                    <label htmlFor="web-dev">Web Development</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="kategori" id="android-dev" />
-                    <label htmlFor="android-dev">Android Development</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="kategori" id="ios-dev" />
-                    <label htmlFor="ios-dev">iOS Development</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="kategori" id="data-science" />
-                    <label htmlFor="data-science">Data Science</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="kategori"
-                      id="business-intelligence"
-                    />
-                    <label htmlFor="business-intelligence">
-                      Business Intelligence
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="kategori"
-                      id="digital-marketing"
-                    />
-                    <label htmlFor="digital-marketing">Digital Marketing</label>
-                  </div>
-                </li>
+                {categories.map((category) => (
+                  <li>
+                    <div className="flex items-center gap-1 my-1">
+                      <input
+                        type="checkbox"
+                        name="categoryId"
+                        id={category.id}
+                        value={category.id}
+                      />
+                      <label htmlFor={category.id}>{category.name}</label>
+                    </div>
+                  </li>
+                ))}
               </ul>
+
               <h3 className="text-lg font-semibold mb-1 mt-3">
                 Level Kesulitan
               </h3>
               <ul className="text-xs">
                 <li>
                   <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="level" id="pemula" />
+                    <input
+                      type="checkbox"
+                      name="level"
+                      id="pemula"
+                      value={"pemula"}
+                    />
                     <label htmlFor="pemula">Pemula</label>
                   </div>
                 </li>
                 <li>
                   <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="level" id="menengah" />
+                    <input
+                      type="checkbox"
+                      name="level"
+                      id="menengah"
+                      value={"menengah"}
+                    />
                     <label htmlFor="menengah">Menengah</label>
                   </div>
                 </li>
                 <li>
                   <div className="flex items-center gap-1 my-1">
-                    <input type="checkbox" name="level" id="mahir" />
+                    <input
+                      type="checkbox"
+                      name="level"
+                      id="mahir"
+                      value={"mahir"}
+                    />
                     <label htmlFor="mahir">Mahir</label>
                   </div>
                 </li>
@@ -294,9 +272,12 @@ function Course() {
                   className="fixed bottom-0 w-full bg-white rounded-t-3xl p-6 overflow-y-auto"
                   style={{ maxHeight: "92vh" }}
                 >
-                  <div className="flex justify-end">
+                  <div className="flex justify-between mb-2">
+                    <h1 className="text-2xl font-bold text-primary-01">
+                      Filter
+                    </h1>
                     <button
-                      className="text-3xl text-primary-01 fixed"
+                      className="text-3xl text-primary-01"
                       onClick={(e) => {
                         e.preventDefault();
                         setIsMobileFilterVisible(false);
@@ -305,31 +286,29 @@ function Course() {
                       <IoMdClose />
                     </button>
                   </div>
-                  <form className="mt-6">
-                    <h3 className="text-xl font-semibold mb-1">Filter</h3>
-                    <ul className="text-sm">
+                  <form onChange={(e) => handleFilterForm(e)}>
+                    <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
+                    <ul className="text-xs">
                       <li>
                         <div className="flex items-center gap-1 my-1">
                           <input
                             type="radio"
-                            id="paling-terbaru-mobile"
-                            value={"paling-terbaru"}
-                            name="filter"
+                            id="terbaru-mobile"
+                            value={"terbaru"}
+                            name="sortBy"
                           />
-                          <label htmlFor="paling-terbaru-mobile">
-                            Paling Terbaru
-                          </label>
+                          <label htmlFor="terbaru-mobile">Terbaru</label>
                         </div>
                       </li>
                       <li>
                         <div className="flex items-center gap-1 my-1">
                           <input
                             type="radio"
-                            id="paling-populer-mobile"
-                            value={"paling-populer"}
-                            name="filter"
+                            id="terpopuler-mobile"
+                            value={"terpopuler"}
+                            name="sortBy"
                           />
-                          <label htmlFor="paling-populer-mobile">
+                          <label htmlFor="terpopuler-mobile">
                             Paling Populer
                           </label>
                         </div>
@@ -338,125 +317,49 @@ function Course() {
                         <div className="flex items-center gap-1 my-1">
                           <input
                             type="radio"
-                            id="rating-tertinggi-mobile"
-                            value={"rating-tertinggi"}
-                            name="filter"
+                            id="rating-mobile"
+                            value={"rating"}
+                            name="sortBy"
                           />
-                          <label htmlFor="rating-tertinggi-mobile">
+                          <label htmlFor="rating-mobile">
                             Rating Tertinggi
                           </label>
                         </div>
                       </li>
                     </ul>
-                    <h3 className="text-xl font-semibold mb-1 mt-3">
+                    <h3 className="text-lg font-semibold mb-1 mt-3">
                       Kategori
                     </h3>
-                    <ul className="text-sm">
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="uiux-mobile"
-                          />
-                          <label htmlFor="uiux-mobile">UI/UX Design</label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="product-management-mobile"
-                          />
-                          <label htmlFor="product-management-mobile">
-                            Product Management
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="web-dev-mobile"
-                          />
-                          <label htmlFor="web-dev-mobile">
-                            Web Development
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="android-dev-mobile"
-                          />
-                          <label htmlFor="android-dev-mobile">
-                            Android Development
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="ios-dev-mobile"
-                          />
-                          <label htmlFor="ios-dev-mobile">
-                            iOS Development
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="data-science-mobile"
-                          />
-                          <label htmlFor="data-science-mobile">
-                            Data Science
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="business-intelligence-mobile"
-                          />
-                          <label htmlFor="business-intelligence-mobile">
-                            Business Intelligence
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="kategori"
-                            id="digital-marketing-mobile"
-                          />
-                          <label htmlFor="digital-marketing-mobile">
-                            Digital Marketing
-                          </label>
-                        </div>
-                      </li>
+                    <ul className="text-xs">
+                      {categories &&
+                        categories.length > 0 &&
+                        categories.map((category) => (
+                          <li>
+                            <div className="flex items-center gap-1 my-1">
+                              <input
+                                type="checkbox"
+                                name="categoryId"
+                                id={`${category.id}-mobile`}
+                                value={category.id}
+                              />
+                              <label htmlFor={`${category.id}-mobile`}>
+                                {category.name}
+                              </label>
+                            </div>
+                          </li>
+                        ))}
                     </ul>
-                    <h3 className="text-xl font-semibold mb-1 mt-3">
+                    <h3 className="text-lg font-semibold mb-1 mt-3">
                       Level Kesulitan
                     </h3>
-                    <ul className="text-sm">
+                    <ul className="text-xs">
                       <li>
                         <div className="flex items-center gap-1 my-1">
                           <input
                             type="checkbox"
                             name="level"
                             id="pemula-mobile"
+                            value={"pemula"}
                           />
                           <label htmlFor="pemula-mobile">Pemula</label>
                         </div>
@@ -467,6 +370,7 @@ function Course() {
                             type="checkbox"
                             name="level"
                             id="menengah-mobile"
+                            value={"menengah"}
                           />
                           <label htmlFor="menengah-mobile">Menengah</label>
                         </div>
@@ -477,13 +381,20 @@ function Course() {
                             type="checkbox"
                             name="level"
                             id="mahir-mobile"
+                            value={"mahir"}
                           />
                           <label htmlFor="mahir-mobile">Mahir</label>
                         </div>
                       </li>
                     </ul>
                     <div className="flex flex-col items-center mt-4">
-                      <button className="w-3/4 py-2 bg-primary-01 text-white rounded-3xl">
+                      <button
+                        className="w-3/4 py-2 bg-primary-01 text-white rounded-3xl"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setIsMobileFilterVisible(false);
+                        }}
+                      >
                         Terapkan Filter
                       </button>
                       <button

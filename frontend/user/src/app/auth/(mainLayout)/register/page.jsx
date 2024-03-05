@@ -6,7 +6,7 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { register } from "@/services/auth.service";
+import { fetchRegister } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import LoadingScreen from "@/components/loading-animation/LoadingScreen";
@@ -45,7 +45,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const res = await register(
+      const res = await fetchRegister(
         e.target.name.value,
         e.target.email.value,
         e.target.phoneNumber.value,

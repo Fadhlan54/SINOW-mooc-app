@@ -30,13 +30,13 @@ const validateCategory = async (categoryId, next) => {
 }
 
 const validateLevel = (level, next) => {
-  const validLevels = ['beginner', 'intermediate', 'advanced']
+  const validLevels = ['pemula', 'menengah', 'mahir']
 
   if (typeof level === 'string') {
     if (!validLevels.includes(level)) {
       return next(
         new ApiError(
-          "Level harus antara 'beginner', 'intermediate' atau 'advanced', perhatikan juga huruf kecil besarnya",
+          "Level harus antara 'pemula', 'menengah' atau 'mahir', perhatikan juga huruf kecil besarnya",
           400,
         ),
       )
@@ -45,7 +45,7 @@ const validateLevel = (level, next) => {
     if (!level.every((item) => validLevels.includes(item))) {
       return next(
         new ApiError(
-          "Level harus antara 'beginner', 'intermediate' atau 'advanced', perhatikan juga huruf kecil besarnya",
+          "Level harus antara 'pemula', 'menengah' atau 'mahir', perhatikan juga huruf kecil besarnya",
           400,
         ),
       )
@@ -77,21 +77,21 @@ const validateNumericFields = (fields, next) => {
 }
 
 const getCourseOrder = (sortBy, next) => {
-  const validSortBy = ['terbaru', 'terpopuler', 'promo']
+  const validSortBy = ['terbaru', 'terpopuler', 'rating']
   const courseOrder = []
 
   if (sortBy) {
     if (!validSortBy.includes(sortBy)) {
       return next(
-        new ApiError("sortBy harus 'terbaru', 'terpopuler' atau 'promo'", 400),
+        new ApiError("sortBy harus 'terbaru', 'terpopuler' atau 'rating'", 400),
       )
     }
     if (sortBy === 'terbaru') {
       courseOrder.push(['createdAt', 'DESC'])
     } else if (sortBy === 'terpopuler') {
       courseOrder.push(['totalUser', 'DESC'])
-    } else if (sortBy === 'promo') {
-      courseOrder.push(['promoDiscountPercentage', 'DESC'])
+    } else if (sortBy === 'rating') {
+      courseOrder.push(['rating', 'DESC'])
     }
   }
 

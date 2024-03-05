@@ -1,10 +1,12 @@
-export const getCourse = async ({ categoryId, type, search } = {}) => {
+export const getCourse = async ({
+  categoryId,
+  type,
+  search,
+  sortBy,
+  level,
+} = {}) => {
   try {
     const queryParams = new URLSearchParams();
-
-    if (categoryId && categoryId !== "semua") {
-      queryParams.append("categoryId", categoryId);
-    }
 
     if (type && type !== "semua") {
       queryParams.append("type", type);
@@ -12,6 +14,32 @@ export const getCourse = async ({ categoryId, type, search } = {}) => {
 
     if (search) {
       queryParams.append("search", search);
+    }
+
+    if (categoryId && categoryId !== "semua" && categoryId.length > 0) {
+      if (Array.isArray(categoryId)) {
+        categoryId.forEach((cat) => {
+          queryParams.append("categoryId", cat);
+        });
+      } else {
+        queryParams.append("categoryId", categoryId);
+      }
+      console.log(queryParams.toString());
+    }
+
+    if (level && level.length > 0) {
+      console.log(level);
+      if (Array.isArray(level)) {
+        level.forEach((lvl) => {
+          queryParams.append("level", lvl);
+        });
+      } else {
+        queryParams.append("level", level);
+      }
+    }
+
+    if (sortBy) {
+      queryParams.append("sortBy", sortBy);
     }
 
     const res = await fetch(

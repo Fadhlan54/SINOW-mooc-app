@@ -1,4 +1,4 @@
-export const getCategories = async ({ name, isPopular } = {}) => {
+export const fetchCategories = async ({ name, isPopular, sortByName } = {}) => {
   try {
     const queryParams = new URLSearchParams();
     if (name) {
@@ -7,6 +7,10 @@ export const getCategories = async ({ name, isPopular } = {}) => {
 
     if (isPopular !== undefined) {
       queryParams.append("isPopular", isPopular);
+    }
+
+    if (sortByName) {
+      queryParams.append("sortByName", sortByName);
     }
 
     const res = await fetch(

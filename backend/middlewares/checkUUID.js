@@ -49,8 +49,20 @@ const checkUUIDBody = () => async (req, res, next) => {
       return next(new ApiError('User ID tidak dengan format UUID', 400))
     }
 
-    if (categoryId && !validateUUID(categoryId)) {
-      return next(new ApiError('Category ID tidak dengan format UUID', 400))
+    if (categoryId) {
+      if (Array.isArray(categoryId)) {
+        categoryId.forEach((id) => {
+          if (!validateUUID(id)) {
+            return next(
+              new ApiError('Category ID tidak dengan format UUID', 400),
+            )
+          }
+        })
+      } else {
+        if (!validateUUID(categoryId)) {
+          return next(new ApiError('Category ID tidak dengan format UUID', 400))
+        }
+      }
     }
 
     if (chapterId && !validateUUID(chapterId)) {
@@ -65,8 +77,20 @@ const checkUUIDBody = () => async (req, res, next) => {
 const checkUUIDQuery = () => async (req, res, next) => {
   try {
     const { categoryId, userId } = req.query
-    if (categoryId && !validateUUID(categoryId)) {
-      return next(new ApiError('Category ID tidak dengan format UUID', 400))
+    if (categoryId) {
+      if (Array.isArray(categoryId)) {
+        categoryId.forEach((id) => {
+          if (!validateUUID(id)) {
+            return next(
+              new ApiError('Category ID tidak dengan format UUID', 400),
+            )
+          }
+        })
+      } else {
+        if (!validateUUID(categoryId)) {
+          return next(new ApiError('Category ID tidak dengan format UUID', 400))
+        }
+      }
     }
 
     if (userId && !validateUUID(userId)) {

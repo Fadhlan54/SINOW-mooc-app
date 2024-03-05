@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
-import { resendOtp, verifyEmail } from "@/services/auth.service";
+import { fetchResendOtp, fetchVerifyEmail } from "@/services/auth.service";
 import { Montserrat, Poppins } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -128,7 +128,7 @@ function VerifyEmail() {
     }
     setIsLoading(true);
     try {
-      const res = await verifyEmail(token, otp);
+      const res = await fetchVerifyEmail(token, otp);
       if (res.status === "Success") {
         Cookies.set("token", res.data.token, { expires: 30 });
         push("/");
@@ -154,7 +154,7 @@ function VerifyEmail() {
   const handleResendOTP = async () => {
     setIsLoading(true);
     try {
-      const res = await resendOtp(decodedToken.email);
+      const res = await fetchResendOtp(decodedToken.email);
       if (res.status === "Success") {
         setSuccessMessage(res.message);
         setCountdownTimer(60);

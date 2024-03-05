@@ -1,4 +1,4 @@
-export const login = async (email, password) => {
+export const fetchLogin = async (email, password) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
@@ -21,7 +21,7 @@ export const login = async (email, password) => {
   }
 };
 
-export const checkToken = async (token) => {
+export const fetchCheckToken = async (token) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/check-token`,
@@ -41,7 +41,7 @@ export const checkToken = async (token) => {
   }
 };
 
-export const register = async (name, email, phoneNumber, password) => {
+export const fetchRegister = async (name, email, phoneNumber, password) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
@@ -66,7 +66,7 @@ export const register = async (name, email, phoneNumber, password) => {
   }
 };
 
-export const verifyEmail = async (token, otpCode) => {
+export const fetchVerifyEmail = async (token, otpCode) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify-email`,
@@ -89,7 +89,7 @@ export const verifyEmail = async (token, otpCode) => {
   }
 };
 
-export const resendOtp = async (email) => {
+export const fetchResendOtp = async (email) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/resend-otp`,
@@ -111,7 +111,7 @@ export const resendOtp = async (email) => {
   }
 };
 
-export const reqResetPassword = async (email) => {
+export const fetchReqResetPassword = async (email) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/request-reset-password`,
@@ -133,7 +133,7 @@ export const reqResetPassword = async (email) => {
   }
 };
 
-export const resetPassword = async (token, password) => {
+export const fetchResetPassword = async (token, password) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reset-password`,

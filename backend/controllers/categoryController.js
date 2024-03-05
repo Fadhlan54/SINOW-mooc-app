@@ -46,7 +46,7 @@ const createCategory = async (req, res, next) => {
 
 const getAllCategory = async (req, res, next) => {
   try {
-    const { name, isPopular } = req.query
+    const { name, isPopular, sortByName } = req.query
 
     const where = {}
     if (name) {
@@ -67,7 +67,7 @@ const getAllCategory = async (req, res, next) => {
 
     const categories = await Category.findAll({
       where,
-      order: [['id', 'ASC']],
+      order: sortByName ? [['name', 'asc']] : [['id', 'ASC']],
     })
 
     if (!categories || categories.length === 0) {

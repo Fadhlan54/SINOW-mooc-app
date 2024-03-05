@@ -1,5 +1,6 @@
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "@/store/StoreProvider";
 
 const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 const montserrat = Montserrat({
@@ -14,12 +15,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${montserrat.className} scrollbar-thin scrollbar-webkit`}
-      >
-        {children}
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body
+          className={`${montserrat.className} scrollbar-thin scrollbar-webkit`}
+        >
+          {children}
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

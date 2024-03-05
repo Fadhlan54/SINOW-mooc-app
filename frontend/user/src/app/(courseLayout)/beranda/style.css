@@ -7,6 +7,10 @@
   padding: 0 0 12px;
 }
 
+.banner-slide {
+  padding: 0 12px !important;
+}
+
 .category-swiper {
   padding: 0 0 12px;
 }

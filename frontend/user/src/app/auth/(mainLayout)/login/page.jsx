@@ -6,7 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import Link from "next/link";
 import { useState } from "react";
 import Button from "@/components/Button";
-import { login } from "@/services/auth.service";
+import { fetchLogin } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import Cookies from "js-cookie";
@@ -36,7 +36,7 @@ export default function LoginPage() {
     }
 
     setIsLoading(true);
-    const res = await login(e.target.email.value, e.target.password.value);
+    const res = await fetchLogin(e.target.email.value, e.target.password.value);
 
     try {
       if (res.status === "Success") {

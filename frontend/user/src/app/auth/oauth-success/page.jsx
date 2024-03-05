@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { checkToken } from "@/services/auth.service";
+import { fetchCheckToken } from "@/services/auth.service";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -9,7 +9,7 @@ import Loading from "@/components/loading-animation/Loading";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-function CheckToken() {
+function CheckTokenPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { push } = useRouter();
@@ -30,7 +30,7 @@ function CheckToken() {
           return;
         }
       } else {
-        const res = await checkToken(token);
+        const res = await fetchCheckToken(token);
         if (res.status !== "Success") {
           const result = await Swal.fire({
             icon: "error",
@@ -64,7 +64,7 @@ function CheckToken() {
 export default function OauthSuccessPage() {
   return (
     <Suspense>
-      <CheckToken />
+      <CheckTokenPage />
     </Suspense>
   );
 }

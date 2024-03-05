@@ -37,11 +37,7 @@ export default function CourseCard({ course }) {
             <RiShieldStarLine className="text-alert-success" />
             <p className="text-[0.65rem] ml-1 font-semibold text-primary-01">
               Level{" "}
-              {course.level === "beginner"
-                ? "Pemula"
-                : course.level === "intermediate"
-                  ? "Menengah"
-                  : "Mahir"}
+              {course.level?.charAt(0).toUpperCase() + course.level.slice(1)}
             </p>
           </div>
           <div className="flex items-center">
