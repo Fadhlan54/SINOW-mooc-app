@@ -7,7 +7,7 @@ import { Montserrat, Poppins } from "next/font/google";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Button from "@/components/Button";
 import Swal from "sweetalert2";
-import { resetPassword } from "@/services/auth.service";
+import { fetchResetPassword } from "@/services/auth.service";
 import LoadingScreen from "@/components/loading-animation/LoadingScreen";
 import { useRouter } from "next/navigation";
 
@@ -55,7 +55,7 @@ export default function ResetPasswordPage(props) {
     }
     setIsLoading(true);
     try {
-      const res = await resetPassword(token, password);
+      const res = await fetchResetPassword(token, password);
       if (res.status === "Success") {
         const result = await Swal.fire({
           icon: "success",

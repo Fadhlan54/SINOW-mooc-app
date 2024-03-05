@@ -38,5 +38,8 @@ export const fetchNotificationDetail = async (id, token) => {
       statusCode: res.status,
       data: await res.json(),
     };
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+    return err.message;
+  }
 };

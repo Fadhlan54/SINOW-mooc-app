@@ -59,6 +59,26 @@ export default function DetailCoursePage({ params }) {
         setchaptersUser(res.data?.data?.chapters);
       } else {
         setError({ status: res.status, message: res.data.message });
+        if (res.status === 401 && res.data.message === "Token tidak valid") {
+          Swal.fire({
+            title: "Oopps!",
+            text: "Data login tidak valid, silahkan login kembali",
+            imageUrl:
+              "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/must_login.png?updatedAt=1708540672288",
+            imageHeight: 143,
+            imageWidth: 188,
+            showDenyButton: true,
+            confirmButtonText: "Login",
+            confirmButtonColor: "#00CCF4",
+            denyButtonText: `Batal`,
+            denyButtonColor: "#FF0000",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Cookies.remove("token");
+              push("/auth/login");
+            }
+          });
+        }
       }
     };
 
@@ -72,6 +92,10 @@ export default function DetailCoursePage({ params }) {
     if (!token) {
       Swal.fire({
         title: "Oopps!",
+        imageUrl:
+          "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/must_login.png?updatedAt=1708540672288",
+        imageHeight: 143,
+        imageWidth: 188,
         text: "Anda harus login terlebih dahulu",
         showDenyButton: true,
         confirmButtonText: "Login",
@@ -96,6 +120,7 @@ export default function DetailCoursePage({ params }) {
             icon: "success",
             title: "Berhasil",
             text: "Berhasil mengikuti course ini",
+            confirmButtonText: "Ok",
             confirmButtonColor: "#00CCF4",
           });
         } else {
@@ -118,7 +143,9 @@ export default function DetailCoursePage({ params }) {
         text: "Anda harus login terlebih dahulu",
         showDenyButton: true,
         confirmButtonText: "Login",
+        confirmButtonColor: "#00CCF4",
         denyButtonText: `Batal`,
+        denyButtonColor: "#FF0000",
       }).then((result) => {
         if (result.isConfirmed) {
           push("/auth/login");
@@ -139,7 +166,6 @@ export default function DetailCoursePage({ params }) {
             icon: "success",
             title: "Berhasil",
             text: "Berhasil berhenti mengikuti course ini",
-            confirmButtonColor: "#00CCF4",
           });
         } else {
           Swal.fire({
@@ -328,7 +354,7 @@ export default function DetailCoursePage({ params }) {
         </div>
       ) : (
         course && (
-          <div className="mx-auto px-3 md:px-4 pt-3 pb-4 lg:px-10 lg:mx-auto max-w-7xl">
+          <div className="mx-auto px-3 md:px-4 pt-3 pb-4 lg:px-10 lg:mx-auto max-w-7xl w-fit ">
             <div className="">
               <Link
                 href={"/kursus"}
@@ -340,9 +366,7 @@ export default function DetailCoursePage({ params }) {
             </div>
 
             <div className="flex md:gap-5 lg:gap-10">
-              <div
-                className={`w-full ${(courseUser && !courseUser.isFollowing && !courseUser.isAccessible) || !token ? "md:w-full max-w-3xl" : "md:w-3/5"} mx-auto`}
-              >
+              <div className={`w-full  mx-auto max-w-3xl`}>
                 <video
                   src={videoContentURL}
                   className="w-full rounded-[32px] shadow-lg"
@@ -579,12 +603,12 @@ export default function DetailCoursePage({ params }) {
                           </p>
                         ))}
                     </div>
-                    <h3 className="font-bold text-xl mt-4 mb-2">
+                    <h3 className="font-bold text-xl mt-4">
                       Keuntungan Mengikuti Kelas Ini
                     </h3>
                     <div className="text-sm px-1">
                       {course.benefits.map((benefit) => (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 my-1">
                           <p>{benefit.no}.</p>
                           <p>{benefit.description}</p>
                         </div>

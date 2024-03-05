@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
-import { reqResetPassword } from "@/services/auth.service";
+import { fetchReqResetPassword } from "@/services/auth.service";
 import { Montserrat, Poppins } from "next/font/google";
 import Swal from "sweetalert2";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export default function ResetPasswordPage() {
     const email = e.target.email.value;
 
     try {
-      const res = await reqResetPassword(email);
+      const res = await fetchReqResetPassword(email);
       if (res.status === "Success") {
         Swal.fire({
           icon: "success",

@@ -15,7 +15,7 @@ import "./style.css";
 import { getCourse } from "@/services/course.service";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading-animation/Loading";
-import { getCategories } from "@/services/category.service";
+import { fetchCategories } from "@/services/category.service";
 import CourseLayout from "@/components/CourseLayout";
 import CourseCard from "@/components/CourseCard";
 
@@ -27,12 +27,10 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [filterCategory, setFilterCategory] = useState("semua");
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    const fetchCategories = async () => {
+    const handleGetCategories = async () => {
       try {
-        const res = await getCategories();
+        const res = await fetchCategories();
         if (res.status === "Success") {
           setCategories(res.data);
         } else {
@@ -42,7 +40,7 @@ export default function Home() {
         console.log(e.message);
       }
     };
-    fetchCategories();
+    handleGetCategories();
   }, []);
 
   useEffect(() => {
@@ -103,23 +101,27 @@ export default function Home() {
           breakpoints={{
             0: {
               slidesPerView: 1,
-              spaceBetween: 20,
+              spaceBetween: 8,
+            },
+            300: {
+              slidesPerView: 1.25,
+              spaceBetween: 8,
             },
             640: {
-              slidesPerView: 2,
-              spaceBetween: 25,
+              slidesPerView: 2.25,
+              spaceBetween: 12,
             },
             1024: {
               slidesPerView: 2.5,
-              spaceBetween: 50,
+              spaceBetween: 24,
             },
             1280: {
               slidesPerView: 3,
-              spaceBetween: 50,
+              spaceBetween: 24,
             },
           }}
         >
-          <SwiperSlide>
+          <SwiperSlide className="banner-slide">
             <Image
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_learn.png?updatedAt=1707381013622"
@@ -130,7 +132,7 @@ export default function Home() {
               alt="ads banner learn sinow"
             />
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide className="banner-slide">
             <Image
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_promo.png?updatedAt=1707381013791"
@@ -141,7 +143,7 @@ export default function Home() {
               alt="ads banner promo sinow"
             />
           </SwiperSlide>
-          <SwiperSlide>
+          <SwiperSlide className="banner-slide">
             <Image
               src={
                 "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_tags.png?updatedAt=1707381013979"

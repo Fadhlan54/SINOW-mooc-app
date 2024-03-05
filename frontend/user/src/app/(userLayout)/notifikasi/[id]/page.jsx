@@ -92,17 +92,21 @@ export default function DetailNotificationPage({ params }) {
             </div>
           ) : (
             <div className="px-4 md:px-8 pt-2 pb-8 bg-white rounded-b-2xl border border-primary-01 ">
-              <h1 className="text-primary-01 font-semibold md:text-lg mb-1">
+              <h1 className="text-primary-01 font-semibold md:text-lg my-1">
                 {notification.type}
               </h1>
               <hr />
-              <h3 className="font-bold mt-1 mb-2 text-xl md:text-2xl">
+              <h3 className="font-bold mt-2 mb-4 text-xl md:text-2xl">
                 {notification.title}
               </h3>
 
-              <p className="text-neutral-04 text-sm md:text-base">
-                {notification.content}
-              </p>
+              {notification.content?.split("\n\n").map((line) => (
+                <div className="text-neutral-04 text-sm md:text-base mt-2">
+                  {line.split("\n").map((text) => (
+                    <p>{text}</p>
+                  ))}
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -7,6 +7,8 @@ import { GoBell, GoHome, GoPerson, GoBook, GoVideo } from "react-icons/go";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearch } from "@/store/slices/filterSlice";
 
 export default function CourseLayout({
   children,
@@ -19,6 +21,7 @@ export default function CourseLayout({
   const [isLogin, setIsLogin] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { push } = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (Cookies.get("token")) {
@@ -48,17 +51,19 @@ export default function CourseLayout({
     if (key) {
       if (key === "Enter") {
         if (searchValue) {
-          push(`/kursus?cari=${searchValue}`);
+          dispatch(setSearch(searchValue));
         } else {
-          push("/kursus");
+          dispatch(setSearch(""));
         }
+        push("/kursus");
       }
     } else {
       if (searchValue) {
-        push(`/kursus?cari=${searchValue}`);
+        dispatch(setSearch(searchValue));
       } else {
-        push("/kursus");
+        dispatch(setSearch(""));
       }
+      push("/kursus");
     }
   };
 
