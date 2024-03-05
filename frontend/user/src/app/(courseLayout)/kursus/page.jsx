@@ -98,6 +98,7 @@ function Course() {
   }, [isMobileFilterVisible]);
 
   const handleFilterForm = async (e) => {
+    e.preventDefault();
     const { name, value, checked } = e.target;
 
     if (name === "sortBy") {
@@ -111,6 +112,15 @@ function Course() {
       }
       setFilterForm({ ...filterForm, [name]: updatedValues });
     }
+  };
+
+  const handleResetFilter = (e) => {
+    e.preventDefault();
+    setFilterForm({
+      sortBy: "",
+      categoryId: [],
+      level: [],
+    });
   };
 
   return (
@@ -141,6 +151,7 @@ function Course() {
                       id="terbaru"
                       value={"terbaru"}
                       name="sortBy"
+                      checked={filterForm.sortBy === "terbaru"}
                     />
                     <label htmlFor="terbaru ml-4">Terbaru</label>
                   </div>
@@ -152,6 +163,7 @@ function Course() {
                       id="terpopuler"
                       value={"terpopuler"}
                       name="sortBy"
+                      checked={filterForm.sortBy === "terpopuler"}
                     />
                     <label htmlFor="terpopuler">Paling Populer</label>
                   </div>
@@ -163,6 +175,7 @@ function Course() {
                       id="rating"
                       value={"rating"}
                       name="sortBy"
+                      checked={filterForm.sortBy === "rating"}
                     />
                     <label htmlFor="rating">Rating Tertinggi</label>
                   </div>
@@ -178,6 +191,7 @@ function Course() {
                         name="categoryId"
                         id={category.id}
                         value={category.id}
+                        checked={filterForm.categoryId.includes(category.id)}
                       />
                       <label htmlFor={category.id}>{category.name}</label>
                     </div>
@@ -196,6 +210,7 @@ function Course() {
                       name="level"
                       id="pemula"
                       value={"pemula"}
+                      checked={filterForm.level.includes("pemula")}
                     />
                     <label htmlFor="pemula">Pemula</label>
                   </div>
@@ -207,6 +222,7 @@ function Course() {
                       name="level"
                       id="menengah"
                       value={"menengah"}
+                      checked={filterForm.level.includes("menengah")}
                     />
                     <label htmlFor="menengah">Menengah</label>
                   </div>
@@ -218,14 +234,15 @@ function Course() {
                       name="level"
                       id="mahir"
                       value={"mahir"}
+                      checked={filterForm.level.includes("mahir")}
                     />
                     <label htmlFor="mahir">Mahir</label>
                   </div>
                 </li>
               </ul>
               <button
-                type="reset"
                 className="w-full mt-3 text-center text-sm font-semibold text-alert-danger"
+                onClick={(e) => handleResetFilter(e)}
               >
                 Hapus Filter
               </button>
@@ -296,6 +313,7 @@ function Course() {
                             id="terbaru-mobile"
                             value={"terbaru"}
                             name="sortBy"
+                            checked={filterForm.sortBy === "terbaru"}
                           />
                           <label htmlFor="terbaru-mobile">Terbaru</label>
                         </div>
@@ -307,6 +325,7 @@ function Course() {
                             id="terpopuler-mobile"
                             value={"terpopuler"}
                             name="sortBy"
+                            checked={filterForm.sortBy === "terpopuler"}
                           />
                           <label htmlFor="terpopuler-mobile">
                             Paling Populer
@@ -320,6 +339,7 @@ function Course() {
                             id="rating-mobile"
                             value={"rating"}
                             name="sortBy"
+                            checked={filterForm.sortBy === "rating"}
                           />
                           <label htmlFor="rating-mobile">
                             Rating Tertinggi
@@ -341,6 +361,9 @@ function Course() {
                                 name="categoryId"
                                 id={`${category.id}-mobile`}
                                 value={category.id}
+                                checked={filterForm.categoryId.includes(
+                                  category.id
+                                )}
                               />
                               <label htmlFor={`${category.id}-mobile`}>
                                 {category.name}
@@ -360,6 +383,7 @@ function Course() {
                             name="level"
                             id="pemula-mobile"
                             value={"pemula"}
+                            checked={filterForm.level.includes("pemula")}
                           />
                           <label htmlFor="pemula-mobile">Pemula</label>
                         </div>
@@ -371,6 +395,7 @@ function Course() {
                             name="level"
                             id="menengah-mobile"
                             value={"menengah"}
+                            checked={filterForm.level.includes("menengah")}
                           />
                           <label htmlFor="menengah-mobile">Menengah</label>
                         </div>
@@ -382,6 +407,7 @@ function Course() {
                             name="level"
                             id="mahir-mobile"
                             value={"mahir"}
+                            checked={filterForm.level.includes("mahir")}
                           />
                           <label htmlFor="mahir-mobile">Mahir</label>
                         </div>
@@ -400,6 +426,9 @@ function Course() {
                       <button
                         type="reset"
                         className="w-full mt-3 text-sm font-semibold text-alert-danger"
+                        onClick={(e) => {
+                          handleResetFilter(e);
+                        }}
                       >
                         Hapus Filter
                       </button>
