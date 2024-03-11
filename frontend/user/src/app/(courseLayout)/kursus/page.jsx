@@ -1,13 +1,12 @@
 "use client";
 
-import CourseCard from "@/components/CourseCard";
+import CourseCard from "@/components/card/CourseCard";
 import CourseLayout from "@/components/CourseLayout";
 import Loading from "@/components/loading-animation/Loading";
-import { getCourse } from "@/services/course.service";
+import { fetchCourses } from "@/services/course.service";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Swal from "sweetalert2";
-import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { selectSearchFilter } from "@/store/slices/filterSlice";
 import { fetchCategories } from "@/services/category.service";
@@ -47,7 +46,7 @@ function Course() {
     const getCourses = async () => {
       setIsLoading(true);
       try {
-        const res = await getCourse({
+        const res = await fetchCourses({
           search: searchFilter,
           type: filterType,
           categoryId: filterForm.categoryId,
@@ -125,7 +124,7 @@ function Course() {
 
   return (
     <CourseLayout>
-      <div className="py-6 px-4 min-[420px]:px-8 min-[480px]:px-10 sm:px-4 md:px-6 lg:px-20 xl:px-10 mx-auto max-w-7xl">
+      <div className="py-2 px-4 min-[420px]:px-8 min-[480px]:px-10 sm:px-4 md:p-6 lg:px-20 xl:px-10 mx-auto max-w-7xl">
         <div className="flex items-center mb-3 justify-between">
           <h1 className="font-bold text-2xl">Topik Kelas</h1>
           <button
@@ -271,7 +270,9 @@ function Course() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
               {isLoading ? (
-                <Loading className="col-span-full" />
+                <div className="col-span-full ">
+                  <Loading />
+                </div>
               ) : (
                 courses &&
                 courses.length > 0 &&
@@ -444,7 +445,7 @@ function Course() {
   );
 }
 
-export default function MyCoursePage() {
+export default function CoursePage() {
   return (
     <Suspense>
       <Course />

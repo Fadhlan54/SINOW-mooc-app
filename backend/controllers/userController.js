@@ -330,10 +330,10 @@ const getMyCourses = async (req, res, next) => {
       validateCategory(categoryId, next)
       if (Array.isArray(categoryId)) {
         where.categoryId = {
-          [Op.in]: categoryId.map((cat) => parseInt(cat, 10)),
+          [Op.in]: categoryId,
         }
       } else {
-        where.categoryId = parseInt(categoryId, 10)
+        where.categoryId = categoryId
       }
     }
 
