@@ -33,17 +33,22 @@ export default function NotificationsPage() {
           setNotifications(res.data.data);
         } else if (res.statusCode === 401) {
           Swal.fire({
-            imageUrl:
-              "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/confuse.png?updatedAt=1708483330927",
-            imageWidth: 188,
-            imageHeight: 145,
             title: "Oopps!",
-            text: `Data login tidak valid, silahkan login ulang`,
-            confirmButtonColor: "#00CCF4",
-            confirmButtonText: "Login",
+            text: "Data login tidak valid, silahkan login kembali",
+            imageUrl:
+              "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/must_login.png?updatedAt=1708540672288",
+            imageHeight: 143,
+            imageWidth: 188,
             showDenyButton: true,
+            confirmButtonText: "Login",
+            confirmButtonColor: "#00CCF4",
             denyButtonText: `Batal`,
             denyButtonColor: "#FF0000",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Cookies.remove("token");
+              push("/auth/login");
+            }
           });
         }
       } catch (err) {

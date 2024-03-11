@@ -12,12 +12,12 @@ import { FreeMode, Autoplay } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import "swiper/css";
 import "./style.css";
-import { getCourse } from "@/services/course.service";
+import { fetchCourses } from "@/services/course.service";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading-animation/Loading";
 import { fetchCategories } from "@/services/category.service";
 import CourseLayout from "@/components/CourseLayout";
-import CourseCard from "@/components/CourseCard";
+import CourseCard from "@/components/card/CourseCard";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -47,7 +47,7 @@ export default function Home() {
     const fetchCourses = async () => {
       setIsLoading(true);
       try {
-        const res = await getCourse({ categoryId: filterCategory });
+        const res = await fetchCourses({ categoryId: filterCategory });
         setCourses(res.data);
       } catch (e) {
         console.log(e.message);

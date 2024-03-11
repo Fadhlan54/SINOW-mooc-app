@@ -11,8 +11,8 @@ import CourseLayout from "@/components/CourseLayout";
 import { useEffect, useState } from "react";
 import {
   followCourse,
-  getCourseUser,
-  getCouseById,
+  fetchCourseUserById,
+  fetchCourseById,
   openModuleUser,
   unfollowCourse,
 } from "@/services/course.service";
@@ -40,7 +40,7 @@ export default function DetailCoursePage({ params }) {
     const fetchCoursesById = async () => {
       setIsLoading(true);
       setError(undefined);
-      const res = await getCouseById(id);
+      const res = await fetchCourseById(id);
 
       if (res?.data?.status === "Success") {
         setCourse(res.data?.data);
@@ -53,7 +53,7 @@ export default function DetailCoursePage({ params }) {
 
     const fetchCourseUser = async () => {
       setError(undefined);
-      const res = await getCourseUser(id, token);
+      const res = await fetchCourseUserById(id, token);
       if (res?.data?.status === "Success") {
         setCourseUser(res.data?.data?.myCourse);
         setchaptersUser(res.data?.data?.chapters);
@@ -109,7 +109,7 @@ export default function DetailCoursePage({ params }) {
       try {
         const res = await followCourse(id, token);
         if (res?.data?.status === "Success") {
-          const res = await getCourseUser(id, token);
+          const res = await fetchCourseUserById(id, token);
           if (res.data.status === "Success") {
             setCourseUser(res.data?.data?.myCourse);
             setchaptersUser(res.data?.data?.chapters);
@@ -155,7 +155,7 @@ export default function DetailCoursePage({ params }) {
       try {
         const res = await unfollowCourse(id, token);
         if (res?.data?.status === "Success") {
-          const res = await getCourseUser(id, token);
+          const res = await fetchCourseUserById(id, token);
           if (res?.data?.status === "Success") {
             setCourseUser(res.data?.data?.myCourse);
             setShiftContent(false);
@@ -166,6 +166,8 @@ export default function DetailCoursePage({ params }) {
             icon: "success",
             title: "Berhasil",
             text: "Berhasil berhenti mengikuti course ini",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#00CCF4",
           });
         } else {
           Swal.fire({
@@ -246,7 +248,7 @@ export default function DetailCoursePage({ params }) {
           "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/onboarding.png?updatedAt=1707366179905",
         imageWidth: 188,
         imageHeight: 143,
-        html: "<p>Yakin ingin berhenti mengikuti kursus ini?</p> <p style='color: #00CCF4; font-size: 14px'>Note: data pembelian dan kemajuan tidak akan terhapus </p>",
+        html: "<p>Yakin ingin berhenti mengikuti kursus ini?</p> <p style='color: #00CCF4; font-size: 14px'>Note: data pembelian dan kemajuan akan tetap disimpan </p>",
         showDenyButton: true,
         confirmButtonText: "Ya",
         confirmButtonColor: "#00CCF4",
@@ -300,7 +302,7 @@ export default function DetailCoursePage({ params }) {
       const res = await openModuleUser(id, moduleId, token);
       if (res?.data?.status === "Success") {
         setVideoContentURL(res.data?.data?.module?.videoUrl);
-        const courseUser = await getCourseUser(id, token);
+        const courseUser = await fetchCourseUserById(id, token);
         if (courseUser?.data?.status === "Success") {
           setCourseUser(courseUser.data?.data?.myCourse);
           setchaptersUser(courseUser.data?.data?.chapters);
