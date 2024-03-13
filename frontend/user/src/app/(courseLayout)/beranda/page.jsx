@@ -44,18 +44,22 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const getCourses = async () => {
       setIsLoading(true);
       try {
         const res = await fetchCourses({ categoryId: filterCategory });
-        setCourses(res.data);
+        if (res.status === "Success") {
+          setCourses(res.data);
+        } else {
+          setCourses([]);
+        }
       } catch (e) {
         console.log(e.message);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchCourses();
+    getCourses();
   }, [filterCategory]);
 
   return (

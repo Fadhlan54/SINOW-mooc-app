@@ -28,7 +28,6 @@ export default function NotificationsPage() {
       try {
         setIsLoading(true);
         const res = await fetchNotifications(token);
-        console.log(res);
         if (res.data.status === "Success") {
           setNotifications(res.data.data);
         } else if (res.statusCode === 401) {

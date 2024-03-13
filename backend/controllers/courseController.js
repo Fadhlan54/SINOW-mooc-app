@@ -133,9 +133,6 @@ const getAllCourse = async (req, res, next) => {
       }
     }
 
-    console.log('\n\n\ntest')
-    console.log(categoryId)
-
     if (categoryId) {
       validateCategory(categoryId, next)
       if (Array.isArray(categoryId)) {

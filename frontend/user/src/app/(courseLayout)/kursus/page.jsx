@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { selectSearchFilter } from "@/store/slices/filterSlice";
 import { fetchCategories } from "@/services/category.service";
+import NoCourseCard from "@/components/card/NoCourseCard";
 
 function Course() {
   const [courses, setCourses] = useState([]);
@@ -53,6 +54,7 @@ function Course() {
           level: filterForm.level,
           sortBy: filterForm.sortBy,
         });
+        console.log(res);
         setCourses(res.data);
       } catch (e) {
         Swal.fire({
@@ -124,7 +126,7 @@ function Course() {
 
   return (
     <CourseLayout>
-      <div className="py-2 px-4 min-[420px]:px-8 min-[480px]:px-10 sm:px-4 md:p-6 lg:px-20 xl:px-10 mx-auto max-w-7xl">
+      <div className="py-2 md:mt-2 px-4 sm:px-8 md:px-12 mx-auto max-w-7xl">
         <div className="flex items-center mb-3 justify-between">
           <h1 className="font-bold text-2xl">Topik Kelas</h1>
           <button
@@ -138,109 +140,186 @@ function Course() {
           </button>
         </div>
         <div className="flex justify-between lg:gap-10 xl:gap-8">
-          <div className="hidden lg:flex justify-center pt-4 pb-6 bg-white rounded-2xl shadow-md w-1/5 h-fit">
+          <div className="hidden lg:block px-6 py-4 bg-white rounded-2xl shadow-md w-1/5 h-fit">
             <form onChange={(e) => handleFilterForm(e)}>
-              <h2 className="text-xl font-bold text-primary-01">Filter</h2>
-              <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
+              <h2 className="text-xl font-bold text-primary-01 ">Filter</h2>
+              <h3 className="text-sm font-semibold ">Urutkan</h3>
               <ul className="text-xs">
                 <li>
-                  <div className="flex items-center gap-1 my-1">
+                  <div className="flex items-center gap-1.5 mb-1">
                     <input
                       type="radio"
                       id="terbaru"
                       value={"terbaru"}
                       name="sortBy"
                       checked={filterForm.sortBy === "terbaru"}
+                      className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                     />
-                    <label htmlFor="terbaru ml-4">Terbaru</label>
+                    <label htmlFor="terbaru">Terbaru</label>
                   </div>
                 </li>
                 <li>
-                  <div className="flex items-center gap-1 my-1">
+                  <div className="flex items-center gap-1.5 mb-1">
                     <input
                       type="radio"
                       id="terpopuler"
                       value={"terpopuler"}
                       name="sortBy"
                       checked={filterForm.sortBy === "terpopuler"}
+                      className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                     />
                     <label htmlFor="terpopuler">Paling Populer</label>
                   </div>
                 </li>
                 <li>
-                  <div className="flex items-center gap-1 my-1">
+                  <div className="flex items-center gap-1.5 mb-1">
                     <input
                       type="radio"
                       id="rating"
                       value={"rating"}
                       name="sortBy"
                       checked={filterForm.sortBy === "rating"}
+                      className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                     />
                     <label htmlFor="rating">Rating Tertinggi</label>
                   </div>
                 </li>
               </ul>
-              <h3 className="text-lg font-semibold mb-1 mt-3">Kategori</h3>
+              <h3 className="text-sm font-semibold">Kategori</h3>
               <ul className="text-xs">
                 {categories.map((category) => (
                   <li>
-                    <div className="flex items-center gap-1 my-1">
-                      <input
-                        type="checkbox"
-                        name="categoryId"
-                        id={category.id}
-                        value={category.id}
-                        checked={filterForm.categoryId.includes(category.id)}
-                      />
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <div className="relative flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="categoryId"
+                          id={category.id}
+                          value={category.id}
+                          checked={filterForm.categoryId.includes(category.id)}
+                          className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                        />
+                        <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-3 w-3"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="1"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                      </div>
                       <label htmlFor={category.id}>{category.name}</label>
                     </div>
                   </li>
                 ))}
               </ul>
 
-              <h3 className="text-lg font-semibold mb-1 mt-3">
-                Level Kesulitan
-              </h3>
+              <h3 className="text-sm font-semibold">Level Kesulitan</h3>
               <ul className="text-xs">
                 <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="level"
-                      id="pemula"
-                      value={"pemula"}
-                      checked={filterForm.level.includes("pemula")}
-                    />
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <div className="relative flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="level"
+                        id={"pemula"}
+                        value={"pemula"}
+                        checked={filterForm.level.includes("pemula")}
+                        className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                      />
+                      <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-3 w-3"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="1"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
                     <label htmlFor="pemula">Pemula</label>
                   </div>
                 </li>
                 <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="level"
-                      id="menengah"
-                      value={"menengah"}
-                      checked={filterForm.level.includes("menengah")}
-                    />
+                  <div className="flex items-center gap-1.5 my-1">
+                    <div className="relative flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="level"
+                        id={"menengah"}
+                        value={"menengah"}
+                        checked={filterForm.level.includes("menengah")}
+                        className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                      />
+                      <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-3 w-3"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="1"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
                     <label htmlFor="menengah">Menengah</label>
                   </div>
                 </li>
                 <li>
-                  <div className="flex items-center gap-1 my-1">
-                    <input
-                      type="checkbox"
-                      name="level"
-                      id="mahir"
-                      value={"mahir"}
-                      checked={filterForm.level.includes("mahir")}
-                    />
+                  <div className="flex items-center gap-1.5 my-1">
+                    <div className="relative flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="level"
+                        id={"mahir"}
+                        value={"mahir"}
+                        checked={filterForm.level.includes("mahir")}
+                        className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                      />
+                      <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-3 w-3"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          stroke-width="1"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </span>
+                    </div>
                     <label htmlFor="mahir">Mahir</label>
                   </div>
                 </li>
               </ul>
               <button
-                className="w-full mt-3 text-center text-sm font-semibold text-alert-danger"
+                className="w-full mt-2 text-center text-sm font-semibold text-alert-danger"
                 onClick={(e) => handleResetFilter(e)}
               >
                 Hapus Filter
@@ -268,17 +347,19 @@ function Course() {
                 Kursus Gratis
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-3">
               {isLoading ? (
                 <div className="col-span-full ">
                   <Loading />
                 </div>
-              ) : (
-                courses &&
-                courses.length > 0 &&
+              ) : courses && courses.length > 0 ? (
                 courses.map((course) => (
                   <CourseCard key={course.id} course={course} />
                 ))
+              ) : (
+                <div className="col-span-1 sm:col-span-2 xl:col-span-3">
+                  <NoCourseCard />
+                </div>
               )}
             </div>
 
@@ -305,28 +386,30 @@ function Course() {
                     </button>
                   </div>
                   <form onChange={(e) => handleFilterForm(e)}>
-                    <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
+                    <h3 className="text-lg font-semibold">Urutkan</h3>
                     <ul className="text-xs">
                       <li>
-                        <div className="flex items-center gap-1 my-1">
+                        <div className="flex items-center gap-1.5 mb-1">
                           <input
                             type="radio"
                             id="terbaru-mobile"
                             value={"terbaru"}
                             name="sortBy"
                             checked={filterForm.sortBy === "terbaru"}
+                            className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                           />
                           <label htmlFor="terbaru-mobile">Terbaru</label>
                         </div>
                       </li>
                       <li>
-                        <div className="flex items-center gap-1 my-1">
+                        <div className="flex items-center gap-1.5 my-1">
                           <input
                             type="radio"
                             id="terpopuler-mobile"
                             value={"terpopuler"}
                             name="sortBy"
                             checked={filterForm.sortBy === "terpopuler"}
+                            className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                           />
                           <label htmlFor="terpopuler-mobile">
                             Paling Populer
@@ -334,13 +417,14 @@ function Course() {
                         </div>
                       </li>
                       <li>
-                        <div className="flex items-center gap-1 my-1">
+                        <div className="flex items-center gap-1.5 my-1">
                           <input
                             type="radio"
                             id="rating-mobile"
                             value={"rating"}
                             name="sortBy"
                             checked={filterForm.sortBy === "rating"}
+                            className="w-3.5 h-3.5 appearance-none rounded-full bg-[#E8F1FF] ring-1 ring-[#B4BDC4] border-2 border-[#E8F1FF] checked:bg-primary-01 checked:border-white checked:ring-1 checked:ring-primary-01"
                           />
                           <label htmlFor="rating-mobile">
                             Rating Tertinggi
@@ -348,24 +432,42 @@ function Course() {
                         </div>
                       </li>
                     </ul>
-                    <h3 className="text-lg font-semibold mb-1 mt-3">
-                      Kategori
-                    </h3>
+                    <h3 className="text-lg font-semibold mt-1">Kategori</h3>
                     <ul className="text-xs">
                       {categories &&
                         categories.length > 0 &&
                         categories.map((category) => (
                           <li>
-                            <div className="flex items-center gap-1 my-1">
-                              <input
-                                type="checkbox"
-                                name="categoryId"
-                                id={`${category.id}-mobile`}
-                                value={category.id}
-                                checked={filterForm.categoryId.includes(
-                                  category.id
-                                )}
-                              />
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <div className="relative flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  name="categoryId"
+                                  id={`${category.id}-mobile`}
+                                  value={category.id}
+                                  checked={filterForm.categoryId.includes(
+                                    category.id
+                                  )}
+                                  className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                                />
+                                <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-3 w-3"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="1"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </span>
+                              </div>
+
                               <label htmlFor={`${category.id}-mobile`}>
                                 {category.name}
                               </label>
@@ -373,66 +475,126 @@ function Course() {
                           </li>
                         ))}
                     </ul>
-                    <h3 className="text-lg font-semibold mb-1 mt-3">
+                    <h3 className="text-lg font-semibold mt-1">
                       Level Kesulitan
                     </h3>
                     <ul className="text-xs">
                       <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="level"
-                            id="pemula-mobile"
-                            value={"pemula"}
-                            checked={filterForm.level.includes("pemula")}
-                          />
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <div className="relative flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              name="level"
+                              id={"pemula-mobile"}
+                              value={"pemula"}
+                              checked={filterForm.level.includes("pemula")}
+                              className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                            />
+                            <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="1"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </span>
+                          </div>
                           <label htmlFor="pemula-mobile">Pemula</label>
                         </div>
                       </li>
                       <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="level"
-                            id="menengah-mobile"
-                            value={"menengah"}
-                            checked={filterForm.level.includes("menengah")}
-                          />
+                        <div className="flex items-center gap-1.5 my-1">
+                          <div className="relative flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              name="level"
+                              id={"menengah-mobile"}
+                              value={"menengah"}
+                              checked={filterForm.level.includes("menengah")}
+                              className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                            />
+                            <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="1"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </span>
+                          </div>
                           <label htmlFor="menengah-mobile">Menengah</label>
                         </div>
                       </li>
                       <li>
-                        <div className="flex items-center gap-1 my-1">
-                          <input
-                            type="checkbox"
-                            name="level"
-                            id="mahir-mobile"
-                            value={"mahir"}
-                            checked={filterForm.level.includes("mahir")}
-                          />
+                        <div className="flex items-center gap-1.5 my-1">
+                          <div className="relative flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              name="level"
+                              id={"mahir-mobile"}
+                              value={"mahir"}
+                              checked={filterForm.level.includes("mahir")}
+                              className="before:content[''] peer relative h-4 w-4 cursor-pointer appearance-none rounded-md bg-[#E8F1FF] border border-[#B4BDC4] transition-all checked:border-primary-01 checked:bg-primary-01"
+                            />
+                            <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="1"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </span>
+                          </div>
                           <label htmlFor="mahir-mobile">Mahir</label>
                         </div>
                       </li>
                     </ul>
-                    <div className="flex flex-col items-center mt-4">
+                    <div className="flex flex-col items-center ">
                       <button
-                        className="w-3/4 py-2 bg-primary-01 text-white rounded-3xl"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setIsMobileFilterVisible(false);
-                        }}
-                      >
-                        Terapkan Filter
-                      </button>
-                      <button
-                        type="reset"
-                        className="w-full mt-3 text-sm font-semibold text-alert-danger"
+                        className="w-7/12 py-2 bg-alert-danger text-white font-semibold  rounded-full mt-4 text-sm"
+                        // onClick={(e) => {
+                        //   e.preventDefault();
+                        //   setIsMobileFilterVisible(false);
+                        // }}
                         onClick={(e) => {
                           handleResetFilter(e);
                         }}
                       >
                         Hapus Filter
                       </button>
+                      {/* <button
+                        type="reset"
+                        className="w-full text-sm font-semibold text-alert-danger mt-1 mb-2"
+                        onClick={(e) => {
+                          handleResetFilter(e);
+                        }}
+                      >
+                        Hapus Filter
+                      </button> */}
                     </div>
                   </form>
                 </div>
