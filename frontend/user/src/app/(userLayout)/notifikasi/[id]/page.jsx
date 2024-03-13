@@ -29,9 +29,7 @@ export default function DetailNotificationPage({ params }) {
     const getNotification = async () => {
       try {
         setIsLoading(true);
-        console.log(id);
         const res = await fetchNotificationDetail(id, token);
-        console.log(res);
         if (res.data.status === "Success") {
           setNotification(res.data.data);
         } else if (res.statusCode === 401) {
