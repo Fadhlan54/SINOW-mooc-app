@@ -8,11 +8,10 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-export default function SuccessfulPaymentPage() {
+function SuccessfulPayment() {
   const searchParams = useSearchParams();
 
   const orderId = searchParams.get("order_id");
-  const statusCode = searchParams.get("status_code");
   const [courseName, setCourseName] = useState("");
   const [courseId, setCourseId] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -71,5 +70,13 @@ export default function SuccessfulPaymentPage() {
         </div>
       </div>
     </MainLayout>
+  );
+}
+
+export default function SuccessfullPaymentPage() {
+  return (
+    <Suspense>
+      <SuccessfulPayment />
+    </Suspense>
   );
 }
