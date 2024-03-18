@@ -9,11 +9,12 @@ import DesktopNavbar from "./navbar/Desktop";
 import MobileNavbar from "./navbar/Mobile";
 import BottomNavbar from "./navbar/BottomNavbar";
 
-export default function CourseLayout({
+export default function MainLayout({
   children,
-  disableWebNavbar = false,
+  disableDesktopNavbar = false,
   disableMobileNavbar = false,
   disableBottomNavbar = false,
+  disableSearch = false,
 }) {
   const [isLogin, setIsLogin] = useState(false);
   const { push } = useRouter();
@@ -52,14 +53,22 @@ export default function CourseLayout({
   return (
     <div className="bg-neutral-02 min-h-screen">
       {/* Navbar for desktop */}
-      {!disableWebNavbar && (
+      {!disableDesktopNavbar && (
         <>
-          <DesktopNavbar isLogin={isLogin} handleSearch={handleSearch} />
+          <DesktopNavbar
+            isLogin={isLogin}
+            handleSearch={handleSearch}
+            disableSearch={disableSearch}
+          />
         </>
       )}
       {/* Navbar for mobile */}
       {!disableMobileNavbar && (
-        <MobileNavbar isLogin={isLogin} handleSearch={handleSearch} />
+        <MobileNavbar
+          isLogin={isLogin}
+          handleSearch={handleSearch}
+          disableSearch={disableSearch}
+        />
       )}
       {children}
       {/* Bottom Navigation */}

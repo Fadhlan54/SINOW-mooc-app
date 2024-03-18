@@ -61,7 +61,7 @@ export default function RunningCourseCard({ courseUser }) {
             </p>
           </div>
         </div>
-        <div className="w-6/12 bg-neutral-07 rounded-full mt-1.5 relative text-[0.65rem] font-medium text-white text-center">
+        <div className="w-6/12 bg-neutral-07 rounded-full mt-2 relative text-[0.65rem] font-medium text-white text-center">
           <div
             className="bg-primary-01 rounded-full  min-h-full absolute "
             style={{
@@ -69,7 +69,7 @@ export default function RunningCourseCard({ courseUser }) {
               minWidth: 11 + "%",
             }}
           ></div>
-          <p className="min-w-max font-semibold relative z-10 ">
+          <p className="min-w-max font-semibold relative z-10">
             {courseUser.progressPercentage}% Diselesaikan
           </p>
         </div>

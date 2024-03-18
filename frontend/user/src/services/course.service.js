@@ -77,6 +77,26 @@ export const fetchCourseById = async (id) => {
   }
 };
 
+export const fetchOtherCourses = async (id) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/courses/others/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return {
+      status: res.status,
+      data: await res.json(),
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const fetchCoursesUser = async (
   token,
   { categoryId, progress, search, sortBy, level } = {}

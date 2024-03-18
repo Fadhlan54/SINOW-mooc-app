@@ -1,7 +1,7 @@
 "use client";
 
 import CourseCard from "@/components/card/CourseCard";
-import CourseLayout from "@/components/CourseLayout";
+import MainLayout from "@/components/MainLayout";
 import Loading from "@/components/loading-animation/Loading";
 import { fetchCourses } from "@/services/course.service";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -125,7 +125,7 @@ function Course() {
   };
 
   return (
-    <CourseLayout>
+    <MainLayout>
       <div className="py-2 md:mt-2 px-4 sm:px-8 md:px-12 mx-auto max-w-7xl">
         <div className="flex items-center mb-3 justify-between">
           <h1 className="font-bold text-2xl">Topik Kelas</h1>
@@ -603,7 +603,7 @@ function Course() {
           </div>
         </div>
       </div>
-    </CourseLayout>
+    </MainLayout>
   );
 }
 

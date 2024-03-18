@@ -1,6 +1,6 @@
 "use client";
 
-import CourseLayout from "@/components/CourseLayout";
+import MainLayout from "@/components/MainLayout";
 import Loading from "@/components/loading-animation/Loading";
 import { dateFormatter } from "@/lib/formatter";
 import { fetchNotificationDetail } from "@/services/notification.service";
@@ -19,6 +19,8 @@ export default function DetailNotificationPage({ params }) {
   const token = Cookies.get("token");
   const [isLoading, setIsLoading] = useState(false);
   const id = params.id;
+  const linkRegex =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
 
   const { push } = useRouter();
 
@@ -58,8 +60,8 @@ export default function DetailNotificationPage({ params }) {
   }, []);
 
   return (
-    <CourseLayout disableMobileNavbar>
-      <div className="w-full max-w-4xl mx-auto px-2 md:px-6 py-0.5 pb-2 md:pb-6">
+    <MainLayout disableMobileNavbar>
+      <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-1 mb-3 md:pb-6">
         <Link
           href={"/notifikasi"}
           className="flex items-center gap-2 font-semibold my-3 w-fit "
@@ -89,26 +91,38 @@ export default function DetailNotificationPage({ params }) {
               </p>
             </div>
           ) : (
-            <div className="px-4 md:px-8 pt-2 pb-8 bg-white rounded-b-2xl border border-primary-01 ">
-              <h1 className="text-primary-01 font-semibold md:text-lg my-1">
+            <div className="px-4 md:px-8 pt-2 pb-8 bg-white rounded-b-2xl border border-primary-01">
+              <h1 className="text-primary-01 font-semibold md:text-lg mt-1">
                 {notification.type}
               </h1>
-              <hr />
-              <h3 className="font-bold mt-2 mb-4 text-xl md:text-2xl">
+              <h3 className="font-bold text-lg md:text-2xl">
                 {notification.title}
               </h3>
+              <hr className="mb-2" />
 
               {notification.content?.split("\n\n").map((line) => (
-                <div className="text-neutral-04 text-sm md:text-base mt-2">
-                  {line.split("\n").map((text) => (
-                    <p>{text}</p>
-                  ))}
+                <div className="text-neutral-04 text-xs md:text-sm mb-2">
+                  {line.split("\n").map((text) => {
+                    if (linkRegex.test(text)) {
+                      return (
+                        <Link
+                          href={text}
+                          className="my-1 text-primary-01 underline hover:text-primary-02 inline-block break-all"
+                          target="_blank"
+                        >
+                          {text}
+                        </Link>
+                      );
+                    } else {
+                      return <p className="my-1">{text}</p>;
+                    }
+                  })}
                 </div>
               ))}
             </div>
           )}
         </div>
       </div>
-    </CourseLayout>
+    </MainLayout>
   );
 }

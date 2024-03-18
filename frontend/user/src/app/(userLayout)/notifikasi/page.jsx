@@ -1,6 +1,6 @@
 "use client";
 
-import CourseLayout from "@/components/CourseLayout";
+import MainLayout from "@/components/MainLayout";
 import Loading from "@/components/loading-animation/Loading";
 import { dateFormatter } from "@/lib/formatter";
 import { fetchNotifications } from "@/services/notification.service";
@@ -59,8 +59,8 @@ export default function NotificationsPage() {
   }, []);
 
   return (
-    <CourseLayout disableMobileNavbar>
-      <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-0.5 pb-2 md:pb-6">
+    <MainLayout disableMobileNavbar>
+      <div className="w-full max-w-4xl mx-auto px-4  md:px-6 py-1 mb-3 md:pb-6">
         <Link
           href={"/beranda"}
           className="flex items-center gap-2 font-semibold my-3 w-fit"
@@ -136,6 +136,6 @@ export default function NotificationsPage() {
           )}
         </div>
       </div>
-    </CourseLayout>
+    </MainLayout>
   );
 }

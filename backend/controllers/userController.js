@@ -765,20 +765,8 @@ const getMyTransactionById = async (req, res, next) => {
     const { user } = req
     const { transactionId } = req.params
 
-    const transaction = await Transaction.findByPk(transactionId, {
-      include: [
-        {
-          model: Course,
-          include: [
-            {
-              model: Category,
-              as: 'category',
-            },
-          ],
-        },
-      ],
-      order: [['createdAt', 'DESC']],
-    })
+    const transaction = await Transaction.findByPk(transactionId)
+    const course = await Course.findByPk(transaction.courseId)
 
     if (!transaction) {
       return next(new ApiError('Transaksi tidak ditemukan', 404))
@@ -798,6 +786,7 @@ const getMyTransactionById = async (req, res, next) => {
       message: 'Berhasil mendapatkan data transaksi',
       data: {
         transaction,
+        course,
       },
     })
   } catch (error) {
