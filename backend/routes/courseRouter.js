@@ -7,6 +7,7 @@ const uploader = require('../middlewares/uploader')
 const { checkUUIDParams, checkUUIDBody } = require('../middlewares/checkUUID')
 
 router.get('/', Course.getAllCourse)
+router.get('/others/:courseId', checkUUIDParams(), Course.getOtherCourse)
 router.get('/:id', checkUUIDParams(), Course.getCourseById)
 router.delete(
   '/:id',

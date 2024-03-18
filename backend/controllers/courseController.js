@@ -250,6 +250,93 @@ const getCourseById = async (req, res, next) => {
   }
 }
 
+const getOtherCourse = async (req, res, next) => {
+  try {
+    const { courseId } = req.params
+
+    if (!courseId) {
+      return next(new ApiError('courseId harus diisi', 400))
+    }
+
+    const course = await Course.findByPk(courseId)
+
+    if (!course) {
+      return next(new ApiError('Course tidak ditemukan', 404))
+    }
+
+    const coursesWithSameCategory = await Course.findAll({
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'name'],
+          as: 'category',
+        },
+        {
+          model: User,
+          as: 'courseCreator',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Benefit,
+          as: 'benefits',
+          attributes: ['id', 'no', 'description'],
+        },
+      ],
+      where: {
+        id: {
+          [Op.not]: courseId,
+        },
+        categoryId: course.categoryId,
+      },
+      order: [['id', 'ASC']],
+      limit: 8,
+    })
+
+    let courses = coursesWithSameCategory
+
+    if (courses.length < 8) {
+      const coursesWithOtherCategory = await Course.findAll({
+        include: [
+          {
+            model: Category,
+            attributes: ['id', 'name'],
+            as: 'category',
+          },
+          {
+            model: User,
+            as: 'courseCreator',
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Benefit,
+            as: 'benefits',
+            attributes: ['id', 'no', 'description'],
+          },
+        ],
+        where: {
+          id: {
+            [Op.not]: courseId,
+          },
+          categoryId: {
+            [Op.not]: course.categoryId,
+          },
+        },
+        order: [['id', 'ASC']],
+        limit: Math.max(8 - courses.length, 0),
+      })
+      courses = courses.concat(coursesWithOtherCategory)
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      message: `Berhasil mendapatkan data course id: ${courseId}`,
+      data: courses,
+    })
+  } catch (error) {
+    return next(new ApiError(error, 500))
+  }
+}
+
 const updateCourse = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -383,4 +470,5 @@ module.exports = {
   getCourseById,
   deleteCourse,
   updateCourse,
+  getOtherCourse,
 }

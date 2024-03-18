@@ -77,7 +77,7 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-          <p className="text-neutral-300 mt-4">Version 0.1.0</p>
+          <p className="text-neutral-300 mt-4">Versi 0.1.0</p>
         </div>
       </div>
       <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
@@ -110,9 +110,7 @@ export default function ProfilePage() {
             </button>
           </div>
         </div>
-        <p className="text-xs text-neutral-04 mt-2 text-center">
-          Version 0.1.0
-        </p>
+        <p className="text-xs text-neutral-04 mt-2 text-center">Versi 0.1.0</p>
       </div>
     </>
   );

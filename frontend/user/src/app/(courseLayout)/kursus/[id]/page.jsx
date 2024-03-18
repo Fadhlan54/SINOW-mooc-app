@@ -7,7 +7,7 @@ import { RiShieldStarLine } from "react-icons/ri";
 import { PiBooks, PiClockFill } from "react-icons/pi";
 import { IoPlayCircle } from "react-icons/io5";
 import { IoIosLock } from "react-icons/io";
-import CourseLayout from "@/components/CourseLayout";
+import MainLayout from "@/components/MainLayout";
 import { useEffect, useState } from "react";
 import {
   followCourse,
@@ -321,7 +321,7 @@ export default function DetailCoursePage({ params }) {
   };
 
   return (
-    <CourseLayout disableMobileNavbar>
+    <MainLayout disableMobileNavbar>
       {loadingScreen ? (
         <LoadingScreen />
       ) : error ? (
@@ -376,7 +376,7 @@ export default function DetailCoursePage({ params }) {
                 ></video>
                 <div className="bg-white rounded-[32px] px-4 sm:px-6 py-8 mt-8 shadow-lg relative">
                   <div className="mb-4">
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center mb-1">
                       <h2 className="text-lg sm:text-xl font-bold text-primary-01">
                         {course.category?.name}
                       </h2>
@@ -389,8 +389,8 @@ export default function DetailCoursePage({ params }) {
                       </div>
                     </div>
                     <h2 className="sm:text-lg font-bold">{course.name}</h2>
-                    <h4 className="text-sm mt-1"> {course.courseBy}</h4>
-                    <div className="flex items-center mt-2 justify-between md:justify-start md:gap-4 lg:gap-8 text-xs font-medium">
+                    <h4 className="text-sm"> {course.courseBy}</h4>
+                    <div className="flex items-center mt-1 justify-between md:justify-start md:gap-4 lg:gap-8 text-xs font-medium">
                       <div className="flex items-center gap-1">
                         <RiShieldStarLine className="text-alert-success text-base" />
                         <p className="font-semibold text-primary-01">
@@ -425,7 +425,7 @@ export default function DetailCoursePage({ params }) {
                         <>
                           {course.promoDiscountPercentage > 0 ? (
                             <div className="flex items-center">
-                              <p className="mt-2 mb-1 mr-2 font-bold  sm:text-lg">
+                              <p className="mt-1 mb-1 mr-2 font-bold text-sm  sm:text-base">
                                 {currencyFormatterIDR(
                                   course.price -
                                     (course.price *
@@ -433,7 +433,7 @@ export default function DetailCoursePage({ params }) {
                                       100
                                 )}
                               </p>
-                              <p className="text-sm text-neutral-04 font-semibold mr-1 line-through">
+                              <p className="text-xs text-neutral-04 font-semibold mr-1 line-through">
                                 {currencyFormatterIDR(course.price)}
                               </p>
                               <p className="text-xs text-neutral-04">
@@ -446,10 +446,13 @@ export default function DetailCoursePage({ params }) {
                             </p>
                           )}
 
-                          <button className="flex items-center justify-between  bg-alert-success  hover:bg-alert-success-hover py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md">
+                          <Link
+                            href={`/pembayaran/${course.id}`}
+                            className="flex items-center justify-between  bg-alert-success  hover:bg-alert-success-hover py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md w-fit"
+                          >
                             <FaCartPlus className="mr-1" />
                             Beli Kursus
-                          </button>
+                          </Link>
                         </>
                       )}
 
@@ -735,6 +738,6 @@ export default function DetailCoursePage({ params }) {
           </div>
         )
       )}
-    </CourseLayout>
+    </MainLayout>
   );
 }

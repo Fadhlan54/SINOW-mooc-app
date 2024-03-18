@@ -8,11 +8,6 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUID,
       },
-      noOrder: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
       userId: {
         type: Sequelize.UUID,
       },
@@ -39,6 +34,9 @@ module.exports = {
         defaultValue: 11,
       },
       paymentUrl: {
+        type: Sequelize.STRING,
+      },
+      paymentToken: {
         type: Sequelize.STRING,
       },
       paymentMethod: {

@@ -85,11 +85,20 @@ const createTransaction = async (req, res, next) => {
     const { courseId } = req.body
     const { user } = req
 
+    console.log('API CREATE TRANSACTION')
+
     if (!courseId) {
       return next(new ApiError('Course ID harus diisi', 400))
     }
 
-    const course = await Course.findByPk(courseId)
+    const course = await Course.findByPk(courseId, {
+      include: [
+        {
+          model: Category,
+          as: 'category',
+        },
+      ],
+    })
 
     if (!course) {
       return next(new ApiError('Course tidak ditemukan', 404))
@@ -104,18 +113,6 @@ const createTransaction = async (req, res, next) => {
         userId: user.id,
         courseId,
       },
-      include: [
-        {
-          model: Course,
-          include: [
-            {
-              model: Category,
-              as: 'category',
-            },
-          ],
-        },
-      ],
-      order: [['createdAt', 'DESC']],
     })
 
     if (checkTransaction) {
@@ -126,12 +123,17 @@ const createTransaction = async (req, res, next) => {
       }
 
       if (checkTransaction.status === 'BELUM_BAYAR') {
-        return res.status(400).json({
-          status: 'Failed',
+        return res.status(200).json({
+          status: 'Success',
           message: 'Transaksi sudah ada silahkan melakukan pembayaran',
           data: {
             transactionDetail: checkTransaction,
-            paymentUrl: checkTransaction.paymentUrl,
+            courseDetail: course,
+            paymentDetail: {
+              paymentUrl: checkTransaction.paymentUrl,
+              paymentToken: checkTransaction.paymentToken,
+              paymentMethod: checkTransaction.paymentMethod,
+            },
           },
         })
       }
@@ -199,9 +201,9 @@ const createTransaction = async (req, res, next) => {
                     moduleId: module.id,
                     chapterId: chapter.id,
                     status:
-                      (module.no === 1
-                        && (chapter.no === 1 || chapterIndex === 0))
-                      || (moduleIndex === 0 && chapterIndex === 0)
+                      (module.no === 1 &&
+                        (chapter.no === 1 || chapterIndex === 0)) ||
+                      (moduleIndex === 0 && chapterIndex === 0)
                         ? 'terbuka'
                         : 'terkunci',
                   })
@@ -214,19 +216,14 @@ const createTransaction = async (req, res, next) => {
     }
 
     const discountPrice = (course.price * course.promoDiscountPercentage) / 100
-    const taxPrice = discountPrice === 0
-      ? (course.price * 11) / 100
-      : (discountPrice * 11) / 100
+    const taxPrice =
+      discountPrice === 0
+        ? (course.price * 11) / 100
+        : (discountPrice * 11) / 100
 
     const totalPrice = course.price - discountPrice + taxPrice
 
-    const timestamp = new Date().getTime()
-    const userSalt = Math.floor(Math.random() * 1000)
-    const combinedValue = `${timestamp}${user.id}${userSalt}${courseId}`
-    const noOrder = parseInt(combinedValue / 123, 10).toString(16)
-
     const newTransaction = await Transaction.create({
-      noOrder,
       userId: user.id,
       courseId,
       coursePrice: course.price,
@@ -241,9 +238,11 @@ const createTransaction = async (req, res, next) => {
       expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
     })
 
-    const courseName = course.name.length > 30
-      ? `${course.name.substring(0, 30)}...`
-      : course.name
+    console.log('Sampai sini')
+    const courseName =
+      course.name.length > 30
+        ? `${course.name.substring(0, 30)}...`
+        : course.name
 
     const parameter = {
       item_details: [
@@ -269,6 +268,8 @@ const createTransaction = async (req, res, next) => {
 
     const midtransResponseData = await snap.createTransaction(parameter)
 
+    console.log(midtransResponseData)
+
     if (!midtransResponseData) {
       newTransaction.destroy()
       return next(new ApiError('Gagal membuat transaksi', 500))
@@ -284,14 +285,20 @@ const createTransaction = async (req, res, next) => {
 
     await newTransaction.update({
       paymentUrl: midtransResponseData.redirect_url,
+      paymentToken: midtransResponseData.token,
     })
 
     return res.status(201).json({
       status: 'Success',
       message: 'sukses membuat transaksi',
       data: {
-        ...midtransResponseData,
         transactionDetail: newTransaction,
+        courseDetail: course,
+        paymentDetail: {
+          paymentUrl: midtransResponseData.redirect_url,
+          paymentToken: midtransResponseData.token,
+          paymentMethod: null,
+        },
       },
     })
   } catch (error) {
@@ -312,12 +319,12 @@ const paymentCallback = async (req, res, next) => {
     } = req.body
 
     if (
-      !transaction_status
-      || !fraud_status
-      || !order_id
-      || !status_code
-      || !gross_amount
-      || !signature_key
+      !transaction_status ||
+      !fraud_status ||
+      !order_id ||
+      !status_code ||
+      !gross_amount ||
+      !signature_key
     ) {
       return res.status(400).json({
         status: 'Failed',
@@ -390,8 +397,8 @@ const paymentCallback = async (req, res, next) => {
     }
 
     if (
-      transaction_status === 'capture'
-      || transaction_status === 'settlement'
+      transaction_status === 'capture' ||
+      transaction_status === 'settlement'
     ) {
       if (fraud_status === 'accept') {
         const myCourse = await MyCourse.findOne({

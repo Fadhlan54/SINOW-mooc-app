@@ -21,7 +21,7 @@ export default function BottomNavbar() {
   }, [prevScrollPos]);
   return (
     <>
-      <div className="w-full h-12 sm:hidden"></div>
+      <div className="w-full h-4 sm:hidden"></div>
       <div
         className={`fixed z-40 sm:hidden bottom-0 left-0 bg-primary-01 w-full flex justify-evenly pt-2 rounded-t-[2rem] text-2xl text-white 
 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"} `}

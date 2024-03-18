@@ -16,7 +16,7 @@ import { fetchCourses } from "@/services/course.service";
 import { useEffect, useState } from "react";
 import Loading from "@/components/loading-animation/Loading";
 import { fetchCategories } from "@/services/category.service";
-import CourseLayout from "@/components/CourseLayout";
+import MainLayout from "@/components/MainLayout";
 import CourseCard from "@/components/card/CourseCard";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -63,7 +63,7 @@ export default function Home() {
   }, [filterCategory]);
 
   return (
-    <CourseLayout>
+    <MainLayout>
       <div className="bg-primary-01 pt-2 px-3 hidden sm:flex w-full">
         <div className="flex w-1/2 justify-center">
           <Image
@@ -262,6 +262,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </CourseLayout>
+    </MainLayout>
   );
 }

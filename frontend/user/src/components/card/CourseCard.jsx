@@ -53,7 +53,7 @@ export default function CourseCard({ course }) {
           onClick={() => {
             push(`/kursus/${course.id}`);
           }}
-          className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-4 rounded-2xl text-white font-semibold text-xs"
+          className="flex items-center justify-between mt-2 bg-primary-01 hover:bg-primary-04 py-1 px-4 rounded-2xl text-white font-semibold text-xs"
         >
           {course.type === "premium" ? (
             <>
