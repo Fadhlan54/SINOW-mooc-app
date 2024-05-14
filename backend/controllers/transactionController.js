@@ -374,6 +374,17 @@ const paymentCallback = async (req, res, next) => {
       })
     }
 
+    const checkSignatureKey = generateSHA512(
+      `${order_id}${status_code}${gross_amount}${process.env.MIDTRANS_SERVER_KEY}`,
+    )
+
+    if (signature_key !== checkSignatureKey) {
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Signature key tidak sesuai',
+      })
+    }
+
     if (transaction_status === 'expire') {
       transaction.status = 'KADALUARSA'
       await transaction.save()
@@ -384,14 +395,13 @@ const paymentCallback = async (req, res, next) => {
       })
     }
 
-    const checkSignatureKey = generateSHA512(
-      `${order_id}${status_code}${gross_amount}${process.env.MIDTRANS_SERVER_KEY}`,
-    )
+    if (transaction_status === 'pending') {
+      transaction.status = 'TERTUNDA'
+      await transaction.save()
 
-    if (signature_key !== checkSignatureKey) {
       return res.status(200).json({
         status: 'Success',
-        message: 'Signature key tidak sesuai',
+        message: 'Transaksi tertunda',
       })
     }
 
