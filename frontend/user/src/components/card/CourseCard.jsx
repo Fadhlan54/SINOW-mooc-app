@@ -1,4 +1,4 @@
-import { currencyFormatterIDR } from "@/lib/formatter";
+import { currencyFormatterIDR, dateFormatter } from "@/lib/formatter";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa";
@@ -31,7 +31,14 @@ export default function CourseCard({ course }) {
           </div>
         </div>
         <h2 className="text-sm truncate font-bold mt-1">{course.name}</h2>
-        <p className="text-xs mt-1">{course.courseBy}</p>
+        <div className="text-xs flex justify-between mt-1">
+          <p className="">{course.courseBy}</p>
+
+          <p className="text-primary-01 font-semibold text-[0.65rem]">
+            {dateFormatter(course.createdAt).split(",")[0]}
+          </p>
+        </div>
+
         <div className="flex justify-between items-center mt-2">
           <div className="flex items-center">
             <RiShieldStarLine className="text-alert-success" />
@@ -49,6 +56,12 @@ export default function CourseCard({ course }) {
             <p className="text-[0.65rem] ml-1">{course.totalDuration} Menit</p>
           </div>
         </div>
+        <p className="text-[0.65rem] mt-1">
+          <span className="text-primary-01 font-semibold">
+            {course.totalUser}
+          </span>{" "}
+          Pengguna mengikuti kursus ini
+        </p>
         <button
           onClick={() => {
             push(`/kursus/${course.id}`);

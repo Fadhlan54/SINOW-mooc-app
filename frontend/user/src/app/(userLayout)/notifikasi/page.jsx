@@ -22,7 +22,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     if (!token) {
-      push("/beranda");
+      push("/");
     }
     const getNotifications = async () => {
       try {
@@ -62,7 +62,7 @@ export default function NotificationsPage() {
     <MainLayout disableMobileNavbar>
       <div className="w-full max-w-4xl mx-auto px-4  md:px-6 py-1 mb-3 md:pb-6">
         <Link
-          href={"/beranda"}
+          href={"/"}
           className="flex items-center gap-2 font-semibold my-3 w-fit"
         >
           <LuArrowLeft className="sm:text-lg" />

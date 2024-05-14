@@ -3,22 +3,30 @@
   height: 100%;
 }
 
+.banner-swiper {
+  padding: 0 0 12px;
+}
+
+.banner-slide {
+  padding: 0 12px !important;
+}
+
+.category-swiper {
+  padding: 0 0 12px;
+}
+
 .swiper-slide {
   text-align: center;
-
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.category-slide {
+.cat-slide {
   width: fit-content !important;
 }
 
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.icon:hover {
+  @apply transform scale-125;
+  @apply transition-transform duration-300 ease-in-out;
 }

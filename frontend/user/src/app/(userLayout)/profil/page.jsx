@@ -11,34 +11,37 @@ import {
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState } from "react";
+import Profile from "@/components/profile-content/Profile";
+import ChangePassword from "@/components/profile-content/ChangePassword";
+import PaymentHistory from "@/components/profile-content/PaymentHistory";
 
 export default function ProfilePage() {
   const { push } = useRouter();
+  const [content, setContent] = useState("profil");
 
   const handleLogout = (e) => {
     e.preventDefault();
     Cookies.remove("token");
     push("/auth/login");
   };
+
   return (
     <>
-      <div className="hidden sm:flex flex-col items-center justify-center h-screen">
+      <div className="hidden sm:flex flex-col items-center ">
         <div className="flex flex-col w-full sm:w-11/12 md:w-4/5 lg:w-3/4 items-center  rounded-2xl  ">
-          <div className="w-full px-4 py-2">
-            <Link
-              href={"/beranda"}
-              className="text-primary-01 hover:text-primary-02"
-            >
+          <div className="w-full py-2 mt-2">
+            <Link href={"/"} className="text-primary-01 hover:text-primary-02">
               <LuArrowLeft className="inline-block text-xl mr-1" />
               Kembali ke beranda
             </Link>
           </div>
-          <div className="w-full rounded-2xl shadow-md-blue border border-primary-01">
+          <div className="w-full rounded-2xl shadow-md-blue border border-primary-01 ">
             <div className="bg-primary-01 text-white font-bold text-xl w-full text-center rounded-t-2xl py-2 ">
               <p>Akun</p>
             </div>
-            <div className="flex w-full">
-              <div className="w-1/2 py-3 font-medium  border-r border-primary-01">
+            <div className="flex w-full h-[71vh]">
+              <div className="w-1/2 py-3 font-medium  border-r border-primary-01 min-h-fit">
                 <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent">
                   <button>
                     <LuPencilLine className="inline-block text-2xl mr-2" />{" "}
@@ -51,29 +54,20 @@ export default function ProfilePage() {
                     Password
                   </button>
                 </div>
-                <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent mb-4">
+                <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent">
                   <button>
                     <LuShoppingCart className="inline-block text-2xl mr-2" />{" "}
                     Riwayat Pembayaran
                   </button>
                 </div>
-                <hr />
-                <div className=" hover:border-l-4 border-alert-danger text-alert-danger hover:bg-alert-danger-transparent mt-3 px-6 py-3">
+                <div className="hover:border-l-4 border-alert-danger text-alert-danger hover:bg-alert-danger-transparent px-6 py-3">
                   <button onClick={(e) => handleLogout(e)}>
                     <LuLogOut className="inline-block text-2xl mr-2" /> Keluar
                   </button>
                 </div>
               </div>
-              <div className="w-1/2 flex flex-col items-center justify-center">
-                <Image
-                  src={
-                    "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/onboarding.png?updatedAt=1707366179905"
-                  }
-                  width={188}
-                  height={143}
-                  alt="Sinow Mascot onboarding"
-                />
-                <p className="mt-4">Masih dalam pengembangan...</p>
+              <div className="w-1/2 flex flex-col items-center p-4 overflow-auto">
+                <PaymentHistory />
               </div>
             </div>
           </div>
@@ -81,7 +75,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
-        <Link href={"/beranda"}>
+        <Link href={"/"}>
           <LuArrowLeft className="text-2xl" />
         </Link>
         <h1 className="font-bold text-2xl mt-5 mb-2 p-2">Akun</h1>

@@ -70,7 +70,7 @@ export default function InfoNotification() {
           setIsError("");
           const encodedTitle = encodeURIComponent(title);
           await axios.put(
-            `https://sinow-production.up.railway.app/api/v1/notifications/title/` +
+            `${import.meta.env.VITE_API_URL}/api/v1/notifications/title/` +
               encodedTitle,
             form,
             {

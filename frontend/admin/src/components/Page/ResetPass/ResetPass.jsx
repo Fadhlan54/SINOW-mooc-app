@@ -21,7 +21,7 @@ export default function ResetPassword() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/user`,
+          `${import.meta.env.VITE_API_URL}/api/v1/user`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ export default function ResetPassword() {
         setIsLoading(true);
         console.log("Masuk??");
         const response = await axios.post(
-          `https://sinow-production.up.railway.app/api/v1/auth/reset-password/${token}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/auth/reset-password/${token}`,
           resetPassword,
           {
             headers: {

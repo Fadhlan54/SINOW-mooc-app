@@ -14,7 +14,7 @@ export default function Header() {
       try {
         if (adminToken) {
           const res = await axios.get(
-            "https://sinow-production.up.railway.app/api/v1/user",
+            `${import.meta.env.VITE_API_URL}/api/v1/user`,
             {
               headers: {
                 "Content-Type": "application/json",

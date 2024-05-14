@@ -32,7 +32,7 @@ export default function InfoTransaction() {
         setIsLoading(true);
         setIsError("");
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/transactions/${keyClass}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/transactions/${keyClass}`,
           {
             headers: {
               "Content-Type": "application/json",

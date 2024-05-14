@@ -45,7 +45,7 @@ export default function ManageNotification() {
         setIsError("");
         setIsLoading(true);
         const response = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/notifications?${
+          `${import.meta.env.VITE_API_URL}/api/v1/notifications?${
             searchValue.length > 0 ? `&title=${searchValue}` : ""
           }${filterClass ? `&type=${filterClass}` : ""}`,
           {
@@ -127,7 +127,9 @@ export default function ManageNotification() {
           setIsLoading(true);
           setIsError("");
           await axios.delete(
-            `https://sinow-production.up.railway.app/api/v1/notifications/title/${title}`,
+            `${
+              import.meta.env.VITE_API_URL
+            }/api/v1/notifications/title/${title}`,
             {
               headers: {
                 "Content-Type": "application/json",

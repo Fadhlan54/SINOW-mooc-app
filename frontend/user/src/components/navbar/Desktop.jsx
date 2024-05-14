@@ -3,13 +3,20 @@ import Link from "next/link";
 import { GoBell, GoBook, GoHome, GoPerson, GoVideo } from "react-icons/go";
 import { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
+import { RiMenuLine } from "react-icons/ri";
+import { selectSearchFilter } from "@/store/slices/filterSlice";
+import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 export default function DesktopNavbar({
   isLogin,
   handleSearch,
   disableSearch,
 }) {
-  const [searchValue, setSearchValue] = useState("");
+  const searchFilter = useSelector(selectSearchFilter);
+  const [searchValue, setSearchValue] = useState(searchFilter);
+
+  const [isMenuActive, setIsMenuActive] = useState(false);
 
   return (
     <div className="hidden sm:flex items-center justify-between sticky top-0 left-0 bg-primary-01 w-full px-4 lg:px-8 py-4 z-50 shadow-md">
@@ -38,7 +45,7 @@ export default function DesktopNavbar({
             onKeyDown={(e) => handleSearch(e, searchValue)}
           />
           <button
-            className="absolute right-2 bg-primary-01 hover:bg-primary-04 p-1 rounded-xl"
+            className="absolute right-2 bg-primary-01 hover:bg-primary-03 p-1 rounded-xl"
             type="submit"
             onClick={(e) => {
               handleSearch(e, searchValue);
@@ -55,55 +62,69 @@ export default function DesktopNavbar({
       )}
 
       <div className="flex items-center gap-2 text-white">
-        <Link
-          href={"/beranda"}
-          className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
+        <button
+          className={`hover:bg-primary-03 p-2 rounded-xl  ${isMenuActive && "bg-primary-03"} `}
+          onClick={() => setIsMenuActive(!isMenuActive)}
         >
-          <GoHome className="text-2xl" />
-        </Link>
-        <span className="h-6 border-r-2 border-white"></span>
-        <Link
-          href={"/kursus"}
-          className="p-1 hover:bg-primary-04 px-2 py-1.5  rounded-2xl"
+          <RiMenuLine className="text-2xl" />
+        </button>
+        <div
+          className={`absolute right-4 top-16 flex flex-col bg-white text-neutral-05 py-3    font-semibold rounded-2xl text-sm shadow-md ${isMenuActive ? "block" : "hidden"} ${isLogin ? "w-40" : "w-[136px]"} `}
         >
-          <GoBook className="text-2xl" />
-        </Link>
+          <Link
+            href={"/"}
+            className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+          >
+            Beranda
+          </Link>
+          <Link
+            href={"/kursus"}
+            className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01`}
+          >
+            Kursus
+          </Link>
+          {isLogin && (
+            <>
+              <Link
+                href={"/kursus-berjalan"}
+                className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+              >
+                Kursus Berjalan
+              </Link>
+              <Link
+                href={"/notifikasi"}
+                className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+              >
+                Notifikasi
+              </Link>
+              <Link
+                href={"/profil"}
+                className="px-4 py-1  hover:bg-primary-01-transparent hover:border-l-4 hover:border-primary-01 hover:text-primary-01"
+              >
+                Profil
+              </Link>
+            </>
+          )}
 
-        {isLogin ? (
-          <>
-            <span className="h-6 border-r-2 border-white"></span>
-            <Link
-              href={"/kursus-berjalan"}
-              className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
+          <hr className="my-1" />
+          {isLogin ? (
+            <button
+              onClick={() => {
+                Cookies.remove("token");
+              }}
+              className="px-4 py-1 text-start text-alert-danger  font-bold hover:bg-alert-danger-transparent hover:border-l-4 border-alert-danger-transparent "
             >
-              <GoVideo className="text-2xl" />
-            </Link>
-            <span className="h-6 border-r-2 border-white"></span>
-            <Link
-              href={"/notifikasi"}
-              className="p-1 hover:bg-primary-04 px-2 py-1  rounded-2xl"
-            >
-              <GoBell className="text-2xl" />
-            </Link>
-            <span className="h-6 border-r-2 border-white"></span>
-            <Link
-              href={"/profil"}
-              className="p-1 hover:bg-primary-04 px-2 py-1 rounded-2xl"
-            >
-              <GoPerson className="text-2xl" />
-            </Link>
-          </>
-        ) : (
-          <>
-            <hr className="h-6 bg-gray-300" />
+              Keluar
+            </button>
+          ) : (
             <Link
               href={"/auth/login"}
-              className="flex items-center gap-2  font-semibold hover:bg-primary-04 px-4 py-1 rounded-2xl ml-2"
+              className="px-4 py-1 text-start text-primary-01  font-bold hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 "
             >
-              <FiLogIn className="text-xl" /> Masuk
+              Masuk
             </Link>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

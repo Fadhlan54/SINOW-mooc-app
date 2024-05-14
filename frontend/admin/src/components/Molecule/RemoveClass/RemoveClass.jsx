@@ -31,7 +31,7 @@ export default function RemoveClass({ id }) {
 
       if (result.isConfirmed) {
         await axios.delete(
-          `https://sinow-production.up.railway.app/api/v1/courses/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/courses/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

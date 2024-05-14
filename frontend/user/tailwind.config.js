@@ -10,9 +10,9 @@ module.exports = {
       colors: {
         primary: {
           "01": "#00CCF4",
-          "01-transparent": "rgba(0, 204, 244, 0.08)",
+          "01-transparent": "rgba(0, 204, 244, 0.09)",
           "02": "#27B1CC",
-          "03": "#33B5FF",
+          "03": "#05b3d6",
           "04": "#0066A2",
         },
         neutral: {

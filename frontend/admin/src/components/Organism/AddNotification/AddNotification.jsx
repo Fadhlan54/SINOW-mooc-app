@@ -82,7 +82,7 @@ export default function AddNotification() {
           setIsLoading(true);
           setIsError("");
           await axios.post(
-            `https://sinow-production.up.railway.app/api/v1/notifications/`,
+            `${import.meta.env.VITE_API_URL}/api/v1/notifications/`,
             newNotification,
             {
               headers: {
