@@ -8,7 +8,7 @@ import { RiShieldStarLine } from "react-icons/ri";
 export default function PaymentHistoryCard({ coursePaymentHistory }) {
   return (
     <div>
-      <Image
+      {/* <Image
         src={
           "https://ik.imagekit.io/vsecvavlp/Image-1715656907926_CfMY5hLrc.png?updatedAt=1715656911950"
         }
@@ -48,7 +48,7 @@ export default function PaymentHistoryCard({ coursePaymentHistory }) {
           <PiClockFill className="text-alert-success" />
           <p className="text-[0.65rem] ml-1">{course.totalDuration} Menit</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
