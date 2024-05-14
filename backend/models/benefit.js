@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       no: DataTypes.INTEGER,
       description: DataTypes.TEXT,
-      courseId: DataTypes.INTEGER,
+      courseId: DataTypes.UUID,
     },
     {
       sequelize,

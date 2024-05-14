@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       videoPreviewUrl: DataTypes.STRING,
       level: DataTypes.STRING,
       rating: DataTypes.FLOAT,
-      categoryId: DataTypes.INTEGER,
+      categoryId: DataTypes.UUID,
       description: DataTypes.TEXT,
       classCode: DataTypes.STRING,
       totalModule: {

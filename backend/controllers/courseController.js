@@ -35,6 +35,7 @@ const createCourse = async (req, res, next) => {
       price = 0,
       promoDiscountPercentage = 0,
       courseBy,
+      videoURL,
     } = req.body
 
     const missingFields = [
@@ -82,8 +83,8 @@ const createCourse = async (req, res, next) => {
       }
     }
 
-    const { imageUrl } = await uploadImage(req.files.image[0], next)
-    const { videoUrl } = await uploadVideo(req.files.video[0], next)
+    const { imageUrlImgKit } = await uploadImage(req.files.image[0], next)
+    const { videoUrlImgKit } = await uploadVideo(req.files.video[0], next)
 
     const course = await Course.create({
       name,
@@ -98,8 +99,8 @@ const createCourse = async (req, res, next) => {
       price: type === 'gratis' ? 0 : price,
       promoDiscountPercentage: Math.floor(promoDiscountPercentage),
       totalUser: 0,
-      imageUrl,
-      videoPreviewUrl: videoUrl,
+      imageUrl: imageUrlImgKit,
+      videoPreviewUrl: videoUrlImgKit || videoURL,
       courseBy,
       createdBy: user.id,
     })
@@ -352,6 +353,8 @@ const updateCourse = async (req, res, next) => {
       price,
       promoDiscountPercentage,
       courseBy,
+      videoURL,
+      imageURL,
     } = req.body
 
     const course = await Course.findByPk(id)
@@ -421,15 +424,23 @@ const updateCourse = async (req, res, next) => {
     }
 
     if (req.files || Object.keys(req.files).length > 0) {
-      if (req.files.image) {
-        const { imageUrl } = await uploadImage(req.files.image[0], next)
-        updateData.imageUrl = imageUrl
+      if (!imageURL && req.files.image) {
+        const { imageUrlImgKit } = await uploadImage(req.files.image[0], next)
+        updateData.imageUrl = imageUrlImgKit
       }
 
-      if (req.files.video) {
-        const { videoUrl } = await uploadVideo(req.files.video[0], next)
-        updateData.videoPreviewUrl = videoUrl
+      if (!videoURL && req.files.video) {
+        const { videoUrlImgKit } = await uploadVideo(req.files.video[0], next)
+        updateData.videoPreviewUrl = videoUrlImgKit
       }
+    }
+
+    if (imageURL) {
+      updateData.imageUrl = imageURL
+    }
+
+    if (videoURL) {
+      updateData.videoUrl = videoURL
     }
 
     await course.update(updateData)

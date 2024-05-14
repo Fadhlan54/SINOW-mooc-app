@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       title: DataTypes.STRING,
       content: DataTypes.TEXT,
-      userId: DataTypes.INTEGER,
+      userId: DataTypes.UUID,
       isRead: DataTypes.BOOLEAN,
     },
     {
