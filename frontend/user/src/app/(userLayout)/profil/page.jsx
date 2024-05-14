@@ -42,23 +42,26 @@ export default function ProfilePage() {
             </div>
             <div className="flex w-full h-[71vh]">
               <div className="w-1/2 py-3 font-medium  border-r border-primary-01 min-h-fit">
-                <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent">
-                  <button>
-                    <LuPencilLine className="inline-block text-2xl mr-2" />{" "}
-                    Profil Saya
-                  </button>
+                <div
+                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent "
+                  onClick={() => setContent("profil")}
+                >
+                  <LuPencilLine className="inline-block text-2xl mr-2" /> Profil
+                  Saya
                 </div>
-                <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent">
-                  <button>
-                    <LuSettings className="inline-block text-2xl mr-2" /> Ubah
-                    Password
-                  </button>
+                <div
+                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent"
+                  onClick={() => setContent("ubahPassword")}
+                >
+                  <LuSettings className="inline-block text-2xl mr-2" /> Ubah
+                  Password
                 </div>
-                <div className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent">
-                  <button>
-                    <LuShoppingCart className="inline-block text-2xl mr-2" />{" "}
-                    Riwayat Pembayaran
-                  </button>
+                <div
+                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent"
+                  onClick={() => setContent("paymentHistory")}
+                >
+                  <LuShoppingCart className="inline-block text-2xl mr-2" />{" "}
+                  Riwayat Pembayaran
                 </div>
                 <div className="hover:border-l-4 border-alert-danger text-alert-danger hover:bg-alert-danger-transparent px-6 py-3">
                   <button onClick={(e) => handleLogout(e)}>
@@ -67,7 +70,13 @@ export default function ProfilePage() {
                 </div>
               </div>
               <div className="w-1/2 flex flex-col items-center p-4 overflow-auto">
-                <PaymentHistory />
+                {content === "profil" ? (
+                  <Profile />
+                ) : content === "ubahPassword" ? (
+                  <ChangePassword />
+                ) : (
+                  <PaymentHistory />
+                )}
               </div>
             </div>
           </div>
