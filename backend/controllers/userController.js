@@ -184,7 +184,7 @@ const changeMyPassword = async (req, res, next) => {
   try {
     const { user } = req
 
-    const { oldPassword, newPassword, confirmNewPassword } = req.body
+    const { oldPassword, newPassword } = req.body
 
     const auth = await Auth.findOne({
       where: {
@@ -192,23 +192,14 @@ const changeMyPassword = async (req, res, next) => {
       },
     })
 
-    if (!oldPassword || !newPassword || !confirmNewPassword) {
+    if (!oldPassword || !newPassword) {
       return next(
-        new ApiError(
-          'Password lama, password baru, dan konfirmasi password baru harus diisi',
-          400,
-        ),
+        new ApiError('Password lama dan password baru harus diisi', 400),
       )
     }
 
     if (newPassword.length < 8) {
       return next(new ApiError('Password min 8 karakter!', 400))
-    }
-    if (newPassword.length > 12) {
-      return next(new ApiError('Password max 12 karakter!', 400))
-    }
-    if (newPassword !== confirmNewPassword) {
-      return next(new ApiError('Password tidak cocok', 400))
     }
 
     const isMatch = await bcrypt.compare(oldPassword, auth.password)
@@ -557,8 +548,12 @@ const followCourse = async (req, res, next) => {
       return next(new ApiError('Anda sudah mengikuti course ini', 400))
     }
 
-    await myCourse.update({
+    myCourse.update({
       isFollowing: true,
+    })
+
+    course.update({
+      totalUser: course.totalUser + 1,
     })
 
     return res.status(200).json({
@@ -592,8 +587,12 @@ const unfollowCourse = async (req, res, next) => {
       return next(new ApiError('My Course tidak ditemukan', 404))
     }
 
-    await myCourse.update({
+    myCourse.update({
       isFollowing: false,
+    })
+
+    course.update({
+      totalUser: course.totalUser - 1,
     })
 
     return res.status(200).json({

@@ -238,7 +238,6 @@ const createTransaction = async (req, res, next) => {
       expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
     })
 
-    console.log('Sampai sini')
     const courseName =
       course.name.length > 30
         ? `${course.name.substring(0, 30)}...`

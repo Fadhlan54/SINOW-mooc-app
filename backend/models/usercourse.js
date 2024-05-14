@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      userId: DataTypes.INTEGER,
-      courseId: DataTypes.INTEGER,
+      userId: DataTypes.UUID,
+      courseId: DataTypes.UUID,
       isAccessible: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -59,22 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      hooks: {
-        beforeCreate: async (myCourse) => {
-          const course = await myCourse.getCourse()
-
-          await course.update({
-            totalUser: course.totalUser + 1,
-          })
-        },
-        beforeDestroy: async (myCourse) => {
-          const course = await myCourse.getCourse()
-
-          await course.update({
-            totalUser: course.totalUser - 1,
-          })
-        },
-      },
       sequelize,
       modelName: 'MyCourse',
     },

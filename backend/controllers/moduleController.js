@@ -7,7 +7,7 @@ const { uploadVideo } = require('../utils/imagekitUploader')
 const createModule = async (req, res, next) => {
   try {
     let { no } = req.body
-    const { name, chapterId } = req.body
+    const { name, chapterId, videoURL, videoDuration } = req.body
 
     const missingFields = ['name', 'no', 'chapterId'].filter(
       (field) => !req.body[field],
@@ -23,7 +23,7 @@ const createModule = async (req, res, next) => {
     }
     no = parseInt(no, 10)
 
-    if (!req.file) {
+    if (!videoURL && !req.file) {
       return next(new ApiError('Harus menyertakan video', 400))
     }
 
@@ -80,14 +80,23 @@ const createModule = async (req, res, next) => {
       }
     }
 
-    const uploadedFile = await uploadVideo(req.file, next)
+    if (videoURL) {
+      if (!videoDuration) {
+        return next(new ApiError('Harus menyertakan durasi video', 400))
+      }
+    }
+
+    let uploadData
+    if (!videoURL) {
+      uploadData = await uploadVideo(req.file, next)
+    }
 
     const module = await Module.create({
       name,
       no,
-      videoUrl: uploadedFile.videoUrl,
+      videoUrl: uploadData ? uploadData.videoUrl : videoURL,
       chapterId,
-      duration: uploadedFile.videoDuration,
+      duration: uploadData ? uploadData.videoDuration : videoDuration,
     })
 
     return res.status(201).json({
@@ -156,7 +165,7 @@ const getModuleById = async (req, res, next) => {
 const updateModule = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { name, no } = req.body
+    const { name, no, videoURL, videoDuration } = req.body
 
     const module = await Module.findByPk(id)
     if (!module) {
@@ -191,13 +200,22 @@ const updateModule = async (req, res, next) => {
       updateData.no = parsedNo
     }
 
-    if (req.file) {
+    if (!videoURL && req.file) {
       const uploadedVideo = await uploadVideo(req.file, next)
       if (!uploadedVideo || Object.keys(uploadedVideo).length === 0) {
         return next(new ApiError('Gagal upload video', 400))
       }
       updateData.videoUrl = uploadedVideo.videoUrl
       updateData.duration = uploadedVideo.videoDuration
+    }
+
+    if (videoURL) {
+      if (!videoDuration) {
+        return next(new ApiError('Harus menyertakan durasi video', 400))
+      }
+
+      updateData.videoUrl = videoURL
+      updateData.duration = videoDuration
     }
 
     await module.update(updateData)

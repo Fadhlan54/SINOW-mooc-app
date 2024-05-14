@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       no: DataTypes.INTEGER,
       videoUrl: DataTypes.STRING,
-      chapterId: DataTypes.INTEGER,
+      chapterId: DataTypes.UUID,
       duration: DataTypes.INTEGER,
     },
     {

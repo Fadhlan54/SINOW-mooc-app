@@ -45,7 +45,14 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
       },
       name: DataTypes.STRING,
-      photoProfileUrl: DataTypes.STRING,
+      photoProfileUrl: {
+        type: DataTypes.STRING,
+        validate: {
+          isUrl: true,
+        },
+        defaultValue:
+          'https://ik.imagekit.io/vsecvavlp/SINOW%20assets/profile%20picture%20placeholder.jpg?updatedAt=1710817491626',
+      },
       country: DataTypes.STRING,
       city: DataTypes.STRING,
       role: DataTypes.STRING,
