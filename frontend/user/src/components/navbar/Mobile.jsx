@@ -1,11 +1,14 @@
+import { selectSearchFilter } from "@/store/slices/filterSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { GoBell, GoPerson } from "react-icons/go";
+import { useSelector } from "react-redux";
 
 export default function MobileNavbar({ isLogin, handleSearch, disableSearch }) {
-  const [searchValue, setSearchValue] = useState("");
+  const searchFilter = useSelector(selectSearchFilter);
+  const [searchValue, setSearchValue] = useState(searchFilter);
   return (
     <div className="px-3 py-2 sm:hidden ">
       <div className="flex justify-between items-center p-2">

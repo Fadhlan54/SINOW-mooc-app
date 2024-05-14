@@ -30,6 +30,7 @@ export default function ManageChapter() {
   const [showAddModule, setShowAddModule] = useState(false);
   const [showEditModule, setShowEditModule] = useState(false);
   const editRef = useRef(null);
+  const [uploadVideoTypeUrl, setUploadVideoTypeUrl] = useState(true);
 
   const { id } = useParams();
 
@@ -51,7 +52,7 @@ export default function ManageChapter() {
     const formData = new FormData(e.target);
     const name = formData.get("name");
     const no = Number(formData.get("no"));
-    const courseId = Number(formData.get("courseId"));
+    const courseId = formData.get("courseId");
 
     setEditForm({
       name,
@@ -66,6 +67,8 @@ export default function ManageChapter() {
     const name = formData.get("name");
     const no = Number(formData.get("no"));
     const video = formData.get("video");
+    const videoURL = formData.get("videoURL");
+    const videoDuration = formData.get("videoDuration");
     const chapterId = selectedKey.id;
 
     setModuleForm({
@@ -73,6 +76,8 @@ export default function ManageChapter() {
       no,
       video,
       chapterId,
+      videoURL,
+      videoDuration,
     });
   };
 
@@ -83,12 +88,16 @@ export default function ManageChapter() {
     const no = Number(formData.get("no"));
     const video = formData.get("video");
     const chapterId = selectedKey.id;
+    const videoURL = formData.get("videoURL");
+    const videoDuration = formData.get("videoDuration");
 
     setEditModuleForm({
       name,
       no,
       video,
       chapterId,
+      videoURL,
+      videoDuration,
     });
   };
 
@@ -113,7 +122,7 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.post(
-                `https://sinow-production.up.railway.app/api/v1/chapters/`,
+                `${import.meta.env.VITE_API_URL}/api/v1/chapters/`,
                 form,
                 {
                   headers: {
@@ -201,7 +210,9 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.put(
-                `https://sinow-production.up.railway.app/api/v1/chapters/${selectedKey.id}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/chapters/${
+                  selectedKey.id
+                }`,
                 editForm,
                 {
                   headers: {
@@ -229,6 +240,7 @@ export default function ManageChapter() {
               return;
             }
             setIsLoading(false);
+            setEditForm({});
             await Swal.fire({
               titleText: "Berhasil Diperbarui!",
               imageUrl: "/images/logo-n-maskot/Sticker-3.png",
@@ -272,13 +284,19 @@ export default function ManageChapter() {
         ];
 
         if (
+          !moduleForm.videoURL &&
+          moduleForm.video &&
           moduleForm.video.size > 0 &&
           !allowedVideoTypes.includes(moduleForm.video.type)
         ) {
           throw new Error("Tipe video harus .mp4/.ogg/.webm/.avi/.mpeg/.mov");
         }
 
-        if (moduleForm.video.size > 26214400) {
+        if (
+          !moduleForm.videoURL &&
+          moduleForm.video &&
+          moduleForm.video.size > 26214400
+        ) {
           throw new Error("Ukuran video terlalu besar, maks 25MB");
         }
         await Swal.fire({
@@ -297,7 +315,7 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.post(
-                `https://sinow-production.up.railway.app/api/v1/modules/`,
+                `${import.meta.env.VITE_API_URL}/api/v1/modules/`,
                 moduleForm,
                 {
                   headers: {
@@ -380,13 +398,19 @@ export default function ManageChapter() {
         ];
 
         if (
+          !editModuleForm.videoURL &&
+          editModuleForm.video &&
           editModuleForm.video.size > 0 &&
           !allowedVideoTypes.includes(editModuleForm.video.type)
         ) {
           throw new Error("Tipe video harus .mp4/.ogg/.webm/.avi/.mpeg/.mov");
         }
 
-        if (editModuleForm.video.size > 26214400) {
+        if (
+          !editModuleForm.videoURL &&
+          editModuleForm.video &&
+          editModuleForm.video.size > 26214400
+        ) {
           throw new Error("Ukuran video terlalu besar, maks 25MB");
         }
         await Swal.fire({
@@ -405,7 +429,9 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.put(
-                `https://sinow-production.up.railway.app/api/v1/modules/${selectedKey.moduleId}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/modules/${
+                  selectedKey.moduleId
+                }`,
                 editModuleForm,
                 {
                   headers: {
@@ -477,7 +503,7 @@ export default function ManageChapter() {
       try {
         setIsLoading(true);
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/chapters/`
+          `${import.meta.env.VITE_API_URL}/api/v1/chapters/`
         );
 
         const filteredResponse = await res.data.data.filter(
@@ -500,7 +526,7 @@ export default function ManageChapter() {
       try {
         setIsLoading(true);
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/courses/${id}`
+          `${import.meta.env.VITE_API_URL}/api/v1/courses/${id}`
         );
         setClassData(res.data.data);
       } catch (error) {
@@ -521,7 +547,7 @@ export default function ManageChapter() {
       try {
         setIsLoading(true);
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/courses/`
+          `${import.meta.env.VITE_API_URL}/api/v1/courses/`
         );
         setClassSinow(res.data.data);
       } catch (error) {
@@ -545,7 +571,7 @@ export default function ManageChapter() {
       const getChapterById = async () => {
         setIsLoading(true);
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/chapters/${selectedKey.id}`
+          `${import.meta.env.VITE_API_URL}/api/v1/chapters/${selectedKey.id}`
         );
         setEditChapter(res.data.data);
       };
@@ -623,7 +649,7 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.delete(
-                `https://sinow-production.up.railway.app/api/v1/modules/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/modules/${id}`,
                 {
                   headers: {
                     "Content-Type": "application/json",
@@ -701,7 +727,7 @@ export default function ManageChapter() {
             try {
               setIsLoading(true);
               await axios.delete(
-                `https://sinow-production.up.railway.app/api/v1/chapters/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/chapters/${id}`,
                 {
                   headers: {
                     "Content-Type": "application/json",
@@ -1250,23 +1276,62 @@ export default function ManageChapter() {
                               placeholder="1"
                             />
                           </div>
+
                           <div className="mb-[15px]">
-                            <label
-                              htmlFor=""
-                              className="block md:text-sm text-xs mb-1 ml-2"
-                            >
-                              Upload Video
-                            </label>
-                            <input
-                              type="file"
-                              accept="video/*"
-                              name="video"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                            />
-                            <p className="font-semibold text-gray-600 text-xs pl-2 italic">
-                              <span className="text-red-500">*</span> File Video
-                              Maks 25 MB
-                            </p>
+                            <div className="flex justify-between">
+                              <label
+                                htmlFor=""
+                                className="block md:text-sm text-xs mb-1 ml-2"
+                              >
+                                Upload Video
+                              </label>
+                              <button
+                                className="text-darkblue-05 text-sm font-bold"
+                                type="button"
+                                onClick={() =>
+                                  setUploadVideoTypeUrl(!uploadVideoTypeUrl)
+                                }
+                              >
+                                {uploadVideoTypeUrl
+                                  ? "Ubah Menjadi File"
+                                  : "Ubah Menjadi URL"}
+                              </button>
+                            </div>
+                            {uploadVideoTypeUrl ? (
+                              <>
+                                <input
+                                  type="text"
+                                  name="videoURL"
+                                  placeholder="Masukkan URL Video"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block mb-[15px]"
+                                />
+                                <label
+                                  htmlFor="videoDuration"
+                                  className="block md:text-sm text-xs mb-1 ml-2"
+                                >
+                                  Durasi Video (Menit)
+                                </label>
+                                <input
+                                  type="number"
+                                  name="videoDuration"
+                                  placeholder="Masukkan Durasi Video Dalam Menit"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block"
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <input
+                                  type="file"
+                                  accept="video/*"
+                                  name="video"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block"
+                                />
+                                <p className="font-semibold text-gray-600 text-xs pl-2 italic">
+                                  <span className="text-red-500">*</span> File
+                                  Video Maks 25 MB
+                                </p>
+                              </>
+                            )}
                           </div>
                           <div className="mt-[30px]">
                             <button
@@ -1354,22 +1419,65 @@ export default function ManageChapter() {
                                     />
                                   </div>
                                   <div className="mb-[15px]">
-                                    <label
-                                      htmlFor=""
-                                      className="block md:text-sm text-xs mb-1 ml-2"
-                                    >
-                                      Upload Video
-                                    </label>
-                                    <input
-                                      type="file"
-                                      accept="video/*"
-                                      name="video"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                    />
-                                    <p className="font-semibold text-gray-600 text-xs pl-2 italic">
-                                      <span className="text-red-500">*</span>{" "}
-                                      File Video Maks 25 MB
-                                    </p>
+                                    <div className="flex justify-between">
+                                      <label
+                                        htmlFor=""
+                                        className="block md:text-sm text-xs mb-1 ml-2"
+                                      >
+                                        Upload Video
+                                      </label>
+                                      <button
+                                        className="text-darkblue-05 text-sm font-bold"
+                                        type="button"
+                                        onClick={() =>
+                                          setUploadVideoTypeUrl(
+                                            !uploadVideoTypeUrl
+                                          )
+                                        }
+                                      >
+                                        {uploadVideoTypeUrl
+                                          ? "Ubah Menjadi File"
+                                          : "Ubah Menjadi URL"}
+                                      </button>
+                                    </div>
+
+                                    {uploadVideoTypeUrl ? (
+                                      <>
+                                        <input
+                                          type="text"
+                                          name="videoURL"
+                                          placeholder="Masukkan URL Video"
+                                          className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block mb-[15px]"
+                                        />
+                                        <label
+                                          htmlFor="videoDuration"
+                                          className="block md:text-sm text-xs mb-1 ml-2"
+                                        >
+                                          Durasi Video (Menit)
+                                        </label>
+                                        <input
+                                          type="number"
+                                          name="videoDuration"
+                                          placeholder="Masukkan Durasi Video Dalam Menit"
+                                          className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block"
+                                        />
+                                      </>
+                                    ) : (
+                                      <>
+                                        <input
+                                          type="file"
+                                          accept="video/*"
+                                          name="video"
+                                          className="bg-gray-50 border border-gray-300 text-gray-900 md:text-sm text-xs mb-1 rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2.5 block"
+                                        />
+                                        <p className="font-semibold text-gray-600 text-xs pl-2 italic">
+                                          <span className="text-red-500">
+                                            *
+                                          </span>{" "}
+                                          File Video Maks 25 MB
+                                        </p>
+                                      </>
+                                    )}
                                   </div>
                                   <div className="mt-[30px]">
                                     <button

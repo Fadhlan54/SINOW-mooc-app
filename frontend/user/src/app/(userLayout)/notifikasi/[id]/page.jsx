@@ -26,7 +26,7 @@ export default function DetailNotificationPage({ params }) {
 
   useEffect(() => {
     if (!token) {
-      push("/beranda");
+      push("/");
     }
     const getNotification = async () => {
       try {

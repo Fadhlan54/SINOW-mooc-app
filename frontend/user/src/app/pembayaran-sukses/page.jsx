@@ -61,7 +61,7 @@ function SuccessfulPayment() {
               Lihat kursus
             </Link>
             <Link
-              href={"/beranda"}
+              href={"/"}
               className="block w-full text-center mt-1 text-primary-01 font-bold underline hover:text-primary-02"
             >
               Pergi ke beranda

@@ -59,7 +59,7 @@ export default function Login() {
         if (form.email && form.password) {
           setIsLoading(true);
           const res = await axios.post(
-            " https://sinow-production.up.railway.app/api/v1/auth/login",
+            `${import.meta.env.VITE_API_URL}/api/v1/auth/login`,
             form,
             {
               headers: {
@@ -67,14 +67,16 @@ export default function Login() {
               },
             }
           );
-
+          console.log(res.data);
+          console.log(res.data.status === "Success");
           if (res.data.status === "Success") {
             const adminToken = res.data.data.token;
+
             const validateToken = async () => {
               try {
                 if (adminToken) {
                   const res = await axios.get(
-                    "https://sinow-production.up.railway.app/api/v1/user",
+                    `${import.meta.env.VITE_API_URL}/api/v1/user`,
                     {
                       headers: {
                         "Content-Type": "application/json",
@@ -82,6 +84,7 @@ export default function Login() {
                       },
                     }
                   );
+                  console.log(res);
                   if (
                     res.data.status === "Success" &&
                     res.data.data.role === "admin"
@@ -113,7 +116,8 @@ export default function Login() {
           }
         }
       } catch (error) {
-        console.error(error.response.data);
+        console.log(import.meta.env.VITE_API_URL);
+        console.log(error);
         setFormLength("");
         setPasswordLengthError(""); // Reset pesan kesalahan panjang password
         setPasswordError("Email atau Password salah. Silakan coba lagi."); // Pesan ID atau password salah

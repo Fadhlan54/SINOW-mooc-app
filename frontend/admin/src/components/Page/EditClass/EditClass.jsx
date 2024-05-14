@@ -39,7 +39,7 @@ export default function EditClass() {
     try {
       const getClass = async () => {
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/courses/${id}`
+          `${import.meta.env.VITE_API_URL}/api/v1/courses/${id}`
         );
         setEditClass(res.data.data);
       };
@@ -179,7 +179,9 @@ export default function EditClass() {
                 if (removeBenefits.length > 0) {
                   for (let i = 0; i < removeBenefits.length; i++) {
                     await axios.delete(
-                      `https://sinow-production.up.railway.app/api/v1/benefits/${removeBenefits[i]}`,
+                      `${import.meta.env.VITE_API_URL}/api/v1/benefits/${
+                        removeBenefits[i]
+                      }`,
                       {
                         headers: {
                           "Content-Type": "application/json",
@@ -225,7 +227,9 @@ export default function EditClass() {
                 if (benefitChangeId.length > 0) {
                   for (let i = 0; i < benefitChangeId.length; i++) {
                     await axios.put(
-                      `https://sinow-production.up.railway.app/api/v1/benefits/${benefitChangeId[i].id}`,
+                      `${import.meta.env.VITE_API_URL}/api/v1/benefits/${
+                        benefitChangeId[i].id
+                      }`,
                       {
                         no: i + 1,
                         description: benefitChangeId[i].description,
@@ -244,7 +248,7 @@ export default function EditClass() {
               }
 
               await axios.put(
-                `https://sinow-production.up.railway.app/api/v1/courses/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/courses/${id}`,
                 form,
                 {
                   headers: {
@@ -321,7 +325,7 @@ export default function EditClass() {
     try {
       const getCategory = async () => {
         const res = await axios.get(
-          "https://sinow-production.up.railway.app/api/v1/category"
+          `${import.meta.env.VITE_API_URL}/api/v1/category`
         );
         setCategories(res.data.data);
       };
@@ -375,7 +379,7 @@ export default function EditClass() {
         const addNewBenefit = async () => {
           setIsLoading(true);
           const res = await axios.post(
-            "https://sinow-production.up.railway.app/api/v1/benefits",
+            `${import.meta.env.VITE_API_URL}/api/v1/benefits`,
             newBenefit,
             {
               headers: {

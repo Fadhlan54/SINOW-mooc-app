@@ -39,7 +39,7 @@ export default function DashboadAdmin() {
         setIsError("");
 
         const totalCourse = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/dashboard/totalCourse`,
+          `${import.meta.env.VITE_API_URL}/api/v1/dashboard/totalCourse`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function DashboadAdmin() {
         );
 
         const totalPremiumCourse = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/dashboard/totalPremiumCourse`,
+          `${import.meta.env.VITE_API_URL}/api/v1/dashboard/totalPremiumCourse`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function DashboadAdmin() {
         );
 
         const totalActiveUser = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/dashboard/totalActiveUser`,
+          `${import.meta.env.VITE_API_URL}/api/v1/dashboard/totalActiveUser`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function DashboadAdmin() {
         setIsLoading(true);
         setIsError("");
         const res = await axios.get(
-          `https://sinow-production.up.railway.app/api/v1/transactions`,
+          `${import.meta.env.VITE_API_URL}/api/v1/transactions`,
           {
             headers: {
               "Content-Type": "application/json",

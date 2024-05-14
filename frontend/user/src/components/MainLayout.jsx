@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setSearch } from "@/store/slices/filterSlice";
 import DesktopNavbar from "./navbar/Desktop";
@@ -19,6 +19,8 @@ export default function MainLayout({
   const [isLogin, setIsLogin] = useState(false);
   const { push } = useRouter();
   const dispatch = useDispatch();
+  const pathName = usePathname();
+  const route = pathName.split("/")[1];
 
   useEffect(() => {
     if (Cookies.get("token")) {
@@ -33,19 +35,12 @@ export default function MainLayout({
 
     if (key) {
       if (key === "Enter") {
-        if (searchValue) {
-          dispatch(setSearch(searchValue));
-        } else {
-          dispatch(setSearch(""));
-        }
+        dispatch(setSearch(searchValue));
+
         push("/kursus");
       }
     } else {
-      if (searchValue) {
-        dispatch(setSearch(searchValue));
-      } else {
-        dispatch(setSearch(""));
-      }
+      dispatch(setSearch(searchValue));
       push("/kursus");
     }
   };

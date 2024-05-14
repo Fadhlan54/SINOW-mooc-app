@@ -27,7 +27,7 @@ export default function BottomNavbar() {
 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"} `}
       >
         <Link
-          href={"/beranda"}
+          href={"/"}
           className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
         >
           <GoHome className="icon" />

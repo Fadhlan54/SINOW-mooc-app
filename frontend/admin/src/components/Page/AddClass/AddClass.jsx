@@ -124,7 +124,7 @@ export default function AddClass() {
             try {
               setIsLoading(true);
               await axios.post(
-                `https://sinow-production.up.railway.app/api/v1/courses`,
+                `${import.meta.env.VITE_API_URL}/api/v1/courses`,
                 form,
                 {
                   headers: {
@@ -195,7 +195,7 @@ export default function AddClass() {
     try {
       const getCategory = async () => {
         const res = await axios.get(
-          "https://sinow-production.up.railway.app/api/v1/category"
+          `${import.meta.env.VITE_API_URL}/api/v1/category`
         );
         setCategories(res.data.data);
       };

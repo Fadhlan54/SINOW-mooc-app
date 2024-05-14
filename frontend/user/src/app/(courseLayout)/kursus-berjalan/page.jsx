@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 import NoCourseCard from "@/components/card/NoCourseCard";
+import NoRunningCourseCard from "@/components/card/NoRunningCourseCard";
 
 function MyCourse() {
   const [courses, setCourses] = useState([]);
@@ -362,7 +363,7 @@ function MyCourse() {
                 ))
               ) : (
                 <div className="col-span-1 sm:col-span-2 xl:col-span-3">
-                  <NoCourseCard />
+                  <NoRunningCourseCard />
                 </div>
               )}
             </div>
