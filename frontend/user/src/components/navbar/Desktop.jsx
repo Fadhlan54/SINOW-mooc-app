@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { GoBell, GoBook, GoHome, GoPerson, GoVideo } from "react-icons/go";
 import { useState } from "react";
-import { FiLogIn } from "react-icons/fi";
 import { RiMenuLine } from "react-icons/ri";
 import { selectSearchFilter } from "@/store/slices/filterSlice";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function DesktopNavbar({
   isLogin,
@@ -17,6 +16,8 @@ export default function DesktopNavbar({
   const [searchValue, setSearchValue] = useState(searchFilter);
 
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const pathname = usePathname();
+  const { push } = useRouter();
 
   return (
     <div className="hidden sm:flex items-center justify-between sticky top-0 left-0 bg-primary-01 w-full px-4 lg:px-8 py-4 z-50 shadow-md">
@@ -73,13 +74,13 @@ export default function DesktopNavbar({
         >
           <Link
             href={"/"}
-            className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+            className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01 ${pathname === "/" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
           >
             Beranda
           </Link>
           <Link
             href={"/kursus"}
-            className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01`}
+            className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01 ${pathname === "/kursus" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
           >
             Kursus
           </Link>
@@ -87,13 +88,13 @@ export default function DesktopNavbar({
             <>
               <Link
                 href={"/kursus-berjalan"}
-                className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+                className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01 ${pathname === "/kursus-berjalan" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
               >
                 Kursus Berjalan
               </Link>
               <Link
                 href={"/notifikasi"}
-                className="px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01"
+                className={`px-4 py-1 hover:bg-primary-01-transparent hover:border-l-4 border-primary-01 hover:text-primary-01 ${pathname === "/notifikasi" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
               >
                 Notifikasi
               </Link>
@@ -111,6 +112,7 @@ export default function DesktopNavbar({
             <button
               onClick={() => {
                 Cookies.remove("token");
+                push("/auth/login");
               }}
               className="px-4 py-1 text-start text-alert-danger  font-bold hover:bg-alert-danger-transparent hover:border-l-4 border-alert-danger-transparent "
             >

@@ -1,17 +1,14 @@
-import { dateFormatter } from "@/lib/formatter";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { FaExclamationTriangle, FaStar } from "react-icons/fa";
 import { PiBooks, PiClockFill } from "react-icons/pi";
 import { RiShieldStarLine } from "react-icons/ri";
 import { FaHourglassHalf, FaMoneyCheckDollar } from "react-icons/fa6";
-import { FaMoneyCheckAlt } from "react-icons/fa";
 import { IoDiamondSharp } from "react-icons/io5";
 
 export default function PaymentHistoryCard({ transaction }) {
   return (
-    <div className="w-80 shadow-xl rounded-xl border border-primary-01 mb-3">
+    <div className="w-11/12 mx-auto max-w-80 shadow-xl rounded-xl border border-primary-01 mb-3">
       <Link href={`/kursus/${transaction.courseId}`}>
         <Image
           src={transaction.Course.imageUrl}
@@ -20,7 +17,7 @@ export default function PaymentHistoryCard({ transaction }) {
           className="w-full h-28 rounded-t-xl object-cover"
         />
       </Link>
-      <div className="p-2">
+      <div className="p-3">
         <div className="flex justify-between">
           <h1 className="font-bold text-sm text-primary-01">
             {transaction.Course.category?.name}
@@ -63,24 +60,24 @@ export default function PaymentHistoryCard({ transaction }) {
           <Link
             href={transaction.paymentUrl}
             target="_blank"
-            className="bg-primary-01 hover:bg-primary-03 text-white rounded-xl text-xs font-bold flex items-center py-1 px-4 mt-2 mb-1  gap-2 w-fit"
+            className="bg-primary-01 hover:bg-primary-03 text-white rounded-full text-xs font-bold flex items-center py-1 px-5 mt-2 mb-1  gap-2 w-fit"
           >
             <FaMoneyCheckDollar className="text-base" /> Bayar sekarang
           </Link>
         ) : transaction.status === "SUDAH_BAYAR" ? (
-          <div className="bg-alert-success text-white rounded-xl text-xs font-bold flex items-center py-1 px-4 mt-2 mb-1  gap-2 w-fit">
+          <div className="bg-alert-success text-white rounded-full text-xs font-bold flex items-center py-1 px-5 mt-2 mb-1  gap-2 w-fit">
             <IoDiamondSharp className="text-base" /> Sudah bayar
           </div>
         ) : transaction.status === "TERTUNDA" ? (
-          <div className="bg-alert-attention text-white rounded-xl text-xs font-bold flex items-center py-1 px-4 mt-2 mb-1  gap-2 w-fit">
+          <div className="bg-alert-attention text-white rounded-full text-xs font-bold flex items-center py-1 px-5 mt-2 mb-1  gap-2 w-fit">
             <FaHourglassHalf className="text-base" /> Transaksi tertunda
           </div>
         ) : transaction.status === "KADALUARSA" ? (
-          <div className="bg-alert-danger text-white rounded-xl text-xs font-bold flex items-center py-1 px-4 mt-2 mb-1  gap-2 w-fit">
+          <div className="bg-alert-danger text-white rounded-full text-xs font-bold flex items-center py-1 px-5 mt-2 mb-1  gap-2 w-fit">
             <FaExclamationTriangle className="text-base" /> Transaksi kadaluarsa
           </div>
         ) : (
-          <div className="bg-alert-danger text-white rounded-xl text-xs font-bold flex items-center py-1 px-4 mt-2 mb-1  gap-2 w-fit">
+          <div className="bg-alert-danger text-white rounded-full text-xs font-bold flex items-center py-1 px-5 mt-2 mb-1  gap-2 w-fit">
             <FaExclamationTriangle className="text-base" /> Transaksi gagal
           </div>
         )}

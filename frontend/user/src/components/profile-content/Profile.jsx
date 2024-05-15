@@ -198,7 +198,7 @@ export default function Profile() {
               placeholder="Masukkan kota tempat tinggal"
             />
             <button
-              className="bg-primary-01 text-white mt-6 font-bold p-2 rounded-xl"
+              className="bg-primary-01 text-white mt-8 font-bold p-2 rounded-full"
               onClick={(e) => handleSubmit(e)}
             >
               Simpan Profil Saya
