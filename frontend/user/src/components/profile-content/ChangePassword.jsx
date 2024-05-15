@@ -82,7 +82,7 @@ export default function ChangePassword() {
         </div>
       )}
       <h1 className="text-center font-bold text-xl">Ubah Kata Sandi</h1>
-      <div className="text-sm mt-4">
+      <div className="text-sm mt-6">
         <label htmlFor="oldPassword">Kata sandi lama</label>
         <div className="flex items-end w-full">
           <input
@@ -94,7 +94,7 @@ export default function ChangePassword() {
             onChange={(e) => setOldPassword(e.target.value)}
           />
           <div
-            className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
             onClick={() => setShowOldPassword(!showOldPassword)}
           >
             {showOldPassword ? (
@@ -105,7 +105,7 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        <label htmlFor="newPassword" className="mt-2 block">
+        <label htmlFor="newPassword" className="mt-4 block">
           Kata sandi baru
         </label>
         <div className="flex items-end ">
@@ -118,7 +118,7 @@ export default function ChangePassword() {
             onChange={(e) => setNewPassword(e.target.value)}
           />
           <div
-            className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
             onClick={() => setShowNewPassword(!showNewPassword)}
           >
             {showNewPassword ? (
@@ -129,7 +129,7 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        <label htmlFor="confirmPassword" className="mt-2 block">
+        <label htmlFor="confirmPassword" className="mt-4 block">
           Konfirmasi kata sandi baru
         </label>
         <div className="flex items-end ">
@@ -142,7 +142,7 @@ export default function ChangePassword() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <div
-            className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? (
@@ -153,7 +153,7 @@ export default function ChangePassword() {
           </div>
         </div>
         <button
-          className="bg-primary-01 hover:bg-primary-03 text-white font-bold text-sm w-full text-center rounded-2xl py-3 mt-6"
+          className="bg-primary-01 hover:bg-primary-03 text-white font-bold text-sm w-full text-center rounded-full py-3 mt-6 "
           onClick={(e) => handleSubmit(e)}
         >
           Ubah password

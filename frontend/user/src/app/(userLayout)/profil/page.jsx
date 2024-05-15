@@ -18,7 +18,7 @@ import PaymentHistory from "@/components/profile-content/PaymentHistory";
 
 export default function ProfilePage() {
   const { push } = useRouter();
-  const [content, setContent] = useState("profil");
+  const [content, setContent] = useState("");
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -28,6 +28,7 @@ export default function ProfilePage() {
 
   return (
     <>
+      {/* Desktop */}
       <div className="hidden sm:flex flex-col items-center ">
         <div className="flex flex-col w-full sm:w-11/12 md:w-4/5 lg:w-3/4 items-center  rounded-2xl  ">
           <div className="w-full py-2 mt-2">
@@ -43,22 +44,22 @@ export default function ProfilePage() {
             <div className="flex w-full h-[71vh]">
               <div className="w-1/2 py-3 font-medium  border-r border-primary-01 min-h-fit">
                 <div
-                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent "
+                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${(content === "profil" || content === "") && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
                   onClick={() => setContent("profil")}
                 >
                   <LuPencilLine className="inline-block text-2xl mr-2" /> Profil
                   Saya
                 </div>
                 <div
-                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent"
+                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${content === "ubahPassword" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
                   onClick={() => setContent("ubahPassword")}
                 >
                   <LuSettings className="inline-block text-2xl mr-2" /> Ubah
                   Password
                 </div>
                 <div
-                  className="px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent"
-                  onClick={() => setContent("paymentHistory")}
+                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${content === "riwayatPembayaran" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
+                  onClick={() => setContent("riwayatPembayaran")}
                 >
                   <LuShoppingCart className="inline-block text-2xl mr-2" />{" "}
                   Riwayat Pembayaran
@@ -70,12 +71,12 @@ export default function ProfilePage() {
                 </div>
               </div>
               <div className="w-1/2 flex flex-col items-center p-4 overflow-auto">
-                {content === "profil" ? (
+                {content === "profil" || content === "" ? (
                   <Profile />
                 ) : content === "ubahPassword" ? (
                   <ChangePassword />
                 ) : (
-                  <PaymentHistory />
+                  content === "riwayatPembayaran" && <PaymentHistory />
                 )}
               </div>
             </div>
@@ -83,37 +84,59 @@ export default function ProfilePage() {
           <p className="text-neutral-300 mt-4">Versi 0.1.0</p>
         </div>
       </div>
-      <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
-        <Link href={"/"}>
-          <LuArrowLeft className="text-2xl" />
-        </Link>
-        <h1 className="font-bold text-2xl mt-5 mb-2 p-2">Akun</h1>
-        <div className="bg-white pt-4 pb-4 rounded-2xl text-sm">
-          <div className="p-4 border-b   ">
-            <button>
-              <LuPencilLine className="inline-block text-xl mr-2 text-primary-01" />{" "}
-              Profil Saya
-            </button>
+
+      {/* Mobile */}
+      {content === "" && (
+        <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
+          <Link href={"/"}>
+            <LuArrowLeft className="text-2xl" />
+          </Link>
+          <h1 className="font-bold text-2xl mt-5 mb-2 p-2">Akun</h1>
+          <div className="bg-white pt-4 pb-4 rounded-2xl text-sm">
+            <div className="p-4 border-b   ">
+              <button onClick={() => setContent("profil")}>
+                <LuPencilLine className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                Profil Saya
+              </button>
+            </div>
+            <div className="p-4 border-b ">
+              <button onClick={() => setContent("ubahPassword")}>
+                <LuSettings className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                Ubah Password
+              </button>
+            </div>
+            <div className="p-4 border-b">
+              <button onClick={() => setContent("riwayatPembayaran")}>
+                <LuShoppingCart className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                Riwayat Pembayaran
+              </button>
+            </div>
+            <div className="p-4 border-b text-alert-danger mb-8">
+              <button onClick={(e) => handleLogout(e)}>
+                <LuLogOut className="inline-block text-xl mr-2" /> Keluar
+              </button>
+            </div>
           </div>
-          <div className="p-4 border-b ">
-            <button>
-              <LuSettings className="inline-block text-xl mr-2 text-primary-01" />{" "}
-              Ubah Password
-            </button>
-          </div>
-          <div className="p-4 border-b">
-            <button>
-              <LuShoppingCart className="inline-block text-xl mr-2 text-primary-01" />{" "}
-              Riwayat Pembayaran
-            </button>
-          </div>
-          <div className="p-4 border-b text-alert-danger mb-8">
-            <button onClick={(e) => handleLogout(e)}>
-              <LuLogOut className="inline-block text-xl mr-2" /> Keluar
-            </button>
-          </div>
+          <p className="text-xs text-neutral-04 mt-2 text-center">
+            Versi 0.1.0
+          </p>
         </div>
-        <p className="text-xs text-neutral-04 mt-2 text-center">Versi 0.1.0</p>
+      )}
+      <div className="sm:hidden p-4 bg-neutral-02 min-h-screen">
+        <button
+          className="text-primary-01 hover:text-primary-02 mb-4"
+          onClick={() => setContent("")}
+        >
+          <LuArrowLeft className="inline-block text-xl mr-1" />
+          Kembali
+        </button>
+        {content === "profil" ? (
+          <Profile />
+        ) : content === "ubahPassword" ? (
+          <ChangePassword />
+        ) : (
+          content === "riwayatPembayaran" && <PaymentHistory />
+        )}
       </div>
     </>
   );

@@ -3,6 +3,8 @@ import PaymentHistoryCard from "../card/PaymentHistoryCard";
 import Cookies from "js-cookie";
 import { fetchUserTransactions } from "@/services/user.service";
 import LoadingScreen from "../loading-animation/LoadingScreen";
+import NoCourseCard from "../card/NoCourseCard";
+import NoTransactionCard from "../card/NoTransactionCard";
 
 export default function PaymentHistory() {
   const token = Cookies.get("token");
@@ -26,15 +28,18 @@ export default function PaymentHistory() {
     getCourses();
   }, []);
   return (
-    <div>
+    <div className="w-full">
       {isLoading && <LoadingScreen />}
-      <h1 className="font-bold text-xl text-center mb-4">Payment History</h1>
-      {transactions.length > 0 &&
+      <h1 className="font-bold text-xl text-center mb-6 ">Payment History</h1>
+      {transactions.length > 0 ? (
         transactions.map((transaction) => (
           <>
             <PaymentHistoryCard transaction={transaction} />
           </>
-        ))}
+        ))
+      ) : (
+        <NoTransactionCard />
+      )}
     </div>
   );
 }
