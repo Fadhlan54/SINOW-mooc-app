@@ -130,6 +130,7 @@ export default function Home() {
               height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner learn sinow"
+              priority
             />
           </SwiperSlide>
           <SwiperSlide className="banner-slide">
@@ -141,6 +142,7 @@ export default function Home() {
               height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner promo sinow"
+              priority
             />
           </SwiperSlide>
           <SwiperSlide className="banner-slide">
@@ -152,6 +154,7 @@ export default function Home() {
               height={300}
               className="rounded-3xl object-cover shadow-md"
               alt="ads banner tags sinow"
+              priority
             />
           </SwiperSlide>
         </Swiper>
