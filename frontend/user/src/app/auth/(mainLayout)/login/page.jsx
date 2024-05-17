@@ -1,6 +1,6 @@
 "use client";
 
-import { Montserrat, Poppins } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { FcGoogle } from "react-icons/fc";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Link from "next/link";

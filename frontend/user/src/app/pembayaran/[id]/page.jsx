@@ -5,11 +5,7 @@ import CourseCard from "@/components/card/CourseCard";
 import NoCourseCard from "@/components/card/NoCourseCard";
 import LoadingScreen from "@/components/loading-animation/LoadingScreen";
 import { currencyFormatterIDR } from "@/lib/formatter";
-import {
-  fetchCourseById,
-  fetchCourses,
-  fetchOtherCourses,
-} from "@/services/course.service";
+import { fetchCourseById, fetchOtherCourses } from "@/services/course.service";
 import { fetchCreateTrx } from "@/services/transaction.service";
 import Cookies from "js-cookie";
 import Image from "next/image";

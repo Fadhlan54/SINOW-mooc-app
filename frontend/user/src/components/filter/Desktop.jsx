@@ -4,7 +4,7 @@ import {
   selectLevelFilter,
   selectSortFilter,
 } from "@/store/slices/filterSlice";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory, setSort, setLevel } from "@/store/slices/filterSlice";
 
