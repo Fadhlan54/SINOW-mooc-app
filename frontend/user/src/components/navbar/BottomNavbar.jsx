@@ -21,26 +21,26 @@ export default function BottomNavbar() {
   }, [prevScrollPos]);
   return (
     <>
-      <div className="w-full h-4 sm:hidden"></div>
+      <div className="h-4 w-full sm:hidden"></div>
       <div
-        className={`fixed z-40 sm:hidden bottom-0 left-0 bg-primary-01 w-full flex justify-evenly pt-2 rounded-t-[2rem] text-2xl text-white 
-transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"} `}
+        className={`fixed bottom-0 left-0 z-40 flex w-full justify-evenly rounded-t-[2rem] bg-primary-01 pt-2 text-2xl text-white transition-transform 
+duration-300 sm:hidden ${visible ? "translate-y-0" : "translate-y-full"} `}
       >
         <Link
           href={"/"}
-          className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
+          className="rounded-t-2xl px-4  py-2.5 hover:bg-primary-03"
         >
           <GoHome className="icon" />
         </Link>
         <Link
           href={"/kursus-berjalan"}
-          className="py-2.5 px-4  hover:bg-primary-03 rounded-t-2xl"
+          className="rounded-t-2xl px-4  py-2.5 hover:bg-primary-03"
         >
           <GoVideo className="icon" />
         </Link>
         <Link
           href={"/kursus"}
-          className="py-2.5 px-4 hover:bg-primary-03 rounded-t-2xl"
+          className="rounded-t-2xl px-4 py-2.5 hover:bg-primary-03"
         >
           <GoBook className="icon" />
         </Link>

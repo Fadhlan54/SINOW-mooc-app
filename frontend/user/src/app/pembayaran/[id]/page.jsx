@@ -106,36 +106,36 @@ export default function Pembayaran({ params }) {
 
   return (
     <MainLayout disableSearch>
-      <div className="p-4 md:px-10 border-t-2">
+      <div className="border-t-2 p-4 md:px-10">
         {isLoading ? (
           <LoadingScreen />
         ) : course ? (
           <div className="max-w-7xl  gap-4">
-            <div className="h-fit w-fit border border-primary-01 rounded-3xl shadow-lg ">
-              <div className="bg-primary-01 p-2 rounded-t-3xl flex justify-center items-center text-white">
+            <div className="h-fit w-fit rounded-3xl border border-primary-01 shadow-lg ">
+              <div className="flex items-center justify-center rounded-t-3xl bg-primary-01 p-2 text-white">
                 <h1 className="text-xl font-bold">Pembayaran Kursus</h1>
               </div>
 
-              <div className="p-4 sm:flex flex-wrap gap-4">
-                <div className="shadow-md rounded-3xl w-full sm:max-w-80">
+              <div className="flex-wrap gap-4 p-4 sm:flex">
+                <div className="w-full rounded-3xl shadow-md sm:max-w-80">
                   <Image
                     width={320}
                     height={96}
                     src={course.imageUrl}
-                    className="w-full h-24 object-cover rounded-t-3xl"
+                    className="h-24 w-full rounded-t-3xl object-cover"
                   />
-                  <div className="py-3 px-4">
+                  <div className="px-4 py-3">
                     <h3 className="text-sm font-bold text-primary-01">
                       {course.category?.name}
                     </h3>
-                    <h2 className="font-bold text-sm">{course.name}</h2>
-                    <p className="text-xs mt-1 md:mt-2">
+                    <h2 className="text-sm font-bold">{course.name}</h2>
+                    <p className="mt-1 text-xs md:mt-2">
                       Oleh {course.courseBy}
                     </p>
                   </div>
                 </div>
-                <div className="text-sm mt-2 sm:mt-0">
-                  <h2 className="font-bold text-lg text-primary-01">
+                <div className="mt-2 text-sm sm:mt-0">
+                  <h2 className="text-lg font-bold text-primary-01">
                     Rincian Harga
                   </h2>
                   <h4 className="font-bold">Harga</h4>
@@ -143,13 +143,13 @@ export default function Pembayaran({ params }) {
                     <p className="mr-1">
                       {detailPrice.discountPercentage > 0
                         ? currencyFormatterIDR(
-                            detailPrice.price - detailPrice.discountPrice
+                            detailPrice.price - detailPrice.discountPrice,
                           )
                         : currencyFormatterIDR(detailPrice.price)}
                     </p>
                     {course.promoDiscountPercentage > 0 && (
                       <>
-                        <p className="text-neutral-04 font-semibold mr-1 line-through">
+                        <p className="mr-1 font-semibold text-neutral-04 line-through">
                           {currencyFormatterIDR(detailPrice.price)}
                         </p>
                         <p className="text-xs text-neutral-04">
@@ -165,7 +165,7 @@ export default function Pembayaran({ params }) {
                     {currencyFormatterIDR(detailPrice.total)}
                   </p>
                   <button
-                    className="bg-primary-01 hover:bg-primary-04 text-white font-bold py-2 sm:w-full rounded-full mt-2 block text-xs px-5"
+                    className="mt-2 block rounded-full bg-primary-01 px-5 py-2 text-xs font-bold text-white hover:bg-primary-04 sm:w-full"
                     onClick={handleCreateTransaction}
                   >
                     Bayar dan akses kursus selamanya
@@ -175,8 +175,8 @@ export default function Pembayaran({ params }) {
             </div>
 
             <div className="mt-4 sm:mt-6">
-              <h1 className="text-lg font-bold mb-1">Rekomendasi Kursus</h1>
-              <div className="flex flex-col gap-4 max-w-xs">
+              <h1 className="mb-1 text-lg font-bold">Rekomendasi Kursus</h1>
+              <div className="flex max-w-xs flex-col gap-4">
                 {otherCourses &&
                   otherCourses.length > 0 &&
                   otherCourses.map((course) => (

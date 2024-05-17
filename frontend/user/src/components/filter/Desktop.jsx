@@ -84,10 +84,10 @@ export default function DesktopFilter() {
   return (
     <form onChange={(e) => handleFilterForm(e)}>
       <h2 className="text-xl font-bold text-primary-01">Filter</h2>
-      <h3 className="text-lg font-semibold mb-1">Urutkan</h3>
+      <h3 className="mb-1 text-lg font-semibold">Urutkan</h3>
       <ul className="text-xs">
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="radio"
               id="terbaru"
@@ -99,7 +99,7 @@ export default function DesktopFilter() {
           </div>
         </li>
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="radio"
               id="terpopuler"
@@ -111,7 +111,7 @@ export default function DesktopFilter() {
           </div>
         </li>
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="radio"
               id="rating"
@@ -123,11 +123,11 @@ export default function DesktopFilter() {
           </div>
         </li>
       </ul>
-      <h3 className="text-lg font-semibold mb-1 mt-3">Kategori</h3>
+      <h3 className="mb-1 mt-3 text-lg font-semibold">Kategori</h3>
       <ul className="text-xs">
         {categories.map((category) => (
           <li>
-            <div className="flex items-center gap-1 my-1">
+            <div className="my-1 flex items-center gap-1">
               <input
                 type="checkbox"
                 name="categoryId"
@@ -141,10 +141,10 @@ export default function DesktopFilter() {
         ))}
       </ul>
 
-      <h3 className="text-lg font-semibold mb-1 mt-3">Level Kesulitan</h3>
+      <h3 className="mb-1 mt-3 text-lg font-semibold">Level Kesulitan</h3>
       <ul className="text-xs">
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="checkbox"
               name="level"
@@ -156,7 +156,7 @@ export default function DesktopFilter() {
           </div>
         </li>
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="checkbox"
               name="level"
@@ -168,7 +168,7 @@ export default function DesktopFilter() {
           </div>
         </li>
         <li>
-          <div className="flex items-center gap-1 my-1">
+          <div className="my-1 flex items-center gap-1">
             <input
               type="checkbox"
               name="level"
@@ -181,7 +181,7 @@ export default function DesktopFilter() {
         </li>
       </ul>
       <button
-        className="w-full mt-3 text-center text-sm font-semibold text-alert-danger"
+        className="mt-3 w-full text-center text-sm font-semibold text-alert-danger"
         onClick={(e) => handleResetFilter(e)}
       >
         Hapus Filter

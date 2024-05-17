@@ -59,23 +59,23 @@ export default function NotificationsPage() {
 
   return (
     <MainLayout disableMobileNavbar>
-      <div className="w-full max-w-4xl mx-auto px-4  md:px-6 py-1 mb-3 md:pb-6">
+      <div className="mx-auto mb-3 w-full max-w-4xl  px-4 py-1 md:px-6 md:pb-6">
         <Link
           href={"/"}
-          className="flex items-center gap-2 font-semibold my-3 w-fit"
+          className="my-3 flex w-fit items-center gap-2 font-semibold"
         >
           <LuArrowLeft className="sm:text-lg" />
           <p className="text-sm sm:text-base">Pergi ke beranda</p>
         </Link>
-        <div className="w-full shadow-md rounded-2xl">
-          <div className="bg-primary-01 text-white font-bold text-xl w-full text-center rounded-t-2xl py-2">
+        <div className="w-full rounded-2xl shadow-md">
+          <div className="w-full rounded-t-2xl bg-primary-01 py-2 text-center text-xl font-bold text-white">
             <h1>Notifikasi</h1>
           </div>
 
           {isLoading ? (
             <Loading />
           ) : notifications.length < 1 ? (
-            <div className="w-full flex flex-col justify-center items-center p-6 bg-white rounded-b-2xl border border-primary-01">
+            <div className="flex w-full flex-col items-center justify-center rounded-b-2xl border border-primary-01 bg-white p-6">
               <Image
                 src={
                   "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/notify_null.png?updatedAt=1709088271424"
@@ -84,17 +84,17 @@ export default function NotificationsPage() {
                 width={190}
                 height={160}
               />
-              <p className="text-primary-01 font-bold mt-2 text-xl">
+              <p className="mt-2 text-xl font-bold text-primary-01">
                 Tidak ada notifikasi
               </p>
             </div>
           ) : (
-            <div className="pb-8 bg-white rounded-b-2xl border border-primary-01">
-              <div className="flex items-center justify-end px-2 md:px-4 gap-2 sm:gap-4 py-3 ">
-                <button className="text-xs md:text-sm font-bold text-primary-01 text-start">
+            <div className="rounded-b-2xl border border-primary-01 bg-white pb-8">
+              <div className="flex items-center justify-end gap-2 px-2 py-3 sm:gap-4 md:px-4 ">
+                <button className="text-start text-xs font-bold text-primary-01 md:text-sm">
                   Tandai semua sebagai dibaca
                 </button>
-                <button className="text-xs md:text-sm font-bold text-primary-01 text-start">
+                <button className="text-start text-xs font-bold text-primary-01 md:text-sm">
                   Hapus semua
                 </button>
               </div>
@@ -103,23 +103,23 @@ export default function NotificationsPage() {
                 notifications.map((notification) => (
                   <Link
                     href={`/notifikasi/${notification.id}`}
-                    className={`flex items-center justify-between py-3 px-4 md:px-8 border gap-1 hover:bg-neutral-200 ${!notification.isRead && "bg-neutral-100"} `}
+                    className={`flex items-center justify-between gap-1 border px-4 py-3 hover:bg-neutral-200 md:px-8 ${!notification.isRead && "bg-neutral-100"} `}
                     key={notification.id}
                   >
-                    <div className="flex gap-4 items-center w-full ">
-                      <div className="bg-primary-01 p-2 rounded-full">
+                    <div className="flex w-full items-center gap-4 ">
+                      <div className="rounded-full bg-primary-01 p-2">
                         <FaBell className="text-lg text-white" />
                       </div>
-                      <div className=" w-full flex flex-col ">
-                        <div className="flex justify-between items-start gap-1">
-                          <p className="text-primary-01 text-sm font-bold">
+                      <div className=" flex w-full flex-col ">
+                        <div className="flex items-start justify-between gap-1">
+                          <p className="text-sm font-bold text-primary-01">
                             {notification.type || "notifikasi"}
                           </p>
-                          <p className="text-xs text-neutral-04 font-semibold block text-end">
+                          <p className="block text-end text-xs font-semibold text-neutral-04">
                             {dateFormatter(notification.createdAt)}
                           </p>
                         </div>
-                        <p className="font-semibold text-sm ">
+                        <p className="text-sm font-semibold ">
                           {notification.title}
                         </p>
                         {notification.type === "Promosi" && (

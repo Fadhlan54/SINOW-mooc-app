@@ -49,7 +49,7 @@ export default function LoginPage() {
         e.target.name.value,
         e.target.email.value,
         e.target.phoneNumber.value,
-        e.target.password.value
+        e.target.password.value,
       );
 
       if (res.status === "Success") {
@@ -66,12 +66,12 @@ export default function LoginPage() {
   };
   return (
     <form
-      className="w-full lg:w-3/4 max-w-[452px] mt-4 pt-10"
+      className="mt-4 w-full max-w-[452px] pt-10 lg:w-3/4"
       onSubmit={(e) => handleSubmit(e)}
     >
       {isLoading && <LoadingScreen />}
       {errorMessage && (
-        <div className="absolute top-10 bg-alert-danger rounded-lg ps-4 pe-2 py-2 text-white justify-self-end self-end right-0 text flex opacity-80">
+        <div className="text absolute right-0 top-10 flex self-end justify-self-end rounded-lg bg-alert-danger py-2 pe-2 ps-4 text-white opacity-80">
           <p className="text-sm">{errorMessage}</p>
           <button
             className="ml-2"
@@ -85,7 +85,7 @@ export default function LoginPage() {
         </div>
       )}
       <h3
-        className={`text-primary-01 font-bold text text-2xl mb-6 ${montserrat.className}`}
+        className={`text mb-6 text-2xl font-bold text-primary-01 ${montserrat.className}`}
       >
         Daftar
       </h3>
@@ -98,7 +98,7 @@ export default function LoginPage() {
           name="name"
           id="name"
           placeholder="Masukkan nama lengkap"
-          className="block border border-neutral-03 rounded-2xl py-3 px-4 w-full text-sm mt-1"
+          className="mt-1 block w-full rounded-2xl border border-neutral-03 px-4 py-3 text-sm"
         />
       </div>
       <div className="mb-4">
@@ -110,7 +110,7 @@ export default function LoginPage() {
           name="email"
           id="email"
           placeholder="Masukkan email"
-          className="block border border-neutral-03 rounded-2xl py-3 px-4 w-full text-sm mt-1"
+          className="mt-1 block w-full rounded-2xl border border-neutral-03 px-4 py-3 text-sm"
         />
       </div>
       <div className="mb-4">
@@ -122,8 +122,8 @@ export default function LoginPage() {
           name="phoneNumber"
           id="phoneNumber"
           placeholder="Masukkan nomor telepon"
-          className="block border border-neutral-03 rounded-2xl py-3 px-4 w-full text-sm mt-1
-              [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none focus:outline-none"
+          className="mt-1 block w-full rounded-2xl border border-neutral-03 px-4 py-3 text-sm
+              [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
         />
       </div>
       <div className="mb-4 ">
@@ -137,10 +137,10 @@ export default function LoginPage() {
             name="password"
             id="password"
             placeholder="Masukkan kata sandi"
-            className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+            className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
           />
           <div
-            className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="cursor-pointer rounded-r-2xl  border border-l-0 border-neutral-03 px-4 py-3 text-xl"
             onClick={toggleShowPassword}
           >
             {showPassword ? (
@@ -160,12 +160,12 @@ export default function LoginPage() {
       <Link
         href={`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login/google`}
         className={
-          "w-full mt-4 border bg-white hover:bg-gray-200 p-2 rounded-2xl block text-center text-sm"
+          "mt-4 block w-full rounded-2xl border bg-white p-2 text-center text-sm hover:bg-gray-200"
         }
       >
-        <FcGoogle className="inline-block mr-1 w-6 h-6" /> Masuk dengan Google
+        <FcGoogle className="mr-1 inline-block h-6 w-6" /> Masuk dengan Google
       </Link>
-      <div className="text-center text-sm mt-6 mb-5">
+      <div className="mb-5 mt-6 text-center text-sm">
         <p>
           Sudah punya akun?{" "}
           <Link

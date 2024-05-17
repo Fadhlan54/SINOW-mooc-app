@@ -52,11 +52,11 @@ export default function ResetPasswordPage() {
   };
   return (
     <div
-      className={`flex min-h-screen justify-center items-center border border-neutral-03 ${poppins.className}`}
+      className={`flex min-h-screen items-center justify-center border border-neutral-03 ${poppins.className}`}
     >
       {" "}
       {isLoading && <LoadingScreen />}
-      <div className="border rounded-lg flex flex-col justify-center items-center py-7 px-4 mx-6 shadow-xl">
+      <div className="mx-6 flex flex-col items-center justify-center rounded-lg border px-4 py-7 shadow-xl">
         <Link href={"/"}>
           <Image
             src={
@@ -69,15 +69,15 @@ export default function ResetPasswordPage() {
           />
         </Link>
         <form
-          className="w-full lg:w-3/4 max-w-[452px] px-6 lg:px-0"
+          className="w-full max-w-[452px] px-6 lg:w-3/4 lg:px-0"
           onSubmit={(e) => handleSubmit(e)}
         >
           <h3
-            className={`text-primary-01 font-bold text text-2xl mb-2 ${montserrat.className}`}
+            className={`text mb-2 text-2xl font-bold text-primary-01 ${montserrat.className}`}
           >
             Setel ulang kata sandi
           </h3>
-          <p className="text-xs mb-6">
+          <p className="mb-6 text-xs">
             Masukkan email yang terhubung dengan akun anda dan kami akan
             mengirimkan tautan untuk mengatur ulang kata sandi ke email anda
           </p>
@@ -90,7 +90,7 @@ export default function ResetPasswordPage() {
               name="email"
               id="email"
               placeholder="Masukkan email"
-              className="block border border-neutral-03 rounded-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+              className="mt-1 block w-full rounded-2xl border border-neutral-03 px-4 py-3 text-sm focus:outline-none"
             />
           </div>
 
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
           >
             Selanjutnya
           </Button>
-          <div className="text-center text-sm mt-6">
+          <div className="mt-6 text-center text-sm">
             <p>
               Kembali ke halaman{" "}
               <Link

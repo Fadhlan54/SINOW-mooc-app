@@ -148,7 +148,7 @@ function VerifyEmail() {
 
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   const handleResendOTP = async () => {
@@ -173,12 +173,12 @@ function VerifyEmail() {
   return (
     <div className={`flex min-h-screen ${poppins.className}`}>
       {isLoading && <LoadingScreen />}
-      <div className="flex items-center flex-col justify-center w-full lg:w-1/2 mx-6 relative ">
+      <div className="relative mx-6 flex w-full flex-col items-center justify-center lg:w-1/2 ">
         {(errorMessage || successMessage) && (
-          <div className="absolute top-10   text-white right-0 opacity-80">
+          <div className="absolute right-0   top-10 text-white opacity-80">
             {errorMessage && (
-              <div className="bg-alert-danger rounded-lg ps-4 pe-2 py-2 flex mb-2 justify-between text-center">
-                <p className="text-sm w-full">{errorMessage}</p>
+              <div className="mb-2 flex justify-between rounded-lg bg-alert-danger py-2 pe-2 ps-4 text-center">
+                <p className="w-full text-sm">{errorMessage}</p>
                 <button
                   className="ml-2"
                   onClick={(e) => {
@@ -191,8 +191,8 @@ function VerifyEmail() {
               </div>
             )}
             {successMessage && (
-              <div className="bg-alert-success rounded-lg ps-4 pe-2 py-2 flex justify-between text-center">
-                <p className="text-sm w-full">{successMessage}</p>
+              <div className="flex justify-between rounded-lg bg-alert-success py-2 pe-2 ps-4 text-center">
+                <p className="w-full text-sm">{successMessage}</p>
                 <button
                   className="ml-2"
                   onClick={(e) => {
@@ -213,24 +213,24 @@ function VerifyEmail() {
           alt="sinow logo dark with text dark"
           width={214}
           height={164}
-          className="mt-14 mb-8 sm:mt-0"
+          className="mb-8 mt-14 sm:mt-0"
         />
         <form
-          className="w-full lg:w-3/4 max-w-[452px] text-center"
+          className="w-full max-w-[452px] text-center lg:w-3/4"
           onSubmit={(e) => handleSubmit(e)}
         >
           <h3
-            className={`text-primary-01 font-bold text text-2xl mb-4 ${montserrat.className}`}
+            className={`text mb-4 text-2xl font-bold text-primary-01 ${montserrat.className}`}
           >
             Verifikasi email anda
           </h3>
 
-          <div className="mb-6 flex space-x-4 justify-center items-center bg-primary-01 py-8 rounded-2xl text-white font-semibold shadow-xl">
+          <div className="mb-6 flex items-center justify-center space-x-4 rounded-2xl bg-primary-01 py-8 font-semibold text-white shadow-xl">
             {otpValues.map((value, index) => (
-              <div key={index} className="w-9 h-9">
+              <div key={index} className="h-9 w-9">
                 <input
                   ref={inputRefs.current[index]}
-                  className="w-full h-full flex flex-col items-center justify-center text-center outline-none border-b-4 border-white  text-xl bg-primary-01"
+                  className="flex h-full w-full flex-col items-center justify-center border-b-4 border-white bg-primary-01 text-center  text-xl outline-none"
                   type="text"
                   value={value}
                   onChange={(e) => handleInputChange(index, e)}
@@ -250,7 +250,7 @@ function VerifyEmail() {
             Verifikasi email
           </Button>
           {countdownTimer > 0 ? (
-            <p className="text-sm mt-4">
+            <p className="mt-4 text-sm">
               Kirim ulang OTP dalam{" "}
               <span className="font-bold text-primary-01">
                 {countdownTimer}
@@ -261,13 +261,13 @@ function VerifyEmail() {
             <button
               type="button"
               onClick={() => handleResendOTP()}
-              className="text-sm text-primary-01 hover:text-primary-02 mt-4"
+              className="mt-4 text-sm text-primary-01 hover:text-primary-02"
             >
               Kirim Ulang OTP
             </button>
           )}
 
-          <div className="text-center text-sm mt-6">
+          <div className="mt-6 text-center text-sm">
             <p>
               Kembali ke halaman{" "}
               <Link
@@ -280,8 +280,8 @@ function VerifyEmail() {
           </div>
         </form>
       </div>
-      <div className="w-1/2  bg-primary-01 hidden lg:flex justify-center items-center flex-col">
-        <div className="w-full flex flex-col items-center text-center mb-6">
+      <div className="hidden  w-1/2 flex-col items-center justify-center bg-primary-01 lg:flex">
+        <div className="mb-6 flex w-full flex-col items-center text-center">
           <Image
             src={
               "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/LOGO/logo-sinow-bg-text.png?updatedAt=1706583375728"

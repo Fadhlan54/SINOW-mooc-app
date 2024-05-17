@@ -17,47 +17,47 @@ export default function CourseCard({ course }) {
         }
         width={320}
         height={80}
-        className="object-cover w-full h-32 rounded-t-3xl"
+        className="h-32 w-full rounded-t-3xl object-cover"
         alt={course.name}
       />
       <div className="p-4">
         <div className="flex justify-between">
-          <h1 className="font-bold text-sm text-primary-01">
+          <h1 className="text-sm font-bold text-primary-01">
             {course.category?.name}
           </h1>
           <div className="flex ">
             <FaStar className="text-alert-attention" />
-            <p className="text-sm font-semibold ml-1">{course.rating}</p>
+            <p className="ml-1 text-sm font-semibold">{course.rating}</p>
           </div>
         </div>
-        <h2 className="text-sm truncate font-bold mt-1">{course.name}</h2>
-        <div className="text-xs flex justify-between mt-1">
+        <h2 className="mt-1 truncate text-sm font-bold">{course.name}</h2>
+        <div className="mt-1 flex justify-between text-xs">
           <p className="">{course.courseBy}</p>
 
-          <p className="text-primary-01 font-semibold text-[0.65rem]">
+          <p className="text-[0.65rem] font-semibold text-primary-01">
             {dateFormatter(course.createdAt).split(",")[0]}
           </p>
         </div>
 
-        <div className="flex justify-between items-center mt-2">
+        <div className="mt-2 flex items-center justify-between">
           <div className="flex items-center">
             <RiShieldStarLine className="text-alert-success" />
-            <p className="text-[0.65rem] ml-1 font-semibold text-primary-01">
+            <p className="ml-1 text-[0.65rem] font-semibold text-primary-01">
               Level{" "}
               {course.level?.charAt(0).toUpperCase() + course.level.slice(1)}
             </p>
           </div>
           <div className="flex items-center">
             <PiBooks className="text-alert-success" />
-            <p className="text-[0.65rem] ml-1">{course.totalModule} Modul</p>
+            <p className="ml-1 text-[0.65rem]">{course.totalModule} Modul</p>
           </div>
           <div className="flex items-center justify-center">
             <PiClockFill className="text-alert-success" />
-            <p className="text-[0.65rem] ml-1">{course.totalDuration} Menit</p>
+            <p className="ml-1 text-[0.65rem]">{course.totalDuration} Menit</p>
           </div>
         </div>
-        <p className="text-[0.65rem] mt-1">
-          <span className="text-primary-01 font-semibold">
+        <p className="mt-1 text-[0.65rem]">
+          <span className="font-semibold text-primary-01">
             {course.totalUser}
           </span>{" "}
           Pengguna mengikuti kursus ini
@@ -66,15 +66,15 @@ export default function CourseCard({ course }) {
           onClick={() => {
             push(`/kursus/${course.id}`);
           }}
-          className="flex items-center justify-between mt-2 bg-primary-01 hover:bg-primary-04 py-1 px-4 rounded-2xl text-white font-semibold text-xs"
+          className="mt-2 flex items-center justify-between rounded-2xl bg-primary-01 px-4 py-1 text-xs font-semibold text-white hover:bg-primary-04"
         >
           {course.type === "premium" ? (
             <>
-              <IoDiamondSharp className="mr-1 text-base inline-block" />
+              <IoDiamondSharp className="mr-1 inline-block text-base" />
               <span>{currencyFormatterIDR(course.price)}</span>
             </>
           ) : (
-            <p className=" w-20 flex items-center justify-center">
+            <p className=" flex w-20 items-center justify-center">
               <span>
                 <IoGiftSharp className="mr-1 text-base " />
               </span>

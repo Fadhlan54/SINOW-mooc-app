@@ -90,7 +90,7 @@ export default function ResetPasswordPage(props) {
   return (
     <div className={`flex min-h-screen ${poppins.className}`}>
       {isLoading && <LoadingScreen />}
-      <div className="flex items-center flex-col justify-center w-full lg:w-1/2 mx-6">
+      <div className="mx-6 flex w-full flex-col items-center justify-center lg:w-1/2">
         <Image
           src={
             "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/reset-password.png?updatedAt=1706606384684"
@@ -98,14 +98,14 @@ export default function ResetPasswordPage(props) {
           alt="sinow logo dark with text dark"
           width={214}
           height={164}
-          className="mt-14 mb-8 sm:mt-0"
+          className="mb-8 mt-14 sm:mt-0"
         />
         <form
-          className="w-full lg:w-3/4 max-w-[452px]"
+          className="w-full max-w-[452px] lg:w-3/4"
           onSubmit={(e) => handleSubmit(e)}
         >
           <h3
-            className={`text-primary-01 font-bold text text-2xl mb-4 ${montserrat.className}`}
+            className={`text mb-4 text-2xl font-bold text-primary-01 ${montserrat.className}`}
           >
             Setel ulang kata sandi
           </h3>
@@ -120,10 +120,10 @@ export default function ResetPasswordPage(props) {
                 name="password"
                 id="password"
                 placeholder="Masukkan kata sandi"
-                className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+                className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
               />
               <div
-                className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+                className="cursor-pointer rounded-r-2xl  border border-l-0 border-neutral-03 px-4 py-3 text-xl"
                 onClick={toggleShowPassword}
               >
                 {showPassword ? (
@@ -146,10 +146,10 @@ export default function ResetPasswordPage(props) {
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="Konfirmasi kata sandi"
-                className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+                className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
               />
               <div
-                className="border border-l-0  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+                className="cursor-pointer rounded-r-2xl  border border-l-0 border-neutral-03 px-4 py-3 text-xl"
                 onClick={toggleShowConfirmedPassword}
               >
                 {showConfirmedPassword ? (
@@ -166,7 +166,7 @@ export default function ResetPasswordPage(props) {
           >
             reset kata sandi
           </Button>
-          <div className="text-center text-sm mt-6">
+          <div className="mt-6 text-center text-sm">
             <p>
               Belum punya akun?{" "}
               <Link
@@ -179,8 +179,8 @@ export default function ResetPasswordPage(props) {
           </div>
         </form>
       </div>
-      <div className="w-1/2  bg-primary-01 hidden lg:flex justify-center items-center flex-col">
-        <div className="w-full flex flex-col items-center text-center mb-6">
+      <div className="hidden  w-1/2 flex-col items-center justify-center bg-primary-01 lg:flex">
+        <div className="mb-6 flex w-full flex-col items-center text-center">
           <Image
             src={
               "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/LOGO/logo-sinow-bg-text.png?updatedAt=1706583375728"
