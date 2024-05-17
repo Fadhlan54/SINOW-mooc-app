@@ -10,7 +10,6 @@ import {
 } from "react-icons/lu";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useState } from "react";
 import Profile from "@/components/profile-content/Profile";
 import ChangePassword from "@/components/profile-content/ChangePassword";

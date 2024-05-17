@@ -2,16 +2,13 @@
 
 import MainLayout from "@/components/MainLayout";
 import Loading from "@/components/loading-animation/Loading";
-import { dateFormatter } from "@/lib/formatter";
 import { fetchNotificationDetail } from "@/services/notification.service";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaBell } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-import { LuArrowLeft, LuTrash2 } from "react-icons/lu";
+import { LuArrowLeft } from "react-icons/lu";
 import Swal from "sweetalert2";
 
 export default function DetailNotificationPage({ params }) {

@@ -37,6 +37,7 @@ function SuccessfulPayment() {
   }, []);
   return (
     <MainLayout>
+      {isLoading && <LoadingScreen />}
       <div className="flex flex-col items-center justify-center mt-4">
         <div className="flex flex-col items-center border p-6 rounded-xl shadow-md bg-white max-w-sm mx-4">
           <h1 className="font-bold text-2xl mb-3">Pembayaran Berhasil!</h1>

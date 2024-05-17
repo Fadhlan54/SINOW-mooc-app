@@ -1,9 +1,8 @@
 "use client";
 
-import CourseCard from "@/components/card/CourseCard";
 import MainLayout from "@/components/MainLayout";
 import Loading from "@/components/loading-animation/Loading";
-import { fetchCourses, fetchCoursesUser } from "@/services/course.service";
+import { fetchCoursesUser } from "@/services/course.service";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Swal from "sweetalert2";
@@ -12,9 +11,6 @@ import { selectSearchFilter } from "@/store/slices/filterSlice";
 import { fetchCategories } from "@/services/category.service";
 import RunningCourseCard from "@/components/card/RunningCourseCard";
 import Cookies from "js-cookie";
-import Link from "next/link";
-import Image from "next/image";
-import NoCourseCard from "@/components/card/NoCourseCard";
 import NoRunningCourseCard from "@/components/card/NoRunningCourseCard";
 
 function MyCourse() {

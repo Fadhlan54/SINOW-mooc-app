@@ -3,7 +3,6 @@ import PaymentHistoryCard from "../card/PaymentHistoryCard";
 import Cookies from "js-cookie";
 import { fetchUserTransactions } from "@/services/user.service";
 import LoadingScreen from "../loading-animation/LoadingScreen";
-import NoCourseCard from "../card/NoCourseCard";
 import NoTransactionCard from "../card/NoTransactionCard";
 
 export default function PaymentHistory() {
