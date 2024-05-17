@@ -68,7 +68,7 @@ export default function ChangePassword() {
     <div className="w-full px-2">
       {isLoading && <LoadingScreen />}
       {errorMessage && (
-        <div className="absolute bottom-10 right-10 bg-alert-danger rounded-lg ps-4 pe-2 py-2 text-white justify-self-end self-end flex opacity-80">
+        <div className="absolute bottom-10 right-10 flex self-end justify-self-end rounded-lg bg-alert-danger py-2 pe-2 ps-4 text-white opacity-80">
           <p>{errorMessage}</p>
           <button
             className="ml-2"
@@ -81,20 +81,20 @@ export default function ChangePassword() {
           </button>
         </div>
       )}
-      <h1 className="text-center font-bold text-xl">Ubah Kata Sandi</h1>
-      <div className="text-sm mt-6">
+      <h1 className="text-center text-xl font-bold">Ubah Kata Sandi</h1>
+      <div className="mt-6 text-sm">
         <label htmlFor="oldPassword">Kata sandi lama</label>
-        <div className="flex items-end w-full">
+        <div className="flex w-full items-end">
           <input
             type={showOldPassword ? "text" : "password"}
             id="oldPassword"
             placeholder="Masukkan kata sandi lama"
-            className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+            className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
           <div
-            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="cursor-pointer rounded-r-2xl border  border-l-0 border-neutral-03 bg-white px-4 py-3 text-xl"
             onClick={() => setShowOldPassword(!showOldPassword)}
           >
             {showOldPassword ? (
@@ -113,12 +113,12 @@ export default function ChangePassword() {
             type={showNewPassword ? "text" : "password"}
             id="newPassword"
             placeholder="Masukkan kata sandi baru"
-            className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+            className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
           <div
-            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="cursor-pointer rounded-r-2xl border  border-l-0 border-neutral-03 bg-white px-4 py-3 text-xl"
             onClick={() => setShowNewPassword(!showNewPassword)}
           >
             {showNewPassword ? (
@@ -137,12 +137,12 @@ export default function ChangePassword() {
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
             placeholder="Masukkan ulang kata sandi baru"
-            className="block border border-r-0 border-neutral-03 rounded-l-2xl py-3 px-4 w-full text-sm mt-1 focus:outline-none"
+            className="mt-1 block w-full rounded-l-2xl border border-r-0 border-neutral-03 px-4 py-3 text-sm focus:outline-none"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <div
-            className="border border-l-0 bg-white  border-neutral-03 rounded-r-2xl py-3 px-4 text-xl cursor-pointer"
+            className="cursor-pointer rounded-r-2xl border  border-l-0 border-neutral-03 bg-white px-4 py-3 text-xl"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
             {showConfirmPassword ? (
@@ -153,7 +153,7 @@ export default function ChangePassword() {
           </div>
         </div>
         <button
-          className="bg-primary-01 hover:bg-primary-03 text-white font-bold text-sm w-full text-center rounded-full py-3 mt-6 "
+          className="mt-6 w-full rounded-full bg-primary-01 py-3 text-center text-sm font-bold text-white hover:bg-primary-03 "
           onClick={(e) => handleSubmit(e)}
         >
           Ubah password

@@ -55,7 +55,7 @@ function CheckTokenPage() {
   }, [token, push]);
 
   return (
-    <div className="flex justify-center items-center w-full h-screen">
+    <div className="flex h-screen w-full items-center justify-center">
       <Loading text={"Mendapatkan informasi akun"} />
     </div>
   );

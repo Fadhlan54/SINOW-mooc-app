@@ -11,7 +11,7 @@ export default function MobileNavbar({ isLogin, handleSearch, disableSearch }) {
   const [searchValue, setSearchValue] = useState(searchFilter);
   return (
     <div className="px-3 py-2 sm:hidden ">
-      <div className="flex justify-between items-center p-2">
+      <div className="flex items-center justify-between p-2">
         <Link href={"/"} className={`flex items-center gap-2 font-bold`}>
           <Image
             src="https://ik.imagekit.io/vsecvavlp/SINOW%20assets/LOGO/logo_sinow_bg_no_shadow.png?updatedAt=1707497045815"
@@ -19,20 +19,20 @@ export default function MobileNavbar({ isLogin, handleSearch, disableSearch }) {
             height={36}
             alt="sinow logo dark"
           />
-          <h2 className="text-xl hidden min-[300px]:block">SINOW</h2>
+          <h2 className="hidden text-xl min-[300px]:block">SINOW</h2>
         </Link>
         <div className="flex gap-3 text-2xl text-neutral-04">
           {isLogin ? (
             <>
               <Link
                 href={"/notifikasi"}
-                className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
+                className="rounded-full p-1.5 hover:bg-primary-01 hover:text-white"
               >
                 <GoBell />
               </Link>
               <Link
                 href={"/profil"}
-                className="p-1.5 hover:bg-primary-01 hover:text-white rounded-full"
+                className="rounded-full p-1.5 hover:bg-primary-01 hover:text-white"
               >
                 <GoPerson />
               </Link>
@@ -41,7 +41,7 @@ export default function MobileNavbar({ isLogin, handleSearch, disableSearch }) {
             <>
               <Link
                 href={"/auth/login"}
-                className="flex items-center gap-2 font-semibold  rounded-2xl text-sm"
+                className="flex items-center gap-2 rounded-2xl  text-sm font-semibold"
               >
                 <FiLogIn className="text-lg" /> Masuk
               </Link>
@@ -51,19 +51,19 @@ export default function MobileNavbar({ isLogin, handleSearch, disableSearch }) {
       </div>
 
       {!disableSearch && (
-        <div className="flex items-center relative ">
+        <div className="relative flex items-center ">
           <input
             type="text"
             name="search"
             placeholder="Cari kursus"
-            className="w-full px-6 py-3 rounded-xl text-sm focus:outline-none text-neutral-04 shadow-md"
+            className="w-full rounded-xl px-6 py-3 text-sm text-neutral-04 shadow-md focus:outline-none"
             id="search-2"
             onChange={(e) => setSearchValue(e.target.value)}
             value={searchValue}
             onKeyDown={(e) => handleSearch(e, searchValue)}
           />
           <button
-            className="absolute right-2 bg-primary-01 p-1 rounded-xl"
+            className="absolute right-2 rounded-xl bg-primary-01 p-1"
             onClick={(e) => {
               handleSearch(e, searchValue);
             }}

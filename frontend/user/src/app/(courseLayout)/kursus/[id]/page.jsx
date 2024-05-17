@@ -325,8 +325,8 @@ export default function DetailCoursePage({ params }) {
       {loadingScreen ? (
         <LoadingScreen />
       ) : error ? (
-        <div className="flex flex-col items-center justify-center mt-20">
-          <div className="flex flex-col items-center border p-6 rounded-xl shadow-md">
+        <div className="mt-20 flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center rounded-xl border p-6 shadow-md">
             <div className="flex flex-col items-center justify-center">
               <div className="absolute z-10">
                 <Image
@@ -339,8 +339,8 @@ export default function DetailCoursePage({ params }) {
                   className=""
                 />
               </div>
-              <div className="h-full relative z-20">
-                <h1 className="font-bold text-9xl text-primary-01 opacity-35">
+              <div className="relative z-20 h-full">
+                <h1 className="text-9xl font-bold text-primary-01 opacity-35">
                   {error.status}
                 </h1>
               </div>
@@ -348,7 +348,7 @@ export default function DetailCoursePage({ params }) {
             <h1 className="mt-4">{error.message}</h1>
             <p>
               Pergi ke halaman{" "}
-              <Link href="/kursus" className="text-primary-01 font-bold">
+              <Link href="/kursus" className="font-bold text-primary-01">
                 kursus
               </Link>
             </p>
@@ -356,11 +356,11 @@ export default function DetailCoursePage({ params }) {
         </div>
       ) : (
         course && (
-          <div className="mx-auto px-3 md:px-4 pt-3 pb-4 lg:px-10 lg:mx-auto max-w-7xl w-fit ">
+          <div className="mx-auto w-fit max-w-7xl px-3 pb-4 pt-3 md:px-4 lg:mx-auto lg:px-10 ">
             <div className="">
               <Link
                 href={"/kursus"}
-                className="flex items-center gap-4 font-semibold mb-2 w-fit "
+                className="mb-2 flex w-fit items-center gap-4 font-semibold "
               >
                 <LuArrowLeft className="text-lg" />
                 Kursus lainnya
@@ -368,41 +368,41 @@ export default function DetailCoursePage({ params }) {
             </div>
 
             <div className="flex md:gap-5 lg:gap-10">
-              <div className={`w-full  mx-auto max-w-3xl`}>
+              <div className={`mx-auto  w-full max-w-3xl`}>
                 <video
                   src={videoContentURL}
                   className="w-full rounded-[32px] shadow-lg"
                   controls
                 ></video>
-                <div className="bg-white rounded-[32px] px-4 sm:px-6 py-8 mt-8 shadow-lg relative">
+                <div className="relative mt-8 rounded-[32px] bg-white px-4 py-8 shadow-lg sm:px-6">
                   <div className="mb-4">
-                    <div className="flex justify-between items-center mb-1">
-                      <h2 className="text-lg sm:text-xl font-bold text-primary-01">
+                    <div className="mb-1 flex items-center justify-between">
+                      <h2 className="text-lg font-bold text-primary-01 sm:text-xl">
                         {course.category?.name}
                       </h2>
                       <div className="flex items-center gap-1">
-                        <FaStar className="text-alert-attention text-lg" />
+                        <FaStar className="text-lg text-alert-attention" />
                         <p className="text-sm font-semibold">
                           {course.rating}{" "}
                           <span className="text-neutral-04">(81)</span>
                         </p>
                       </div>
                     </div>
-                    <h2 className="sm:text-lg font-bold">{course.name}</h2>
+                    <h2 className="font-bold sm:text-lg">{course.name}</h2>
                     <h4 className="text-sm"> {course.courseBy}</h4>
-                    <div className="flex items-center mt-1 justify-between md:justify-start md:gap-4 lg:gap-8 text-xs font-medium">
+                    <div className="mt-1 flex items-center justify-between text-xs font-medium md:justify-start md:gap-4 lg:gap-8">
                       <div className="flex items-center gap-1">
-                        <RiShieldStarLine className="text-alert-success text-base" />
+                        <RiShieldStarLine className="text-base text-alert-success" />
                         <p className="font-semibold text-primary-01">
                           Level {course.level}
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
-                        <PiBooks className="text-alert-success text-base" />
+                        <PiBooks className="text-base text-alert-success" />
                         <p>{course.totalModule} Modul</p>
                       </div>
                       <div className="flex items-center justify-center">
-                        <PiClockFill className="text-alert-success text-base" />
+                        <PiClockFill className="text-base text-alert-success" />
                         <p className=" ml-1">{course.totalDuration} Menit</p>
                       </div>
                     </div>
@@ -411,7 +411,7 @@ export default function DetailCoursePage({ params }) {
                       courseUser.isFollowing &&
                       courseUser.isAccessible && (
                         <button
-                          className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md"
+                          className="mt-4 flex items-center justify-between rounded-2xl bg-primary-01 px-6 py-1 text-xs font-semibold text-white shadow-md hover:bg-primary-04 sm:text-sm"
                           onClick={() => handleUnfollowModal()}
                         >
                           <FaCheck className="mr-1" />
@@ -425,15 +425,15 @@ export default function DetailCoursePage({ params }) {
                         <>
                           {course.promoDiscountPercentage > 0 ? (
                             <div className="flex items-center">
-                              <p className="mt-1 mb-1 mr-2 font-bold text-sm  sm:text-base">
+                              <p className="mb-1 mr-2 mt-1 text-sm font-bold  sm:text-base">
                                 {currencyFormatterIDR(
                                   course.price -
                                     (course.price *
                                       course.promoDiscountPercentage) /
-                                      100
+                                      100,
                                 )}
                               </p>
-                              <p className="text-xs text-neutral-04 font-semibold mr-1 line-through">
+                              <p className="mr-1 text-xs font-semibold text-neutral-04 line-through">
                                 {currencyFormatterIDR(course.price)}
                               </p>
                               <p className="text-xs text-neutral-04">
@@ -441,14 +441,14 @@ export default function DetailCoursePage({ params }) {
                               </p>
                             </div>
                           ) : (
-                            <p className="mt-2 mb-1 font-bold sm:text-lg">
+                            <p className="mb-1 mt-2 font-bold sm:text-lg">
                               {currencyFormatterIDR(course.price)}
                             </p>
                           )}
 
                           <Link
                             href={`/pembayaran/${course.id}`}
-                            className="flex items-center justify-between  bg-alert-success  hover:bg-alert-success-hover py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md w-fit"
+                            className="flex w-fit items-center  justify-between  rounded-2xl bg-alert-success px-6 py-1 text-xs font-semibold text-white shadow-md hover:bg-alert-success-hover sm:text-sm"
                           >
                             <FaCartPlus className="mr-1" />
                             Beli Kursus
@@ -461,7 +461,7 @@ export default function DetailCoursePage({ params }) {
                       courseUser.isAccessible) ||
                       !token) && (
                       <button
-                        className="flex items-center justify-between mt-4 bg-primary-01 hover:bg-primary-04 py-1 px-6 rounded-2xl text-white font-semibold text-xs sm:text-sm shadow-md"
+                        className="mt-4 flex items-center justify-between rounded-2xl bg-primary-01 px-6 py-1 text-xs font-semibold text-white shadow-md hover:bg-primary-04 sm:text-sm"
                         onClick={() => handleFollowModal()}
                       >
                         <FaPlus className="mr-1" />
@@ -472,7 +472,7 @@ export default function DetailCoursePage({ params }) {
                       courseUser.isFollowing &&
                       courseUser.isAccessible && (
                         <>
-                          <div className="w-full grid grid-cols-2 mt-4 absolute left-0 md:hidden">
+                          <div className="absolute left-0 mt-4 grid w-full grid-cols-2 md:hidden">
                             <button
                               className={`${!shiftContent ? "bg-primary-01 text-white" : "bg-neutral-02 text-primary-01"}  py-4 font-bold`}
                               onClick={() => setShiftContent(false)}
@@ -480,7 +480,7 @@ export default function DetailCoursePage({ params }) {
                               Tentang
                             </button>
                             <button
-                              className={`${!shiftContent ? "bg-neutral-02 text-primary-01 border" : "bg-primary-01 text-white"}  py-4 font-bold`}
+                              className={`${!shiftContent ? "border bg-neutral-02 text-primary-01" : "bg-primary-01 text-white"}  py-4 font-bold`}
                               onClick={() => setShiftContent(true)}
                             >
                               Materi
@@ -496,11 +496,11 @@ export default function DetailCoursePage({ params }) {
                     courseUser.isFollowing &&
                     courseUser.isAccessible && (
                       <div className="mt-4 md:hidden">
-                        <div className="flex justify-between items-center mb-4">
-                          <h2 className="font-bold text-xl">Materi Belajar</h2>
-                          <div className="w-40 bg-neutral-07 rounded-full ">
+                        <div className="mb-4 flex items-center justify-between">
+                          <h2 className="text-xl font-bold">Materi Belajar</h2>
+                          <div className="w-40 rounded-full bg-neutral-07 ">
                             <div
-                              className="bg-primary-01 text-xs font-medium text-white text-center p-0.5 leading-none rounded-full h-4 px-3 flex items-center"
+                              className="flex h-4 items-center rounded-full bg-primary-01 p-0.5 px-3 text-center text-xs font-medium leading-none text-white"
                               style={{
                                 width: courseUser.progressPercentage + "%",
                               }}
@@ -512,9 +512,9 @@ export default function DetailCoursePage({ params }) {
                             </div>
                           </div>
                         </div>
-                        <div className="flex justify-between text-sm mb-4 gap-2">
+                        <div className="mb-4 flex justify-between gap-2 text-sm">
                           <div className="flex items-center">
-                            <h5 className="w-8 h-8 flex justify-center items-center rounded-full bg-neutral-02 mr-2 font-bold text-xs">
+                            <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                               0
                             </h5>
                             <p className="font-medium">Preview</p>
@@ -528,23 +528,23 @@ export default function DetailCoursePage({ params }) {
                             />
                           </button>
                         </div>
-                        <div className="flex flex-col gap-4 mb-4">
+                        <div className="mb-4 flex flex-col gap-4">
                           {chaptersUser.length > 0 &&
                             chaptersUser.map((chapter) => (
                               <>
-                                <div className="flex justify-between items-start text-sm font-extrabold gap-3">
+                                <div className="flex items-start justify-between gap-3 text-sm font-extrabold">
                                   <h4 className="text-primary-01 ">
                                     Chapter {chapter.no} - {chapter.name}
                                   </h4>
-                                  <p className="text-right min-w-fit ">
+                                  <p className="min-w-fit text-right ">
                                     {chapter.totalDuration} Menit
                                   </p>
                                 </div>
                                 {chapter.myModules?.length > 0 &&
                                   chapter.myModules.map((module) => (
-                                    <div className="flex justify-between text-sm gap-2">
+                                    <div className="flex justify-between gap-2 text-sm">
                                       <div className="flex items-center ">
-                                        <h5 className="w-8 h-8 flex justify-center items-center rounded-full bg-neutral-02 mr-2 font-bold text-xs">
+                                        <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                                           {module.moduleData?.no}
                                         </h5>
                                         <p className="font-medium">
@@ -555,7 +555,7 @@ export default function DetailCoursePage({ params }) {
                                         onClick={() =>
                                           handleOpenModule(
                                             module.id,
-                                            module.status
+                                            module.status,
                                           )
                                         }
                                       >
@@ -576,18 +576,18 @@ export default function DetailCoursePage({ params }) {
                     )
                   ) : (
                     <div className="mt-4 md:hidden">
-                      <h3 className="font-bold text-xl mb-2">Tentang Kelas</h3>
+                      <h3 className="mb-2 text-xl font-bold">Tentang Kelas</h3>
                       {course.description
                         .split("\n")
                         .map((paragraph, index) => (
-                          <p key={index} className="text-sm text-clip mb-4">
+                          <p key={index} className="mb-4 text-clip text-sm">
                             {paragraph}
                           </p>
                         ))}
-                      <h3 className="font-bold text-xl mt-4 mb-2">
+                      <h3 className="mb-2 mt-4 text-xl font-bold">
                         Keuntungan Mengikuti Kelas Ini
                       </h3>
-                      <div className="text-sm px-2">
+                      <div className="px-2 text-sm">
                         {course.benefits.map((benefit) => (
                           <div className="flex gap-2">
                             <p>{benefit.no}.</p>
@@ -598,22 +598,22 @@ export default function DetailCoursePage({ params }) {
                     </div>
                   )}
                   <div className="mt-4 hidden md:block">
-                    <h3 className="font-bold text-xl mb-2">Tentang Kelas</h3>
+                    <h3 className="mb-2 text-xl font-bold">Tentang Kelas</h3>
                     <div className="px-1">
                       {course.description
                         .split("\n")
                         .map((paragraph, index) => (
-                          <p key={index} className="text-sm text-clip mb-4">
+                          <p key={index} className="mb-4 text-clip text-sm">
                             {paragraph}
                           </p>
                         ))}
                     </div>
-                    <h3 className="font-bold text-xl mt-4">
+                    <h3 className="mt-4 text-xl font-bold">
                       Keuntungan Mengikuti Kelas Ini
                     </h3>
-                    <div className="text-sm px-1">
+                    <div className="px-1 text-sm">
                       {course.benefits.map((benefit) => (
-                        <div className="flex gap-2 my-1">
+                        <div className="my-1 flex gap-2">
                           <p>{benefit.no}.</p>
                           <p>{benefit.description}</p>
                         </div>
@@ -625,13 +625,13 @@ export default function DetailCoursePage({ params }) {
               {courseUser &&
                 courseUser.isFollowing &&
                 courseUser.isAccessible && (
-                  <div className="w-2/5 hidden md:block">
-                    <div className="bg-white p-6 rounded-3xl h-fit mb-6 shadow-lg">
-                      <div className="flex justify-between items-center mb-4">
-                        <h2 className="font-bold text-xl">Materi Belajar</h2>
-                        <div className="w-40 bg-neutral-07 rounded-full ">
+                  <div className="hidden w-2/5 md:block">
+                    <div className="mb-6 h-fit rounded-3xl bg-white p-6 shadow-lg">
+                      <div className="mb-4 flex items-center justify-between">
+                        <h2 className="text-xl font-bold">Materi Belajar</h2>
+                        <div className="w-40 rounded-full bg-neutral-07 ">
                           <div
-                            className="bg-primary-01 text-xs font-medium text-white text-center p-0.5 leading-none rounded-full h-4 px-3 flex items-center"
+                            className="flex h-4 items-center rounded-full bg-primary-01 p-0.5 px-3 text-center text-xs font-medium leading-none text-white"
                             style={{
                               width: courseUser.progressPercentage + "%",
                             }}
@@ -643,9 +643,9 @@ export default function DetailCoursePage({ params }) {
                           </div>
                         </div>
                       </div>
-                      <div className="flex justify-between text-sm mb-4 gap-2">
+                      <div className="mb-4 flex justify-between gap-2 text-sm">
                         <div className="flex items-center">
-                          <h5 className="w-8 h-8 flex justify-center items-center rounded-full bg-neutral-02 mr-2 font-bold text-xs">
+                          <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                             0
                           </h5>
                           <p className="font-medium">Preview</p>
@@ -659,23 +659,23 @@ export default function DetailCoursePage({ params }) {
                           />
                         </button>
                       </div>
-                      <div className="flex flex-col gap-4 mb-4">
+                      <div className="mb-4 flex flex-col gap-4">
                         {chaptersUser.length > 0 &&
                           chaptersUser.map((chapter) => (
                             <>
-                              <div className="flex justify-between items-start text-sm font-extrabold gap-3">
+                              <div className="flex items-start justify-between gap-3 text-sm font-extrabold">
                                 <h4 className="text-primary-01 ">
                                   Chapter {chapter.no} - {chapter.name}
                                 </h4>
-                                <p className="text-right min-w-fit">
+                                <p className="min-w-fit text-right">
                                   {chapter.totalDuration} Menit
                                 </p>
                               </div>
                               {chapter.myModules?.length > 0 &&
                                 chapter.myModules.map((module) => (
-                                  <div className="flex justify-between text-sm gap-2">
+                                  <div className="flex justify-between gap-2 text-sm">
                                     <div className="flex items-center ">
-                                      <h5 className="w-8 h-8 flex justify-center items-center rounded-full bg-neutral-02 mr-2 font-bold text-xs">
+                                      <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                                         {module.moduleData?.no}
                                       </h5>
                                       <p className="font-medium">
@@ -686,7 +686,7 @@ export default function DetailCoursePage({ params }) {
                                       onClick={() =>
                                         handleOpenModule(
                                           module.id,
-                                          module.status
+                                          module.status,
                                         )
                                       }
                                     >

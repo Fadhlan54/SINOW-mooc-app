@@ -60,7 +60,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="bg-primary-01 pt-2 px-3 hidden sm:flex w-full">
+      <div className="hidden w-full bg-primary-01 px-3 pt-2 sm:flex">
         <div className="flex w-1/2 justify-center">
           <Image
             src={
@@ -68,26 +68,26 @@ export default function Home() {
             }
             height={380}
             width={300}
-            className="object-contain lg:w-[380px] md:w-80 sm:w-72"
+            className="object-contain sm:w-72 md:w-80 lg:w-[380px]"
             alt="sinow mascot practitioner"
           />
         </div>
-        <div className="flex items-center justify-center w-1/2">
+        <div className="flex w-1/2 items-center justify-center">
           <div
-            className={`flex flex-col items-start justify-center sm:text-xl md:text-2xl text-white font-bold ${montserrat.className}`}
+            className={`flex flex-col items-start justify-center font-bold text-white sm:text-xl md:text-2xl ${montserrat.className}`}
           >
             <h1>Belajar</h1>
             <h1>dari Praktisi Terbaik!</h1>
             <Link
               href="/kursus"
-              className="w-full bg-white hover:bg-neutral-02 text-center rounded-2xl sm:text-base md:text-lg mt-4 py-1 text-primary-01 "
+              className="mt-4 w-full rounded-2xl bg-white py-1 text-center text-primary-01 hover:bg-neutral-02 sm:text-base md:text-lg "
             >
               Ikuti Kelas
             </Link>
           </div>
         </div>
       </div>
-      <div className="mt-4 max-w-7xl mx-auto">
+      <div className="mx-auto mt-4 max-w-7xl">
         <Swiper
           slidesPerView={1.25}
           spaceBetween={20}
@@ -156,9 +156,9 @@ export default function Home() {
           </SwiperSlide>
         </Swiper>
       </div>
-      <div className="px-4 md:px-6 pb-6 lg:w-11/12 lg:mx-auto max-w-7xl">
-        <div className="pt-2 mx-auto">
-          <h1 className="font-bold text-2xl mb-2">Kategori</h1>
+      <div className="max-w-7xl px-4 pb-6 md:px-6 lg:mx-auto lg:w-11/12">
+        <div className="mx-auto pt-2">
+          <h1 className="mb-2 text-2xl font-bold">Kategori</h1>
           <Swiper
             slidesPerView={"auto"}
             freeMode={true}
@@ -182,12 +182,12 @@ export default function Home() {
           >
             {categories.map((category) => (
               <SwiperSlide
-                className="cat-slide min-h-full bg-primary-01 hover:bg-primary-04 shadow-md rounded-lg"
+                className="cat-slide min-h-full rounded-lg bg-primary-01 shadow-md hover:bg-primary-04"
                 key={category.id}
               >
                 <Link
                   href={`/kursus?categoryId=${category.id}`}
-                  className="flex flex-col items-center text-center justify-between w-24  px-3 pt-3 pb-2  "
+                  className="flex w-24 flex-col items-center justify-between px-3  pb-2 pt-3 text-center  "
                 >
                   <Image
                     src={category.imageUrl}
@@ -195,7 +195,7 @@ export default function Home() {
                     height={80}
                     alt={`${category.name} icon`}
                   />
-                  <p className="text-[0.66rem] mt-2 font-bold text-white">
+                  <p className="mt-2 text-[0.66rem] font-bold text-white">
                     {category.name}
                   </p>
                 </Link>
@@ -204,11 +204,11 @@ export default function Home() {
           </Swiper>
         </div>
         <div className="mx-auto">
-          <div className="flex justify-between items-center">
-            <h1 className="font-bold text-2xl">Kursus Populer</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Kursus Populer</h1>
             <Link
               href={"/kursus"}
-              className="font-bold text-sm text-primary-01"
+              className="text-sm font-bold text-primary-01"
             >
               Lihat semua
             </Link>
@@ -219,12 +219,12 @@ export default function Home() {
             spaceBetween={10}
             freeMode={true}
             modules={[FreeMode]}
-            className="pop-category-swiper mySwiper mt-1 mb-4"
+            className="pop-category-swiper mySwiper mb-4 mt-1"
             autoHeight={true}
           >
             <SwiperSlide className="cat-slide">
               <button
-                className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
+                className="rounded-2xl bg-primary-01 px-4 py-1 text-xs font-bold text-white hover:bg-primary-04"
                 onClick={() => setFilterCategory("semua")}
               >
                 Semua
@@ -235,16 +235,16 @@ export default function Home() {
                 category.isPopular && (
                   <SwiperSlide className="cat-slide" key={category.id}>
                     <button
-                      className="text-xs font-bold bg-primary-01 text-white px-4 py-1 rounded-2xl hover:bg-primary-04"
+                      className="rounded-2xl bg-primary-01 px-4 py-1 text-xs font-bold text-white hover:bg-primary-04"
                       onClick={() => setFilterCategory(category.id)}
                     >
                       {category.name}
                     </button>
                   </SwiperSlide>
-                )
+                ),
             )}
           </Swiper>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 ">
             {isLoading ? (
               <div className="col-span-full">
                 <Loading />

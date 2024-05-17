@@ -77,7 +77,7 @@ export default function Profile() {
           city,
           phoneNumber: phone,
         },
-        imageFile
+        imageFile,
       );
       if (res.data.status === "Success") {
         Swal.fire({
@@ -118,16 +118,16 @@ export default function Profile() {
             />
             <label
               htmlFor="image-upload"
-              className="hover:cursor-pointer relative"
+              className="relative hover:cursor-pointer"
             >
               <Image
                 src={image || ""}
                 alt="Uploaded"
-                className="uploaded-image rounded-full  border-primary-01 border-2 p-1.5 w-[70px] h-[70px] object-cover"
+                className="uploaded-image h-[70px]  w-[70px] rounded-full border-2 border-primary-01 object-cover p-1.5"
                 width={70}
                 height={70}
               />
-              <div className="bg-white absolute z-10 -right-1  -bottom-1 p-1 rounded-md">
+              <div className="absolute -bottom-1 -right-1 z-10  rounded-md bg-white p-1">
                 <Image
                   src={
                     "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Icons/gallery.png?updatedAt=1714223717099"
@@ -138,67 +138,67 @@ export default function Profile() {
               </div>
             </label>
           </div>
-          <div className="flex flex-col mt-4 text-sm">
+          <div className="mt-4 flex flex-col text-sm">
             <label htmlFor="email" className="font-semibold">
               Email
             </label>
             <input
               type="text"
-              className="mt-1 border border-neutral-03 outline-none p-2 rounded-xl "
+              className="mt-1 rounded-xl border border-neutral-03 p-2 outline-none "
               id="email"
               value={email || ""}
               disabled
               placeholder="Masukkan email anda"
             />
-            <p className="text-red-500 text-xs mt-0.5">
+            <p className="mt-0.5 text-xs text-red-500">
               Catatan: email tidak dapat diubah
             </p>
-            <label htmlFor="name" className="font-semibold mt-2">
+            <label htmlFor="name" className="mt-2 font-semibold">
               Nama
             </label>
             <input
               type="text"
-              className="mt-1 border border-neutral-03 outline-none p-2 rounded-xl"
+              className="mt-1 rounded-xl border border-neutral-03 p-2 outline-none"
               id="name"
               value={name || ""}
               onChange={(e) => setName(e.target.value)}
               placeholder="Masukkan nama anda"
             />
-            <label htmlFor="phoneNumber" className="font-semibold mt-2">
+            <label htmlFor="phoneNumber" className="mt-2 font-semibold">
               Nomor Telepon
             </label>
             <input
               type="text"
-              className="mt-1 border border-neutral-03 outline-none p-2 rounded-xl"
+              className="mt-1 rounded-xl border border-neutral-03 p-2 outline-none"
               id="phoneNumber"
               value={phone || ""}
               onChange={(e) => handlePhoneNumberChange(e)}
               placeholder="Masukkan nomor telepon anda"
             />
-            <label htmlFor="country" className="font-semibold mt-2">
+            <label htmlFor="country" className="mt-2 font-semibold">
               Negara
             </label>
             <input
               type="text"
-              className="mt-1 border border-neutral-03 outline-none p-2 rounded-xl"
+              className="mt-1 rounded-xl border border-neutral-03 p-2 outline-none"
               id="country"
               value={country || ""}
               onChange={(e) => setCountry(e.target.value)}
               placeholder="Masukkan negara tempat tinggal"
             />
-            <label htmlFor="city" className="font-semibold mt-2">
+            <label htmlFor="city" className="mt-2 font-semibold">
               Kota
             </label>
             <input
               type="text"
-              className="mt-1 border border-neutral-03 outline-none p-2 rounded-xl"
+              className="mt-1 rounded-xl border border-neutral-03 p-2 outline-none"
               id="city"
               value={city || ""}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Masukkan kota tempat tinggal"
             />
             <button
-              className="bg-primary-01 text-white mt-8 font-bold p-2 rounded-full"
+              className="mt-8 rounded-full bg-primary-01 p-2 font-bold text-white"
               onClick={(e) => handleSubmit(e)}
             >
               Simpan Profil Saya

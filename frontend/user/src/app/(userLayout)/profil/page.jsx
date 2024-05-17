@@ -28,48 +28,48 @@ export default function ProfilePage() {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden sm:flex flex-col items-center ">
-        <div className="flex flex-col w-full sm:w-11/12 md:w-4/5 lg:w-3/4 items-center  rounded-2xl  ">
-          <div className="w-full py-2 mt-2">
+      <div className="hidden flex-col items-center sm:flex ">
+        <div className="flex w-full flex-col items-center rounded-2xl sm:w-11/12 md:w-4/5  lg:w-3/4  ">
+          <div className="mt-2 w-full py-2">
             <Link href={"/"} className="text-primary-01 hover:text-primary-02">
-              <LuArrowLeft className="inline-block text-xl mr-1" />
+              <LuArrowLeft className="mr-1 inline-block text-xl" />
               Kembali ke beranda
             </Link>
           </div>
-          <div className="w-full rounded-2xl shadow-md-blue border border-primary-01 ">
-            <div className="bg-primary-01 text-white font-bold text-xl w-full text-center rounded-t-2xl py-2 ">
+          <div className="w-full rounded-2xl border border-primary-01 shadow-md-blue ">
+            <div className="w-full rounded-t-2xl bg-primary-01 py-2 text-center text-xl font-bold text-white ">
               <p>Akun</p>
             </div>
-            <div className="flex w-full h-[71vh]">
-              <div className="w-1/2 py-3 font-medium  border-r border-primary-01 min-h-fit">
+            <div className="flex h-[71vh] w-full">
+              <div className="min-h-fit w-1/2 border-r  border-primary-01 py-3 font-medium">
                 <div
-                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${(content === "profil" || content === "") && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
+                  className={`border-primary-01 px-6 py-3 hover:border-l-4 hover:bg-primary-01-transparent hover:text-primary-01 ${(content === "profil" || content === "") && "border-l-4 bg-primary-01-transparent text-primary-01"}`}
                   onClick={() => setContent("profil")}
                 >
-                  <LuPencilLine className="inline-block text-2xl mr-2" /> Profil
+                  <LuPencilLine className="mr-2 inline-block text-2xl" /> Profil
                   Saya
                 </div>
                 <div
-                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${content === "ubahPassword" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
+                  className={`border-primary-01 px-6 py-3 hover:border-l-4 hover:bg-primary-01-transparent hover:text-primary-01 ${content === "ubahPassword" && "border-l-4 bg-primary-01-transparent text-primary-01"}`}
                   onClick={() => setContent("ubahPassword")}
                 >
-                  <LuSettings className="inline-block text-2xl mr-2" /> Ubah
+                  <LuSettings className="mr-2 inline-block text-2xl" /> Ubah
                   Password
                 </div>
                 <div
-                  className={`px-6 py-3 hover:border-l-4 border-primary-01 hover:text-primary-01 hover:bg-primary-01-transparent ${content === "riwayatPembayaran" && "border-l-4 text-primary-01 bg-primary-01-transparent"}`}
+                  className={`border-primary-01 px-6 py-3 hover:border-l-4 hover:bg-primary-01-transparent hover:text-primary-01 ${content === "riwayatPembayaran" && "border-l-4 bg-primary-01-transparent text-primary-01"}`}
                   onClick={() => setContent("riwayatPembayaran")}
                 >
-                  <LuShoppingCart className="inline-block text-2xl mr-2" />{" "}
+                  <LuShoppingCart className="mr-2 inline-block text-2xl" />{" "}
                   Riwayat Pembayaran
                 </div>
-                <div className="hover:border-l-4 border-alert-danger text-alert-danger hover:bg-alert-danger-transparent px-6 py-3">
+                <div className="border-alert-danger px-6 py-3 text-alert-danger hover:border-l-4 hover:bg-alert-danger-transparent">
                   <button onClick={(e) => handleLogout(e)}>
-                    <LuLogOut className="inline-block text-2xl mr-2" /> Keluar
+                    <LuLogOut className="mr-2 inline-block text-2xl" /> Keluar
                   </button>
                 </div>
               </div>
-              <div className="w-1/2 flex flex-col items-center p-4 overflow-auto">
+              <div className="flex w-1/2 flex-col items-center overflow-auto p-4">
                 {content === "profil" || content === "" ? (
                   <Profile />
                 ) : content === "ubahPassword" ? (
@@ -80,53 +80,53 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-          <p className="text-neutral-300 mt-4">Versi 0.1.0</p>
+          <p className="mt-4 text-neutral-300">Versi 0.1.0</p>
         </div>
       </div>
 
       {/* Mobile */}
       {content === "" && (
-        <div className="sm:hidden p-4  bg-neutral-02 min-h-screen">
+        <div className="min-h-screen bg-neutral-02  p-4 sm:hidden">
           <Link href={"/"}>
             <LuArrowLeft className="text-2xl" />
           </Link>
-          <h1 className="font-bold text-2xl mt-5 mb-2 p-2">Akun</h1>
-          <div className="bg-white pt-4 pb-4 rounded-2xl text-sm">
-            <div className="p-4 border-b   ">
+          <h1 className="mb-2 mt-5 p-2 text-2xl font-bold">Akun</h1>
+          <div className="rounded-2xl bg-white pb-4 pt-4 text-sm">
+            <div className="border-b p-4   ">
               <button onClick={() => setContent("profil")}>
-                <LuPencilLine className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                <LuPencilLine className="mr-2 inline-block text-xl text-primary-01" />{" "}
                 Profil Saya
               </button>
             </div>
-            <div className="p-4 border-b ">
+            <div className="border-b p-4 ">
               <button onClick={() => setContent("ubahPassword")}>
-                <LuSettings className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                <LuSettings className="mr-2 inline-block text-xl text-primary-01" />{" "}
                 Ubah Password
               </button>
             </div>
-            <div className="p-4 border-b">
+            <div className="border-b p-4">
               <button onClick={() => setContent("riwayatPembayaran")}>
-                <LuShoppingCart className="inline-block text-xl mr-2 text-primary-01" />{" "}
+                <LuShoppingCart className="mr-2 inline-block text-xl text-primary-01" />{" "}
                 Riwayat Pembayaran
               </button>
             </div>
-            <div className="p-4 border-b text-alert-danger mb-8">
+            <div className="mb-8 border-b p-4 text-alert-danger">
               <button onClick={(e) => handleLogout(e)}>
-                <LuLogOut className="inline-block text-xl mr-2" /> Keluar
+                <LuLogOut className="mr-2 inline-block text-xl" /> Keluar
               </button>
             </div>
           </div>
-          <p className="text-xs text-neutral-04 mt-2 text-center">
+          <p className="mt-2 text-center text-xs text-neutral-04">
             Versi 0.1.0
           </p>
         </div>
       )}
-      <div className="sm:hidden p-4 bg-neutral-02 min-h-screen">
+      <div className="min-h-screen bg-neutral-02 p-4 sm:hidden">
         <button
-          className="text-primary-01 hover:text-primary-02 mb-4"
+          className="mb-4 text-primary-01 hover:text-primary-02"
           onClick={() => setContent("")}
         >
-          <LuArrowLeft className="inline-block text-xl mr-1" />
+          <LuArrowLeft className="mr-1 inline-block text-xl" />
           Kembali
         </button>
         {content === "profil" ? (

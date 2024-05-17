@@ -5,9 +5,9 @@ import "./typing.css";
 export default function LoadingScreen() {
   return (
     <>
-      <div className="fixed inset-0 overflow-hidden z-[1000] flex justify-center items-center">
-        <div className="absolute w-full mb-24 z-[1000]">
-          <div className="flex justify-center items-center h-screen">
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden">
+        <div className="absolute z-[1000] mb-24 w-full">
+          <div className="flex h-screen items-center justify-center">
             <Lottie
               className="w-[100px]"
               animationData={loadingIcon}
@@ -17,11 +17,11 @@ export default function LoadingScreen() {
         </div>
         <h1
           aria-label="Loading ..."
-          className="flex justify-center items-center h-screen text-2xl w-full font-bold text-[#3cc1ff] mt-10 z-[1000]"
+          className="z-[1000] mt-10 flex h-screen w-full items-center justify-center text-2xl font-bold text-[#3cc1ff]"
         >
           Loading&nbsp;<span className="typewriter"></span>
         </h1>
-        <div className="inset-0 bg-black opacity-40 fixed"></div>
+        <div className="fixed inset-0 bg-black opacity-40"></div>
       </div>
     </>
   );

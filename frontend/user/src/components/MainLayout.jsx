@@ -46,7 +46,7 @@ export default function MainLayout({
   };
 
   return (
-    <div className="bg-neutral-02 min-h-screen">
+    <div className="min-h-screen bg-neutral-02">
       {/* Navbar for desktop */}
       {!disableDesktopNavbar && (
         <>

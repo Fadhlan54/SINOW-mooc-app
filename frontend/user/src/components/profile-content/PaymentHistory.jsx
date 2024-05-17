@@ -29,7 +29,7 @@ export default function PaymentHistory() {
   return (
     <div className="w-full">
       {isLoading && <LoadingScreen />}
-      <h1 className="font-bold text-xl text-center mb-6 ">Payment History</h1>
+      <h1 className="mb-6 text-center text-xl font-bold ">Payment History</h1>
       {transactions.length > 0 ? (
         transactions.map((transaction) => (
           <>

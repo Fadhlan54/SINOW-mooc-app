@@ -38,9 +38,9 @@ function SuccessfulPayment() {
   return (
     <MainLayout>
       {isLoading && <LoadingScreen />}
-      <div className="flex flex-col items-center justify-center mt-4">
-        <div className="flex flex-col items-center border p-6 rounded-xl shadow-md bg-white max-w-sm mx-4">
-          <h1 className="font-bold text-2xl mb-3">Pembayaran Berhasil!</h1>
+      <div className="mt-4 flex flex-col items-center justify-center">
+        <div className="mx-4 flex max-w-sm flex-col items-center rounded-xl border bg-white p-6 shadow-md">
+          <h1 className="mb-3 text-2xl font-bold">Pembayaran Berhasil!</h1>
           <Image
             src={
               "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/premium_asset.png?updatedAt=1710768286085"
@@ -50,20 +50,20 @@ function SuccessfulPayment() {
             alt="Sinow Mascot onboarding"
             priority
           />
-          <div className="w-full text-sm mt-4">
+          <div className="mt-4 w-full text-sm">
             <p>Kamu sekarang kamu sudah memiliki akses ke kursus:</p>
-            <p className="font-bold mt-1">{courseName}</p>
+            <p className="mt-1 font-bold">{courseName}</p>
           </div>
-          <div className="w-full mt-2 text-sm">
+          <div className="mt-2 w-full text-sm">
             <Link
               href={`/kursus/${courseId}`}
-              className="block w-full text-center bg-primary-01 text-white font-bold rounded-full py-1 hover:bg-primary-02  "
+              className="block w-full rounded-full bg-primary-01 py-1 text-center font-bold text-white hover:bg-primary-02  "
             >
               Lihat kursus
             </Link>
             <Link
               href={"/"}
-              className="block w-full text-center mt-1 text-primary-01 font-bold underline hover:text-primary-02"
+              className="mt-1 block w-full text-center font-bold text-primary-01 underline hover:text-primary-02"
             >
               Pergi ke beranda
             </Link>

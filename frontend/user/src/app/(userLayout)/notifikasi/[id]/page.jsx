@@ -58,23 +58,23 @@ export default function DetailNotificationPage({ params }) {
 
   return (
     <MainLayout disableMobileNavbar>
-      <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-1 mb-3 md:pb-6">
+      <div className="mx-auto mb-3 w-full max-w-4xl px-4 py-1 md:px-6 md:pb-6">
         <Link
           href={"/notifikasi"}
-          className="flex items-center gap-2 font-semibold my-3 w-fit "
+          className="my-3 flex w-fit items-center gap-2 font-semibold "
         >
           <LuArrowLeft className="sm:text-lg" />
           <p className="text-sm sm:text-base">Kembali ke halaman notifikasi</p>
         </Link>
         <div className="w-full">
-          <div className="bg-primary-01 text-white font-bold text-xl w-full text-center rounded-t-2xl py-2">
+          <div className="w-full rounded-t-2xl bg-primary-01 py-2 text-center text-xl font-bold text-white">
             <h1>Detail Notifikasi</h1>
           </div>
 
           {isLoading ? (
             <Loading />
           ) : !notification ? (
-            <div className="w-full flex flex-col justify-center items-center p-6 bg-white rounded-b-2xl border border-primary-01">
+            <div className="flex w-full flex-col items-center justify-center rounded-b-2xl border border-primary-01 bg-white p-6">
               <Image
                 src={
                   "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/MASCOT/notify_null.png?updatedAt=1709088271424"
@@ -83,28 +83,28 @@ export default function DetailNotificationPage({ params }) {
                 width={190}
                 height={160}
               />
-              <p className="text-primary-01 font-bold mt-2 text-xl">
+              <p className="mt-2 text-xl font-bold text-primary-01">
                 Notifikasi tidak ditemukan
               </p>
             </div>
           ) : (
-            <div className="px-4 md:px-8 pt-2 pb-8 bg-white rounded-b-2xl border border-primary-01">
-              <h1 className="text-primary-01 font-semibold md:text-lg mt-1">
+            <div className="rounded-b-2xl border border-primary-01 bg-white px-4 pb-8 pt-2 md:px-8">
+              <h1 className="mt-1 font-semibold text-primary-01 md:text-lg">
                 {notification.type}
               </h1>
-              <h3 className="font-bold text-lg md:text-2xl">
+              <h3 className="text-lg font-bold md:text-2xl">
                 {notification.title}
               </h3>
               <hr className="mb-2" />
 
               {notification.content?.split("\n\n").map((line) => (
-                <div className="text-neutral-04 text-xs md:text-sm mb-2">
+                <div className="mb-2 text-xs text-neutral-04 md:text-sm">
                   {line.split("\n").map((text) => {
                     if (linkRegex.test(text)) {
                       return (
                         <Link
                           href={text}
-                          className="my-1 text-primary-01 underline hover:text-primary-02 inline-block break-all"
+                          className="my-1 inline-block break-all text-primary-01 underline hover:text-primary-02"
                           target="_blank"
                         >
                           {text}
