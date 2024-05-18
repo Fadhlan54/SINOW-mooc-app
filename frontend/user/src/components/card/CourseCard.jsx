@@ -39,6 +39,13 @@ export default function CourseCard({ course }) {
           </p>
         </div>
 
+        <p className="mt-1 text-[0.65rem]">
+          <span className="font-semibold text-primary-01">
+            {course.totalUser}
+          </span>{" "}
+          Pengguna mengikuti kursus ini
+        </p>
+
         <div className="mt-2 flex items-center justify-between">
           <div className="flex items-center">
             <RiShieldStarLine className="text-alert-success" />
@@ -56,12 +63,7 @@ export default function CourseCard({ course }) {
             <p className="ml-1 text-[0.65rem]">{course.totalDuration} Menit</p>
           </div>
         </div>
-        <p className="mt-1 text-[0.65rem]">
-          <span className="font-semibold text-primary-01">
-            {course.totalUser}
-          </span>{" "}
-          Pengguna mengikuti kursus ini
-        </p>
+
         <button
           onClick={() => {
             push(`/kursus/${course.id}`);
