@@ -1,6 +1,7 @@
 "use client";
 
 import MainLayout from "@/components/MainLayout";
+import LoadingScreen from "@/components/loading-animation/LoadingScreen";
 import { fetchGetTrxUserById } from "@/services/transaction.service";
 import Cookies from "js-cookie";
 import Image from "next/image";
