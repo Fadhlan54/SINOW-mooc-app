@@ -110,8 +110,8 @@ export default function Pembayaran({ params }) {
         {isLoading ? (
           <LoadingScreen />
         ) : course ? (
-          <div className="max-w-7xl  gap-4">
-            <div className="h-fit w-fit rounded-3xl border border-primary-01 shadow-lg ">
+          <div className="w-full gap-4">
+            <div className="mx-auto h-fit w-fit max-w-7xl rounded-3xl border border-primary-01 shadow-lg">
               <div className="flex items-center justify-center rounded-t-3xl bg-primary-01 p-2 text-white">
                 <h1 className="text-xl font-bold">Pembayaran Kursus</h1>
               </div>
@@ -176,7 +176,7 @@ export default function Pembayaran({ params }) {
 
             <div className="mt-4 sm:mt-6">
               <h1 className="mb-1 text-lg font-bold">Rekomendasi Kursus</h1>
-              <div className="flex max-w-xs flex-col gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {otherCourses &&
                   otherCourses.length > 0 &&
                   otherCourses.map((course) => (
