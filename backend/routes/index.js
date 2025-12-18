@@ -15,7 +15,7 @@ const Transaction = require('./transactionRouter')
 const Dashboard = require('./dashboardDetailRouter')
 const { checkUUIDBody, checkUUIDQuery } = require('../middlewares/checkUUID')
 
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+router.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 router.use('/', checkUUIDBody(), checkUUIDQuery())
 router.use('/api/v1/auth', Auth)
 router.use('/api/v1/user', User)
