@@ -1,5 +1,9 @@
-[functions]
+[build]
   command = "npm install"
+  functions = "functions"
+  publish = "dist"
+
+[functions]
   external_node_modules = ["express", "pg", "pg-hstore"]
   node_bundler = "esbuild"
 [[redirects]]
