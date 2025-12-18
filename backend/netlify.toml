@@ -1,6 +1,5 @@
 [build]
   command = "npm install"
-  functions = "functions"
 
 [functions]
   external_node_modules = ["express", "pg", "pg-hstore"]
