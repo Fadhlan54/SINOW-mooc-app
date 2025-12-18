@@ -2,4 +2,4 @@ const serverless = require('serverless-http')
 
 const app = require('../../index')
 
-export const handler = serverless(api)
+export const handler = serverless(app)
