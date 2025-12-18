@@ -19,7 +19,10 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
-app.use(morgan('dev'))
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'))
+}
 
 app.use(router)
 
