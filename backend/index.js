@@ -36,7 +36,7 @@ app.use('/', (req, res, next) => {
 app.all('*', (req, res) =>
   res.status(404).json({
     status: 'Failed',
-    message: `Halaman tidak ditemukan, silahkan cek dokumentasi ${process.env.BASE_URL}/api-docs/`,
+    message: `Halaman tidak ditemukan, silahkan cek dokumentasi ${process.env.BASE_URL}/api/docs/`,
   }),
 )
 
