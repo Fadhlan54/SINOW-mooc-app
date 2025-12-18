@@ -1,12 +1,11 @@
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
 const process = require('process')
-
-const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
-const config = require('../config/database')[env]
-
+const config = require(__dirname + '/../config/database.js')[env]
 const db = {}
 
 let sequelize
@@ -21,22 +20,20 @@ if (config.use_env_variable) {
   )
 }
 
-fs.readdirSync(__dirname)
-  .filter(
-    (file) =>
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1,
-  )
-  .forEach((file) => {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes,
-    )
-    db[model.name] = model
-  })
+db.Auth = require('./auth')(sequelize, Sequelize.DataTypes)
+db.Benefit = require('./benefit')(sequelize, Sequelize.DataTypes)
+db.Category = require('./category')(sequelize, Sequelize.DataTypes)
+db.Chapter = require('./chapter')(sequelize, Sequelize.DataTypes)
+db.Course = require('./course')(sequelize, Sequelize.DataTypes)
+db.Module = require('./module')(sequelize, Sequelize.DataTypes)
+db.Notification = require('./notification')(sequelize, Sequelize.DataTypes)
+db.Otp = require('./otp')(sequelize, Sequelize.DataTypes)
+db.Transaction = require('./transaction')(sequelize, Sequelize.DataTypes)
+db.User = require('./user')(sequelize, Sequelize.DataTypes)
+db.UserCourse = require('./usercourse')(sequelize, Sequelize.DataTypes)
+db.UserModule = require('./usermodule')(sequelize, Sequelize.DataTypes)
+
+// =================================================================
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
