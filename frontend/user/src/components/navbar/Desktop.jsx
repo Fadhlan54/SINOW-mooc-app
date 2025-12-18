@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RiMenuLine } from "react-icons/ri";
 import { selectSearchFilter } from "@/store/slices/filterSlice";
 import { useSelector } from "react-redux";
@@ -14,10 +14,24 @@ export default function DesktopNavbar({
 }) {
   const searchFilter = useSelector(selectSearchFilter);
   const [searchValue, setSearchValue] = useState(searchFilter);
+  const menuRef = useRef(null);
 
   const [isMenuActive, setIsMenuActive] = useState(false);
   const pathname = usePathname();
   const { push } = useRouter();
+
+  useEffect(() => {
+    const handleClickOutsideMenu = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuActive(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideMenu);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideMenu);
+    };
+  }, []);
 
   return (
     <div className="sticky left-0 top-0 z-50 hidden w-full items-center justify-between bg-primary-01 px-4 py-4 shadow-md sm:flex lg:px-8">
@@ -70,7 +84,8 @@ export default function DesktopNavbar({
           <RiMenuLine className="text-2xl" />
         </button>
         <div
-          className={`absolute right-4 top-16 flex flex-col rounded-2xl bg-white py-3    text-sm font-semibold text-neutral-05 shadow-md ${isMenuActive ? "block" : "hidden"} ${isLogin ? "w-40" : "w-[136px]"} `}
+          className={`absolute right-4 top-16 flex flex-col rounded-2xl border bg-white py-3    text-sm font-semibold text-neutral-05 shadow-md ${isMenuActive ? "block" : "hidden"} ${isLogin ? "w-40" : "w-[136px]"} `}
+          ref={menuRef}
         >
           <Link
             href={"/"}

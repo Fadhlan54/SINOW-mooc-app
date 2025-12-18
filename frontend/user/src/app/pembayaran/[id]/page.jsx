@@ -9,6 +9,7 @@ import { fetchCourseById, fetchOtherCourses } from "@/services/course.service";
 import { fetchCreateTrx } from "@/services/transaction.service";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Pembayaran({ params }) {
@@ -117,7 +118,10 @@ export default function Pembayaran({ params }) {
               </div>
 
               <div className=" gap-4 p-4 sm:flex sm:justify-around">
-                <div className="w-full rounded-3xl shadow-md sm:max-w-80">
+                <Link
+                  href={`/kursus/${id}`}
+                  className="w-full rounded-3xl shadow-md sm:max-w-80"
+                >
                   <Image
                     width={320}
                     height={96}
@@ -133,7 +137,7 @@ export default function Pembayaran({ params }) {
                       Oleh {course.courseBy}
                     </p>
                   </div>
-                </div>
+                </Link>
                 <div className="mt-2 text-sm sm:mt-0">
                   <h2 className="text-lg font-bold text-primary-01">
                     Rincian Harga

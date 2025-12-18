@@ -124,7 +124,7 @@ export default function Home() {
           <SwiperSlide className="banner-slide">
             <Image
               src={
-                "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_learn.png?updatedAt=1707381013622"
+                "https://ik.imagekit.io/96gmelvyq/SINOW%20Banner/ads_sinow_tags%201.png?updatedAt=1766035743797"
               }
               width={540}
               height={300}
@@ -136,7 +136,7 @@ export default function Home() {
           <SwiperSlide className="banner-slide">
             <Image
               src={
-                "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_promo.png?updatedAt=1707381013791"
+                "https://ik.imagekit.io/96gmelvyq/SINOW%20Banner/ads_sinow_learn%201.png?updatedAt=1766035743594"
               }
               width={540}
               height={300}
@@ -148,7 +148,7 @@ export default function Home() {
           <SwiperSlide className="banner-slide">
             <Image
               src={
-                "https://ik.imagekit.io/vsecvavlp/SINOW%20assets/Ads%20Banner/ads_sinow_tags.png?updatedAt=1707381013979"
+                "https://ik.imagekit.io/96gmelvyq/SINOW%20Banner/ads_sinow_promo%201.jpg?updatedAt=1766035743562"
               }
               width={540}
               height={300}
