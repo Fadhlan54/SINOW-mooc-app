@@ -183,27 +183,40 @@ export default function Home() {
               },
             }}
           >
-            {categories.map((category) => (
-              <SwiperSlide
-                className="cat-slide min-h-full rounded-lg bg-primary-01 shadow-md hover:bg-primary-04"
-                key={category.id}
-              >
-                <Link
-                  href={`/kursus?categoryId=${category.id}`}
-                  className="flex w-24 flex-col items-center justify-between px-3  pb-2 pt-3 text-center  "
+            {categories &&
+              categories.map((category) => (
+                <SwiperSlide
+                  className="cat-slide min-h-full rounded-lg bg-primary-01 shadow-md hover:bg-primary-04"
+                  key={category.id}
                 >
-                  <Image
-                    src={category.imageUrl}
-                    width={80}
-                    height={80}
-                    alt={`${category.name} icon`}
-                  />
-                  <p className="mt-2 text-[0.66rem] font-bold text-white">
-                    {category.name}
-                  </p>
-                </Link>
-              </SwiperSlide>
-            ))}
+                  <Link
+                    href={`/kursus?categoryId=${category.id}`}
+                    className="flex w-24 flex-col items-center justify-between px-3  pb-2 pt-3 text-center  "
+                  >
+                    <Image
+                      src={category.imageUrl}
+                      width={80}
+                      height={80}
+                      alt={`${category.name} icon`}
+                    />
+                    <p className="mt-2 text-[0.66rem] font-bold text-white">
+                      {category.name}
+                    </p>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            {categories.length === 0 &&
+              Array.from({ length: 6 }).map((_, index) => (
+                <SwiperSlide className="cat-slide mr-3 rounded-lg bg-primary-01 shadow-md hover:bg-primary-04">
+                  <div
+                    className="flex flex-col items-center justify-between rounded-lg  px-3 pb-2 pt-3 text-center "
+                    key={index}
+                  >
+                    <div className="flex h-[72px] w-[72px] animate-pulse items-center justify-center rounded-lg bg-neutral-02" />
+                    <div className="mt-2 h-4 w-[72px] animate-pulse rounded bg-neutral-02 font-bold"></div>
+                  </div>
+                </SwiperSlide>
+              ))}
           </Swiper>
         </div>
         <div className="mx-auto">
