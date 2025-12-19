@@ -207,11 +207,11 @@ export default function Home() {
               ))}
             {categories.length === 0 &&
               Array.from({ length: 6 }).map((_, index) => (
-                <SwiperSlide className="cat-slide mr-3 rounded-lg bg-primary-01 shadow-md hover:bg-primary-04">
-                  <div
-                    className="flex flex-col items-center justify-between rounded-lg  px-3 pb-2 pt-3 text-center "
-                    key={index}
-                  >
+                <SwiperSlide
+                  className="cat-slide mr-3 rounded-lg bg-primary-01 shadow-md hover:bg-primary-04"
+                  key={index}
+                >
+                  <div className="flex flex-col items-center justify-between rounded-lg  px-3 pb-2 pt-3 text-center">
                     <div className="flex h-[72px] w-[72px] animate-pulse items-center justify-center rounded-lg bg-neutral-02" />
                     <div className="mt-2 h-4 w-[72px] animate-pulse rounded bg-neutral-02 font-bold"></div>
                   </div>
