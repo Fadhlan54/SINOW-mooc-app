@@ -1,7 +1,6 @@
 const randomString = require('randomstring')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
-const ApiError = require('./ApiError')
 const verificationEmailHTML = require('../lib/verificationEmailHTML')
 const resetPasswordHTML = require('../lib/resetPasswordHTML')
 
@@ -14,6 +13,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.APP_EMAIL,
     pass: process.env.APP_PASSWORD,
   },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
 })
 
 const generateOTP = () =>
