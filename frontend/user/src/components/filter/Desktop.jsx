@@ -125,8 +125,8 @@ export default function DesktopFilter() {
       </ul>
       <h3 className="mb-1 mt-3 text-lg font-semibold">Kategori</h3>
       <ul className="text-xs">
-        {categories.map((category) => (
-          <li>
+        {categories.map((category, index) => (
+          <li key={index}>
             <div className="my-1 flex items-center gap-1">
               <input
                 type="checkbox"

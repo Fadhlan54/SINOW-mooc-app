@@ -40,7 +40,7 @@ function PaymentCB() {
       }
     };
     getTransactionUser();
-  }, []);
+  }, [orderId, userId]);
   return (
     <MainLayout>
       {isLoading ? (

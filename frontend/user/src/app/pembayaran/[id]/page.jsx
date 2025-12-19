@@ -78,9 +78,11 @@ export default function Pembayaran({ params }) {
       }
     };
     getOtherCourses();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+
     const snapMidtransScriptURL =
       "https://app.sandbox.midtrans.com/snap/snap.js";
     const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
@@ -127,6 +129,7 @@ export default function Pembayaran({ params }) {
                     height={96}
                     src={course.imageUrl}
                     className="h-24 w-full rounded-t-3xl object-cover"
+                    alt={course.name}
                   />
                   <div className="px-4 py-3">
                     <h3 className="text-sm font-bold text-primary-01">

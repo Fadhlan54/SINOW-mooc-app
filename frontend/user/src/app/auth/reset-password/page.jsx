@@ -3,7 +3,6 @@
 import Button from "@/components/Button";
 import { fetchReqResetPassword } from "@/services/auth.service";
 import { Montserrat, Poppins } from "next/font/google";
-import Swal from "sweetalert2";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -22,7 +21,7 @@ export default function ResetPasswordPage() {
 
     setIsLoading(true);
     const email = e.target.email.value;
-
+    const Swal = (await import("sweetalert2")).default;
     try {
       const res = await fetchReqResetPassword(email);
       if (res.status === "Success") {

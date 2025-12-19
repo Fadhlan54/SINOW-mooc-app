@@ -86,7 +86,7 @@ export default function DetailCoursePage({ params }) {
       fetchCourseUser();
     }
     fetchCoursesById();
-  }, []);
+  }, [id, push, token]);
 
   const handleFollowCourse = async () => {
     if (!token) {
@@ -541,8 +541,11 @@ export default function DetailCoursePage({ params }) {
                                   </p>
                                 </div>
                                 {chapter.myModules?.length > 0 &&
-                                  chapter.myModules.map((module) => (
-                                    <div className="flex justify-between gap-2 text-sm">
+                                  chapter.myModules.map((module, index) => (
+                                    <div
+                                      className="flex justify-between gap-2 text-sm"
+                                      key={index}
+                                    >
                                       <div className="flex items-center ">
                                         <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                                           {module.moduleData?.no}
@@ -588,8 +591,8 @@ export default function DetailCoursePage({ params }) {
                         Keuntungan Mengikuti Kelas Ini
                       </h3>
                       <div className="px-2 text-sm">
-                        {course.benefits.map((benefit) => (
-                          <div className="flex gap-2">
+                        {course.benefits.map((benefit, index) => (
+                          <div className="flex gap-2" key={index}>
                             <p>{benefit.no}.</p>
                             <p>{benefit.description}</p>
                           </div>
@@ -612,8 +615,8 @@ export default function DetailCoursePage({ params }) {
                       Keuntungan Mengikuti Kelas Ini
                     </h3>
                     <div className="px-1 text-sm">
-                      {course.benefits.map((benefit) => (
-                        <div className="my-1 flex gap-2">
+                      {course.benefits.map((benefit, index) => (
+                        <div className="my-1 flex gap-2" key={index}>
                           <p>{benefit.no}.</p>
                           <p>{benefit.description}</p>
                         </div>
@@ -661,8 +664,8 @@ export default function DetailCoursePage({ params }) {
                       </div>
                       <div className="mb-4 flex flex-col gap-4">
                         {chaptersUser.length > 0 &&
-                          chaptersUser.map((chapter) => (
-                            <>
+                          chaptersUser.map((chapter, index) => (
+                            <div key={index}>
                               <div className="flex items-start justify-between gap-3 text-sm font-extrabold">
                                 <h4 className="text-primary-01 ">
                                   Chapter {chapter.no} - {chapter.name}
@@ -672,8 +675,11 @@ export default function DetailCoursePage({ params }) {
                                 </p>
                               </div>
                               {chapter.myModules?.length > 0 &&
-                                chapter.myModules.map((module) => (
-                                  <div className="flex justify-between gap-2 text-sm">
+                                chapter.myModules.map((module, index) => (
+                                  <div
+                                    className="flex justify-between gap-2 text-sm"
+                                    key={index}
+                                  >
                                     <div className="flex items-center ">
                                       <h5 className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-02 text-xs font-bold">
                                         {module.moduleData?.no}
@@ -700,7 +706,7 @@ export default function DetailCoursePage({ params }) {
                                     </button>
                                   </div>
                                 ))}
-                            </>
+                            </div>
                           ))}
                       </div>
                     </div>

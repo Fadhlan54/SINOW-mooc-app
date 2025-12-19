@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "@/components/loading-animation/Loading";
 import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 function CheckTokenPage() {
   const searchParams = useSearchParams();
@@ -16,6 +15,7 @@ function CheckTokenPage() {
 
   useEffect(() => {
     const handleCheckToken = async () => {
+      const Swal = (await import("sweetalert2")).default;
       if (!token) {
         const result = await Swal.fire({
           icon: "error",

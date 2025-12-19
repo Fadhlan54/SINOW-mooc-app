@@ -68,9 +68,10 @@ function MyCourse() {
       }
     };
     getCoursesUser();
-  }, [searchFilter, filterForm, filterProgress]);
+  }, [searchFilter, filterForm, filterProgress, token]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
     if (isMobileFilterVisible) {
       // Disable scrolling when filter is visible
       document.body.style.overflow = "hidden";
@@ -188,8 +189,8 @@ function MyCourse() {
               </ul>
               <h3 className="text-sm font-semibold">Kategori</h3>
               <ul className="text-xs">
-                {categories.map((category) => (
-                  <li>
+                {categories.map((category, index) => (
+                  <li key={index}>
                     <div className="mb-1 flex items-center gap-1.5">
                       <div className="relative flex cursor-pointer items-center">
                         <input
@@ -437,8 +438,8 @@ function MyCourse() {
                     <ul className="text-xs">
                       {categories &&
                         categories.length > 0 &&
-                        categories.map((category) => (
-                          <li>
+                        categories.map((category, index) => (
+                          <li key={index}>
                             <div className="mb-1 flex items-center gap-1.5">
                               <div className="relative flex cursor-pointer items-center">
                                 <input

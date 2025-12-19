@@ -54,7 +54,7 @@ export default function DetailNotificationPage({ params }) {
       }
     };
     getNotification();
-  }, []);
+  }, [id, push, token]);
 
   return (
     <MainLayout disableMobileNavbar>
@@ -97,21 +97,29 @@ export default function DetailNotificationPage({ params }) {
               </h3>
               <hr className="mb-2" />
 
-              {notification.content?.split("\n\n").map((line) => (
-                <div className="mb-2 text-xs text-neutral-04 md:text-sm">
-                  {line.split("\n").map((text) => {
+              {notification.content?.split("\n\n").map((line, index) => (
+                <div
+                  className="mb-2 text-xs text-neutral-04 md:text-sm"
+                  key={index}
+                >
+                  {line.split("\n").map((text, index) => {
                     if (linkRegex.test(text)) {
                       return (
                         <Link
                           href={text}
                           className="my-1 inline-block break-all text-primary-01 underline hover:text-primary-02"
                           target="_blank"
+                          key={index}
                         >
                           {text}
                         </Link>
                       );
                     } else {
-                      return <p className="my-1">{text}</p>;
+                      return (
+                        <p className="my-1" key={index}>
+                          {text}
+                        </p>
+                      );
                     }
                   })}
                 </div>

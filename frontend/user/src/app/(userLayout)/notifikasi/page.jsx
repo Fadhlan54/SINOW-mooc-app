@@ -55,7 +55,7 @@ export default function NotificationsPage() {
       }
     };
     getNotifications();
-  }, []);
+  }, [push, token]);
 
   return (
     <MainLayout disableMobileNavbar>

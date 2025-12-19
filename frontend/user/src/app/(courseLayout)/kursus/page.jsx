@@ -70,6 +70,8 @@ function Course() {
   }, [searchFilter, filterForm, filterType]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+
     if (isMobileFilterVisible) {
       // Disable scrolling when filter is visible
       document.body.style.overflow = "hidden";
@@ -80,6 +82,8 @@ function Course() {
   }, [isMobileFilterVisible]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+
     // Fungsi untuk menutup filter ketika klik dilakukan di luar area filter
     const handleClickOutside = (event) => {
       if (filterRef.current && !filterRef.current.contains(event.target)) {
@@ -187,8 +191,8 @@ function Course() {
               </ul>
               <h3 className="text-sm font-semibold">Kategori</h3>
               <ul className="text-xs">
-                {categories.map((category) => (
-                  <li>
+                {categories.map((category, index) => (
+                  <li key={index}>
                     <div className="mb-1 flex items-center gap-1.5">
                       <div className="relative flex cursor-pointer items-center">
                         <input
@@ -436,8 +440,8 @@ function Course() {
                     <ul className="text-xs">
                       {categories &&
                         categories.length > 0 &&
-                        categories.map((category) => (
-                          <li>
+                        categories.map((category, index) => (
+                          <li key={index}>
                             <div className="mb-1 flex items-center gap-1.5">
                               <div className="relative flex cursor-pointer items-center">
                                 <input

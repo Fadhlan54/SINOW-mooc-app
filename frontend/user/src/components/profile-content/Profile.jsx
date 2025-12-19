@@ -44,7 +44,7 @@ export default function Profile() {
     };
 
     getUserProfile();
-  }, []);
+  }, [push, token]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -134,6 +134,7 @@ export default function Profile() {
                   }
                   width={18}
                   height={16}
+                  alt="upload icon"
                 ></Image>
               </div>
             </label>

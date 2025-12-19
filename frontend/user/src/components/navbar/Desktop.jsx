@@ -21,6 +21,7 @@ export default function DesktopNavbar({
   const { push } = useRouter();
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
     const handleClickOutsideMenu = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuActive(false);

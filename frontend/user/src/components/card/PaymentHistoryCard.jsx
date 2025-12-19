@@ -15,6 +15,7 @@ export default function PaymentHistoryCard({ transaction }) {
           width={200}
           height={100}
           className="h-28 w-full rounded-t-xl object-cover"
+          alt={transaction.Course.name}
         />
       </Link>
       <div className="p-3">

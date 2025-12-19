@@ -1,4 +1,3 @@
-import Swal from "sweetalert2";
 import MaskotLogout from "/images/logo-n-maskot/forgot_pass_aset.png";
 import axios from "axios";
 import { useContext } from "react";
@@ -8,6 +7,7 @@ export default function RemoveClass({ id }) {
   const { classSinow, setClassSinow } = useContext(ClassContext);
   const { toggleShowWarning } = useContext(RemoveClassContext);
   const handleRemoveButton = async () => {
+    const Swal = (await import("sweetalert2")).default;
     try {
       toggleShowWarning();
 

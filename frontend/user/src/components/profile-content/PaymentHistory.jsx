@@ -25,7 +25,7 @@ export default function PaymentHistory() {
     };
 
     getCourses();
-  }, []);
+  }, [token]);
   return (
     <div className="w-full">
       {isLoading && <LoadingScreen />}
