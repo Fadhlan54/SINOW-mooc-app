@@ -296,7 +296,7 @@ const register = async (req, res, next) => {
       role: 'user',
     })
 
-    const otpCode = await sendOTPVerificationEmail(email, next)
+    const otpCode = await sendOTPVerificationEmail(email)
 
     const checkOtp = await OTP.findOne({
       where: {
@@ -386,7 +386,7 @@ const resendOtp = async (req, res, next) => {
       })
     }
 
-    const otpCode = await sendOTPVerificationEmail(email, next)
+    const otpCode = await sendOTPVerificationEmail(email)
 
     await OTP.create({
       userEmail: email,
@@ -542,7 +542,7 @@ const reqResetPassword = async (req, res, next) => {
       return next(new ApiError('Email tidak terdaftar', 400))
     }
 
-    await sendResetPasswordEmail(auth, next)
+    await sendResetPasswordEmail(auth)
 
     return res.status(200).json({
       status: 'Success',
